@@ -56,12 +56,13 @@ The system supports three distinct user roles, each with specific permissions:
   - [ ] content (String)
   - [ ] image
   - [ ] categories (n:m-> Category)
-  - [ ] state (n:n-> State)
+  - [ ] status (n:n -> Status)
+  - [ ] bulletin (n:n -> Bulletin)
   - [ ] created (DateTime)
   - [ ] published (DateTime)
   - [ ] updated (DateTime)
 
-- [ ] State
+- [ ] Status
   - [ ] draft / published_public / published_private / evaluation (String?)
 
 - [ ] Category
@@ -85,21 +86,37 @@ The system supports three distinct user roles, each with specific permissions:
   - [ ] created (DateTime)
   - [ ] updated (DateTime)
 
+### User Management
+
 - [ ] User (default from Django)
+  - [ ] username
+  - [ ] first name
+  - [ ] last name
+  - [ ] password
+  - [ ] email
 
 - [ ] Profile
-  - [ ] user (-> User)
+  - [ ] user (n:n-> User)
   - [ ] biography (String)
-  - [ ] role (reader, writer, admin)
+  - [ ] avatar (Image)
+  - [ ] role () - options: reader, writer, admin
   - [ ] subscribed (n:m -> Bulletin)
+  - [ ] created
+  - [ ] updated
 
 - [ ] Bulletin
   - [ ] title (String)
   - [ ] description (String)
   - [ ] author (n:n-> Profile)
   - [ ] articles (n:m -> Article)
+  - [ ] created
+  - [ ] updated
+
+-----
 
 ## Functionalities
+
+-----
 
 ### Forms
 - register User
@@ -118,9 +135,13 @@ The system supports three distinct user roles, each with specific permissions:
 - writer bulletin (list of articles)
 - writer dashboard (create and manage articles)
 
-## Project Implementation
+-----
+
+## Project Structure
 
 ### `content` app
+Content management - articles.
+
 - [ ] articles list
 - [ ] article content
 - [ ] article create + update
@@ -130,10 +151,15 @@ The system supports three distinct user roles, each with specific permissions:
   - [ ] based on category
 
 ### `accounts` app
+User authentication, profile management and authorization.
+
 - [ ] user register
 - [ ] profile create, update, delete
 - [ ] upgrade to writer
 
+### `---` app 
+Workplace for writers and administrators in form of some dashboard
 
-
+- [ ] create, update and delete articles
+- [ ] evaluation of articles
 
