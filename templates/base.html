@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html {% if LANGUAGE_CODE %} lang="{{ LANGUAGE_CODE }}" {% else %} lang="sk" {% endif %}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>
