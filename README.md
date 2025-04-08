@@ -49,25 +49,25 @@ The system supports three distinct user roles, each with specific permissions:
 ## Database
 
 - [ ] Article
-  - [ ] title (String)
-  - [ ] subtitle (String)
+  - [x] title (String)
+  - [x] subtitle (String)
   - [ ] author (-> Profile)
-  - [ ] description (String)
-  - [ ] content (String)
+  - [x] description (String)
+  - [x] content (String)
   - [ ] image
-  - [ ] categories (n:m-> Category)
+  - [x] categories (n:m-> Category)
   - [ ] status (n:n -> Status)
   - [ ] bulletin (n:n -> Bulletin)
-  - [ ] created (DateTime)
-  - [ ] published (DateTime)
-  - [ ] updated (DateTime)
+  - [x] created (DateTime)
+  - [x] published (DateTime)
+  - [x] updated (DateTime)
 
 - [ ] Status
   - [ ] draft / published_public / published_private / evaluation (String?)
 
-- [ ] Category
-  - [ ] title (String)
-  - [ ] description (String)
+- [x] Category
+  - [x] name (String)
+  - [x] description (String)
 
 - [ ] Like
   - [ ] author (-> User)
