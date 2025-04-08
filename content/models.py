@@ -6,6 +6,10 @@ class Category(Model):
     name = CharField(max_length=100, null=False, blank=False, unique=True)
     description = TextField(max_length=500, null=False, blank=False)
 
+    class Meta:
+        verbose_name_plural = "Kategorie"
+        ordering = ['name']
+
     def __repr__(self):
         return f"Category({self.name})"
 
@@ -25,8 +29,12 @@ class Article(Model):
 
     category = ManyToManyField(Category, related_name="articles")
 
+    class Meta:
+        verbose_name_plural = "Članky"
+        ordering = ['-created']
+
     def __repr__(self):
         return f"Article(title={self.title}, author=Author, created={self.created})"
 
     def __str__(self):
-        return f"{self.title} - Author - {self.created}"
+        return f"{self.title} - Author"
