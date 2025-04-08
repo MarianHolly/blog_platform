@@ -14,3 +14,15 @@
 - Define ORM models and check foreign key relations.
 - Run initial migrations (`makemigrations` & `migrate`).
 - Create a superuser and populate mock content.
+
+### 2025-04-08
+
+#### ✅ What I Have Done
+- Created models on Article, Category and run migrations.
+- Created superuser and wrote mock categories and articles.
+- List articles on homepage and create detail page for single article.
+
+#### 🔜 What To Do Next
+- Resources to read on authentication and users management:
+  - https://docs.djangoproject.com/en/5.2/topics/auth/customizing/
+- Create and develop custom model on user, profile and bulletin.
