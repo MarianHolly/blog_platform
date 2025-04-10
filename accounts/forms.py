@@ -31,14 +31,14 @@ class SignUpForm(UserCreationForm):
         }
 
     password1 = CharField(
-        widget=PasswordInput(attrs={'placeholder': 'Vyber si silné heslo'}),
+        widget=PasswordInput(attrs={'autocomplete': 'new-password', 'placeholder': 'Vyber si silné heslo'}),
         required=True,
         label="Heslo",
         error_messages={
             'required': 'Heslo je povinné.',
         })
     password2 = CharField(
-        widget=PasswordInput(attrs={'placeholder': 'Zapamätáš si ho?'}),
+        widget=PasswordInput(attrs={'autocomplete': 'new-password', 'placeholder': 'Zapamätáš si ho?'}),
         required=True,
         label="Potvrdiť heslo",
         error_messages={
