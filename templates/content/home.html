@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Domovská stránka</h1>
-    <ul>
+    <h1 class="text-3xl text-center my-4">Domovská stránka</h1>
+    <div class="container my-4 flex flex-col gap-3 justify-center">
         {% for article in articles %}
-            <li>
-                <a href="{% url 'article' article.id %}">
+            <div class="border-1 border-gray-200 px-2 py-4 rounded-md">
+                <a href="{% url 'article' article.id %}" class="hover:text-gray-700">
                     {{ article.title }}
                 </a>
-            </li>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
