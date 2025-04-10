@@ -3,6 +3,12 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
-    <h2>{{ article.title }}</h2>
-    <p>{{ article.content }}</p>
+    <article class="mt-12">
+        <h2 class="text-2xl mb-4 text-center">{{ article.title }}</h2>
+        <div class="w-full flex flex-col gap-2 text-center mb-2">
+            <p class="text-gray-500">autor: <span class="font-semibold text-gray-800">Author</span></p>
+            <p class="text-gray-500 text-sm">publikované <span class="font-semibold text-gray-800">20. Január 2025</span></p>
+        </div>
+        <p class="text-sm">{{ article.content }}</p>
+    </article>
 {% endblock %}
