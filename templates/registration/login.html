@@ -1,14 +1,40 @@
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block title %}
-
+    Prihlásenie
 {% endblock %}
 
 {% block content %}
-    <h2 class="text-xl my-6">Vitaj späť</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_table }}
-        <input type="submit" value="Prihlásiť sa">
-    </form>
+    <div class="container mx-auto max-w-xl px-2 py-4">
+        <div class="bg-white shadow-sm rounded-sm p-4">
+            <h2 class="text-2xl font-bold mb-6 text-center uppercase text-gray-900">Vitaj späť</h2>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    {{ form|crispy }}
+                </div>
+
+                <div class="mt-6">
+                    <button type="submit" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition duration-200">
+                        Prihlásiť sa
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between mt-4">
+                    <div class="text-sm">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">
+                            Zabudol si heslo?
+                        </a>
+                    </div>
+                    <div class="text-sm">
+                        <a href="{% url 'signup' %}" class="text-blue-600 hover:text-blue-800 font-medium">
+                            Vytvoriť nový účet
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
