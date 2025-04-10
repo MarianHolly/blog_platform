@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from content.views import *
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path("", home, name="home"),
     path("about/", about, name="about"),
     path("article/<int:pk>", ArticleDetailView.as_view(), name="article"),
+    path("accounts/", include("accounts.urls") ),
 ]
