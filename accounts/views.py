@@ -12,7 +12,7 @@ from accounts.models import Profile
 class SignUpView(CreateView):
     template_name = "registration/signup.html"
     form_class = SignUpForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('login')
 
 
 def logout_user(request):
