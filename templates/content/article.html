@@ -3,12 +3,22 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
-    <article class="mt-12">
-        <h2 class="text-2xl mb-4 text-center">{{ article.title }}</h2>
-        <div class="w-full flex flex-col gap-2 text-center mb-2">
-            <p class="text-gray-500">autor: <span class="font-semibold text-gray-800">Author</span></p>
-            <p class="text-gray-500 text-sm">publikované <span class="font-semibold text-gray-800">20. Január 2025</span></p>
-        </div>
-        <p class="text-sm">{{ article.content }}</p>
-    </article>
+    <div class="container mx-auto px-4 py-8">
+        <article class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+            <h1 class="text-3xl font-bold text-gray-800 mb-3">{{ article.title }}</h1>
+
+            <div class="flex flex-col mb-6 pb-4 border-b border-gray-200">
+                <div class="text-gray-600">
+                    <span class="text-sm">autor: <span class="font-medium text-gray-800">{{ article.author }}</span></span>
+                </div>
+                <div class="text-gray-600 mt-1">
+                    <span class="text-sm">publikované <span class="font-medium text-gray-800">{{ article.published_date|date:"j. F Y" }}</span></span>
+                </div>
+            </div>
+
+            <div class="prose max-w-none">
+                {{ article.content|safe }}
+            </div>
+        </article>
+    </div>
 {% endblock %}
