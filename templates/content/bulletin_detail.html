@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <!-- Bulletin Information -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="flex flex-col p-6 gap-6 items-center">
+                <h2 class="text-2xl font-bold text-gray-800 text-center">
+                    Bulletin Title
+                </h2>
+                <p class="text-md text-gray-600 text-center">
+                    Description of Bulletin
+                </p>
+                <div class="flex justify-center">
+                    <a class="m-1 px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-center hover:bg-gray-900 transition hover:cursor-pointer">
+                        Subscribe
+                    </a>
+                    <a href="{% url 'bulletin_archive' bulletin.slug %}"
+                            class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition hover:cursor-pointer">
+                        Archive
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Bulletin Featured Articles -->
+    </div>
+{% endblock %}
