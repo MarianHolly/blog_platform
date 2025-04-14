@@ -13,18 +13,24 @@
             </div>
         </div>
 
-
         <!-- Archive Navigation (Search, Filter, Tags) -->
         <!-- List of Articles -->
-    <div class="max-w-2xl mx-auto">
+        <div class="max-w-2xl mx-auto">
             {% for article in articles %}
                 <a href="{% url 'article_detail' article.id %}"
-                   class="block mb-4 p-4 bg-white rounded border border-gray-200 hover:bg-gray-50 transition">
-                    <h3 class="font-medium text-lg text-gray-800">
+                   class="block mb-2 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 transition border-l-3
+                        {% if article.status == 'draft' %}
+                                border-l-gray-500
+                            {% elif article.status == 'published' %}
+                                border-l-green-500
+                            {% elif article.status == 'under_evaluation' %}
+                                border-l-pink-500
+                            {% endif %}">
+                    <h3 class="font-medium text-sm text-gray-800">
                         {{ article.title }}
                     </h3>
 
-                    <div class="flex items-center mt-2 text-sm text-gray-600">
+                    <div class="flex items-center mt-2 text-xs text-gray-600">
                         <span>{{ article.author }}</span>
                         <span class="mx-2">•</span>
                         <span>{{ article.created|date:"M d, Y" }}</span>
