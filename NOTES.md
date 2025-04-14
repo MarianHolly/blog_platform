@@ -7,11 +7,11 @@
 - [x] Models for Bulletin, Article, Subscription
 - [x] Check relationships between models
 - [x] Simple list and detail view for Articles
-- [ ] ArticleForm with CreateView, UpdateView, and DeleteView
+- [x] ArticleForm with CreateView, UpdateView, and DeleteView
 
-- [ ] ProfileDetailView 
+- [x] ProfileDetailView 
 - [ ] ProfileForm with create, update, delete
-- [ ] BulletinDetailView
+- [x] BulletinDetailView
 - [ ] BulletinForm with create, update, delete
 - [ ] Subscription functionality (view and manage)
   - [ ] Update article visibility logic based on subscriptions
