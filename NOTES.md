@@ -10,9 +10,9 @@
 - [x] ArticleForm with CreateView, UpdateView, and DeleteView
 
 - [x] ProfileDetailView 
-- [ ] ProfileForm with create, update, delete
+- [ ] ProfileForm with create, update, delete (update is done)
 - [x] BulletinDetailView
-- [ ] BulletinForm with create, update, delete
+- [ ] BulletinForm with create, update, delete (update is done)
 - [ ] Subscription functionality (view and manage)
   - [ ] Update article visibility logic based on subscriptions
   - [ ] Add subscription management to profile view
