@@ -32,6 +32,8 @@
                     <p class="text-gray-600 text-lg">@{{ profile.user.username }}</p>
 
                 </div>
+                <div class="flex flex-col">
+
                 {% if profile.role == 'writer' and profile.bulletin %}
                     <a href="{% url 'bulletin_detail' profile.bulletin.slug %}"
                        class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
@@ -39,10 +41,15 @@
                     </a>
                 {% else %}
                     <a href=""
-                       class="m-1 px-2 py-1 bg-gray-300 text-gray-900 rounded-md text-center hover:bg-gray-400 transition">
+                       class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
                         Create Your Bulletin
                     </a>
                 {% endif %}
+                 <a href="{% url 'profile_update' username=user.username %}"
+                       class="m-1 px-2 py-1 bg-gray-300 text-gray-900 rounded-md text-center hover:bg-gray-400 transition">
+                        Edit Your Profile
+                    </a>
+                </div>
 
             </div>
         </div>
@@ -55,6 +62,5 @@
             {% endif %}
         </div>
         <!-- Informations about Profile's Likes, Subscriptions, Read-Later, Comments -->
-
     </div>
 {% endblock %}

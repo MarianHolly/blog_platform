@@ -36,3 +36,7 @@
 
 ### 2025-04-13
 - 
+
+
+
+- I was trying to upload image, but it didnt function, until i added to form this: `enctype="multipart/form-data"`
