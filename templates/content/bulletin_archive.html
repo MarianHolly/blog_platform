@@ -5,14 +5,36 @@
 {% block content %}
     <div class="max-w-3xl mx-auto px-4 py-8">
         <!-- Bulletin Information -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="flex flex-row p-6 gap-6 items-center">
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="flex flex-col p-6 gap-6 items-center">
                 <h2 class="text-2xl font-medium text-center">
                     Archive
                 </h2>
             </div>
         </div>
+
+
         <!-- Archive Navigation (Search, Filter, Tags) -->
         <!-- List of Articles -->
+    <div class="max-w-2xl mx-auto">
+            {% for article in articles %}
+                <a href="{% url 'article_detail' article.id %}"
+                   class="block mb-4 p-4 bg-white rounded border border-gray-200 hover:bg-gray-50 transition">
+                    <h3 class="font-medium text-lg text-gray-800">
+                        {{ article.title }}
+                    </h3>
+
+                    <div class="flex items-center mt-2 text-sm text-gray-600">
+                        <span>{{ article.author }}</span>
+                        <span class="mx-2">•</span>
+                        <span>{{ article.created|date:"M d, Y" }}</span>
+                    </div>
+                </a>
+            {% empty %}
+                <div class="text-center py-10">
+                    <p class="text-gray-500">No articles written yet.</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

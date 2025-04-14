@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
+from accounts.models import Profile
 from content.forms import ArticleForm
 from content.models import Article, Bulletin
 
@@ -50,8 +52,8 @@ class ArticleDeleteView(DeleteView):
 
 
 class BulletinDetailView(DetailView):
-    model = Bulletin
     template_name = "content/bulletin_detail.html"
+    model = Bulletin
     context_object_name = "bulletin"
     slug_field = "slug"
     slug_url_kwarg = 'slug'
@@ -59,6 +61,16 @@ class BulletinDetailView(DetailView):
 
 class BulletinListView(ListView):
     template_name = "content/bulletin_archive.html"
-    model = Article
-    context_object_name = "articles"
-    extra_context = ""
+    model = Bulletin
+    context_object_name = "bulletin"
+
+
+def bulletin_archive(request, slug):
+    bulletin_ = Bulletin.objects.get(slug=slug)
+    articles_ = Article.objects.all().filter(bulletin=bulletin_)
+
+    context = {
+        'bulletin': bulletin_,
+        'articles': articles_,
+    }
+    return render(request, 'content/bulletin_archive.html', context)

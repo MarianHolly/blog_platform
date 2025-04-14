@@ -3,7 +3,7 @@
 {% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
 {% block content %}
-    <div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-4">
         <!-- Main Profile Information -->
         <div class="bg-white rounded-lg shadow">
             <div class="flex flex-col md:flex-row p-6 gap-6 items-center md:items-start">
@@ -44,12 +44,15 @@
                     </a>
                 {% endif %}
 
-                {% if profile.biography %}
-                    <p class="mt-4 text-gray-600">
-                        {{ profile.biography }}
-                    </p>
-                {% endif %}
             </div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold underline text-center">About Me</h2>
+            {% if profile.biography %}
+                <p class="mt-4 text-gray-600">
+                    {{ profile.biography }}
+                </p>
+            {% endif %}
         </div>
         <!-- Informations about Profile's Likes, Subscriptions, Read-Later, Comments -->
     </div>
