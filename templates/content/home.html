@@ -6,10 +6,10 @@
 
 {% block content %}
     <h1 class="text-3xl text-center my-4">Domovská stránka</h1>
-    <div class="container my-4 flex flex-col gap-3 justify-center">
+    <div class="container max-w-2xl mx-auto my-4 flex flex-col gap-3 justify-center">
         {% for article in articles %}
-            <div class="border-1 border-gray-200 px-2 py-4 rounded-md">
-                <a href="{% url 'article' article.id %}" class="hover:text-gray-700">
+            <div class="border-1 border-gray-200 px-2 py-4 rounded-md hover:bg-gray-200">
+                <a href="{% url 'article_detail' article.id %}">
                     {{ article.title }}
                 </a>
             </div>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+
+{% block title %}
+    Form
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto">
+        <form method="post">
+            {% csrf_token %}
+            <table>{{ form|crispy }}</table>
+            <input type="submit" value="Save">
+        </form>
+    </div>
+{% endblock %}
