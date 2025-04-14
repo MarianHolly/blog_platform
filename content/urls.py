@@ -2,7 +2,7 @@ from django.urls import path
 
 from accounts.views import ProfileDetailView
 from content.views import HomePageView, AboutPageView, ArticleListView, ArticleDetailView, ArticleUpdateView, \
-    ArticleCreateView, ArticleDeleteView, BulletinDetailView, BulletinListView, bulletin_archive
+    ArticleCreateView, ArticleDeleteView, BulletinDetailView, BulletinListView, bulletin_archive, BulletinUpdateView
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
@@ -13,7 +13,6 @@ urlpatterns = [
     path("article/edit/<int:pk>/", ArticleUpdateView.as_view(), name="article_edit"),
     path("article/delete/<int:pk>/", ArticleDeleteView.as_view(), name='article_delete'),
     path("bulletin/<slug:slug>/", BulletinDetailView.as_view(), name="bulletin_detail"),
-    path("bulletin/<slug:slug>/archive", bulletin_archive, name="bulletin_archive"),
-   # path("bulletin/<slug:slug>/archive", BulletinListView.as_view(), name="bulletin_archive"),
-
+    path("bulletin/<slug:slug>/archive/", bulletin_archive, name="bulletin_archive"),
+    path("bulletin/<slug:slug>/edit/", BulletinUpdateView.as_view(), name="bulletin_edit"),
 ]

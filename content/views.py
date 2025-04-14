@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
 from accounts.models import Profile
-from content.forms import ArticleForm
+from content.forms import ArticleForm, BulletinForm
 from content.models import Article, Bulletin
 
 
@@ -55,6 +55,15 @@ class BulletinDetailView(DetailView):
     template_name = "content/bulletin_detail.html"
     model = Bulletin
     context_object_name = "bulletin"
+    slug_field = "slug"
+    slug_url_kwarg = 'slug'
+
+
+class BulletinUpdateView(UpdateView):
+    template_name = "accounts/profile_form.html"
+    model = Bulletin
+    form_class = BulletinForm
+    success_url = reverse_lazy('article_list')
     slug_field = "slug"
     slug_url_kwarg = 'slug'
 

@@ -1,7 +1,7 @@
 from django.forms import RadioSelect, TextInput, Textarea
 from django.forms.models import ModelForm
 
-from content.models import Article
+from content.models import Article, Bulletin
 
 
 class ArticleForm(ModelForm):
@@ -19,3 +19,9 @@ class ArticleForm(ModelForm):
 
     #This form will be accessible only for user with role 'writer'
     #TODO: User is provided, take bulletin from user.profile.bulletin
+
+
+class BulletinForm(ModelForm):
+    class Meta:
+        model = Bulletin
+        fields = ['title', 'description']
