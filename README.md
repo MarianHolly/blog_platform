@@ -48,6 +48,8 @@ The system supports three distinct user roles, each with specific permissions:
 
 ## Database
 
+![ER_DIAGRAM](./media/er_diagram.png)
+
 - [ ] Article
   - [x] title (String)
   - [x] subtitle (String)
