@@ -1,5 +1,5 @@
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
-    SlugField
+    SlugField, ForeignKey
 
 from accounts.models import Profile
 
@@ -34,6 +34,7 @@ class Article(Model):
 
     title = CharField(max_length=150, null=False, blank=False, unique=True)
     content = TextField(null=True, blank=True)
+    bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
     subtite = CharField(max_length=200, null=True, blank=True)
     description = TextField(null=True, blank=True)
@@ -53,3 +54,22 @@ class Article(Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def author(self):
+        return self.bulletin.owner
+
+
+class Subscription(Model):
+    subscriber = ForeignKey(Profile, on_delete=CASCADE, related_name='subscriptions')
+    bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='subscribers')
+    created = DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('subscriber', 'bulletin')
+
+    def __repr__(self):
+        return f"Subscription(subscriber={self.subscriber}, bulletin={self.bulletin})"
+
+    def __str__(self):
+        return f"{self.subscriber.title} subscribed to {self.bulletin.title}"

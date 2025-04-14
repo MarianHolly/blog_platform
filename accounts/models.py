@@ -25,14 +25,14 @@ class Profile(Model):
     def __str__(self):
         return f"{self.user.username}"
 
+    @property
+    def is_reader(self):
+        return True
 
-class Subscription(Model):
-    subscriber = ForeignKey(Profile, on_delete=CASCADE, related_name='subscriptions')
-    writer = ForeignKey(User, on_delete=CASCADE, related_name='subscribers')
-    created = DateTimeField(auto_now_add=True)
+    @property
+    def is_writer(self):
+        return self.role == 'writer'
 
-    def __repr__(self):
-        return f"Subscription(subscriber={self.subscriber}, writer={self.writer})"
-
-    def __str__(self):
-        return f"{self.subscriber.username} subscribed to {self.writer}"
+    @property
+    def is_admin(self):
+        return self.role == 'admin'
