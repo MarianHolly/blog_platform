@@ -7,10 +7,36 @@
 
 {% block content %}
     <div class="max-w-4xl mx-auto">
-        <form method="post">
-            {% csrf_token %}
-            <table>{{ form|crispy }}</table>
-            <input type="submit" value="Save">
-        </form>
+        <h1 class="text-4xl font-semibold my-6">Form</h1>
+        <div class="container mx-auto py-8 px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded shadow p-6">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-6">
+                            {{ form.title|as_crispy_field }}
+                            {{ form.subtite|as_crispy_field }}
+                            {{ form.description|as_crispy_field }}
+                            {{ form.content|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="font-medium text-gray-700 mb-4">Nastavenia</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {{ form.bulletin|as_crispy_field }}
+                                {{ form.status|as_crispy_field }}
+                                {{ form.visibility|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 hover:cursor-pointer">
+                                Uložiť
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
