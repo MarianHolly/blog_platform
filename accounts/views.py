@@ -10,8 +10,8 @@ from accounts.models import Profile
 
 # Create your views here.
 class SignUpView(CreateView):
-    template_name = "registration/signup.html"
     form_class = SignUpForm
+    template_name = "accounts/signup.html"
     success_url = reverse_lazy('login')
 
 
@@ -20,7 +20,20 @@ def logout_user(request):
     return redirect('home')
 
 
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+    redirect_authenticated_user = True
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
 class ProfileDetailView(DetailView):
     model = Profile
-    template_name = "profile.html"
+    template_name = 'accounts/profile.html'
     context_object_name = "profile"
+    slug_field = 'user__username'
+    slug_url_kwarg = 'username'
