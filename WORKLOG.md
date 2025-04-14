@@ -1,4 +1,4 @@
-## Diary of Progress and Workflow with Notes
+## Diary of Progress
 
 ### 2025-04-07
 
@@ -26,3 +26,13 @@
 - Resources to read on authentication and users management:
   - https://docs.djangoproject.com/en/5.2/topics/auth/customizing/
 - Create and develop custom model on user, profile and bulletin.
+
+### 2025-04-11 / 2025-04-13
+
+#### ✅ What I Have Done
+- Planning blog platform structure and functionality.
+- Drafting models and their relationships.
+- Thinking through project.
+
+### 2025-04-13
+- 

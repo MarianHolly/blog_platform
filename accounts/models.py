@@ -11,7 +11,7 @@ class Profile(Model):
         ('admin', 'Administrator'),
     ]
 
-    user = OneToOneField(User, on_delete=CASCADE)
+    user = OneToOneField(User, on_delete=CASCADE, related_name='profile')
     role = CharField(max_length=20, choices=USER_ROLES, default='reader')
     biography = TextField(max_length=500, null=True, blank=True)
     avatar = ImageField(default='default_avatar.png', upload_to='profile_pics')
@@ -27,7 +27,7 @@ class Profile(Model):
 
 
 class Subscription(Model):
-    subscriber = ForeignKey(User, on_delete=CASCADE, related_name='subscriptions')
+    subscriber = ForeignKey(Profile, on_delete=CASCADE, related_name='subscriptions')
     writer = ForeignKey(User, on_delete=CASCADE, related_name='subscribers')
     created = DateTimeField(auto_now_add=True)
 
