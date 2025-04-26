@@ -5,14 +5,67 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl text-center my-4">Domovská stránka</h1>
-    <div class="container max-w-2xl mx-auto my-4 flex flex-col gap-3 justify-center">
-        {% for article in articles %}
-            <div class="border-1 border-gray-200 px-2 py-4 rounded-md hover:bg-gray-200">
-                <a href="{% url 'article_detail' article.id %}">
-                    {{ article.title }}
+    <section class="mb-24" id="articles">
+        <h1 class="my-6 text-xl font-semibold opacity-60 text-center uppercase">Články</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for article in featured_articles %}
+                <div class="
+                    {% if forloop.first %}
+                        col-span-1 md:col-span-2 row-span-2
+                        p-6 border-2 border-gray-300 rounded-xl shadow-lg hover:bg-gray-100 transition-all
+                    {% else %}
+                        p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition
+                    {% endif %}
+                ">
+                    <a href="{% url 'article_detail' article.id %}" class="block h-full">
+                        <h3 class="text-lg font-semibold mb-2">{{ article.title }}</h3>
+                        <p class="text-gray-600 text-sm">{{ article.description|truncatewords:25 }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="mb-24" id="bulletins">
+        <div class="my-4">
+            <h1 class="text-xl font-medium opacity-70 text-center uppercase">Bulletiny</h1>
+            <p class="text-sm font-300 opacity-50 text-center italic">Bulletiny, ktoré sú populárne medzi našimi
+                čitateľmi.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for bulletin in popular_bulletins %}
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <h3 class="text-lg font-semibold text-center">{{ bulletin.title }}</h3>
+                    <p class="text-gray-600 text-sm mt-2">{{ bulletin.description|truncatewords:20 }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="mb-24" id="writers">
+        <div class="my-4">
+            <h1 class="text-xl font-medium opacity-70 text-center uppercase">Autori</h1>
+            <p class="text-sm font-300 opacity-50 text-center italic">Autori, ktorí zaujali v poslednom čase najviac
+                pozornosti.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for writer in recent_writers %}
+                <a href="{% url 'profile' username=writer.user.username %}"
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                    <img src="{{ writer.avatar.url }}" alt="{{ writer.username }}"
+                         class="w-16 h-16 rounded-full mr-4 object-cover">
+                    <div>
+                        <h3 class="text-lg font-semibold"> {{ writer.user.first_name }} {{ writer.user.last_name }}</h3>
+                        <p class="text-gray-500 text-sm">{{ writer.biography|truncatewords:15 }}</p>
+                    </div>
                 </a>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="call-to-action" class="my-32">
+
+    </section>
 {% endblock %}

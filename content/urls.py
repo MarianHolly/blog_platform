@@ -1,11 +1,11 @@
 from django.urls import path
 
 from accounts.views import ProfileDetailView
-from content.views import HomePageView, AboutPageView, ArticleListView, ArticleDetailView, ArticleUpdateView, \
+from content.views import home, HomePageView, AboutPageView, ArticleListView, ArticleDetailView, ArticleUpdateView, \
     ArticleCreateView, ArticleDeleteView, BulletinDetailView, BulletinListView, bulletin_archive, BulletinUpdateView
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", home, name="home"),
     path("about/", AboutPageView.as_view(), name="about"),
     path("articles/", ArticleListView.as_view(), name="article_list"),
     path("article/<int:pk>/", ArticleDetailView.as_view(), name="article_detail"),

@@ -16,6 +16,15 @@ class HomePageView(ListView):
     context_object_name = "articles"
 
 
+def home(request):
+    context = {
+        'featured_articles': Article.objects.all(),
+        'popular_bulletins': Bulletin.objects.all(),
+        'recent_writers': Profile.objects.all(),
+    }
+    return render(request, "content/home.html", context)
+
+
 class AboutPageView(TemplateView):
     template_name = "content/about.html"
 
