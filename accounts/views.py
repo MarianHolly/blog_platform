@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.forms import SignUpForm, ProfileForm
@@ -43,6 +43,8 @@ class ProfileUpdateView(UpdateView):
     template_name = "accounts/profile_form.html"
     model = Profile
     form_class = ProfileForm
-    success_url = reverse_lazy('home')
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
+
+    def get_success_url(self):
+        return reverse('profile', kwargs={'username': self.object.user.username})
