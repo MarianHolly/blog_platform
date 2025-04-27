@@ -34,7 +34,7 @@
 
                 <div class="flex flex-col">
 
-                    {% if profile.role == 'reader' %}
+                    {% if profile.role == 'reader' and profile.user == user %}
                         <a href=""
                            class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
                             Staň sa autorom
@@ -55,6 +55,7 @@
                             {{ profile.bulletin }}
                         </a>
                     {% endif %}
+
                     <div class="w-full flex justify-end items-center">
                         {% if profile.user == user %}
                             <a href="{% url 'profile_update' username=user.username %}"
@@ -86,19 +87,18 @@
         <!-- Informations about Profile's Likes, Subscriptions, Read-Later, Comments -->
         <div class="flex flex-col md:flex-row gap-2">
             <div class="bg-white rounded-lg shadow p-3 flex-1">
-                <h2 class="text-sm font-semibold text-gray-500 opacity-60 text-center uppercase">Ďalšie</h2>
-                <ul class="text-center flex flex-row md:flex-col justify-center items-center">
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm m-2">Likes</li>
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm m-2">Comments</li>
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm m-2">Read Later</li>
+                <h2 class="mb-4 text-sm font-semibold text-gray-500 opacity-60 text-center uppercase">Ďalšie</h2>
+                <ul class="text-center flex flex-row gap-2 md:flex-col justify-center items-center">
+                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">Likes</li>
+                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">Comments</li>
+                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">Read Later</li>
                 </ul>
             </div>
-
 
             <div class="bg-white rounded-lg shadow p-3 flex-2">
                 <h2 class="text-lg font-semibold text-gray-500 opacity-60 text-center uppercase">Odbery</h2>
 
-                <div class="flex flex-row items-center gap-4 m-2 p-2 hover:bg-gray-50 rounded-sm transition">
+                <div class="flex flex-row items-center gap-4 m-2 p-2 hover:bg-gray-50 rounded-sm transition hover:cursor-pointer">
                     <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-800 flex items-center justify-center text-white text-3xl font-bold"></div>
                     <div class="flex-auto">
                         <h2 class="font-semibold text-gray-900 text-md">Buttetin Title</h2>
