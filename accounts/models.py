@@ -26,6 +26,10 @@ class Profile(Model):
         return f"{self.user.username}"
 
     @property
+    def full_name(self):
+        return self.user.get_full_name() or self.user.username
+
+    @property
     def is_reader(self):
         return True
 
