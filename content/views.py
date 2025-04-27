@@ -15,6 +15,14 @@ class HomePageView(ListView):
     model = Article
     context_object_name = "articles"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['featured_articles'] = Article.objects.all()
+        context['popular_bulletins'] = Bulletin.objects.all()
+        context['recent_writers'] = Profile.objects.filter(role='writer')
+        context['new_readers'] = Profile.objects.filter(role='reader')
+        return context
+
 
 def home(request):
     context = {

@@ -5,7 +5,7 @@ from content.views import home, HomePageView, AboutPageView, ArticleListView, Ar
     ArticleCreateView, ArticleDeleteView, BulletinDetailView, BulletinListView, bulletin_archive, BulletinUpdateView
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", HomePageView.as_view(), name="home"),
     path("about/", AboutPageView.as_view(), name="about"),
     path("articles/", ArticleListView.as_view(), name="article_list"),
     path("article/<int:pk>/", ArticleDetailView.as_view(), name="article_detail"),
