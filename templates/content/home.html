@@ -5,8 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="mb-24" id="articles">
-        <h1 class="my-6 text-xl font-semibold opacity-60 text-center uppercase">Články</h1>
+    <section class="mb-24 mt-8" id="articles">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for article in featured_articles %}
                 <div class="
@@ -35,10 +34,10 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {% for bulletin in popular_bulletins %}
-                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                <a href="{% url 'bulletin_detail' bulletin.slug %}" class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                     <h3 class="text-lg font-semibold text-center">{{ bulletin.title }}</h3>
                     <p class="text-gray-600 text-sm mt-2">{{ bulletin.description|truncatewords:20 }}</p>
-                </div>
+                </a>
             {% endfor %}
         </div>
     </section>

@@ -34,23 +34,28 @@
                 </div>
                 <div class="flex flex-col">
 
-                {% if profile.role == 'writer' and profile.bulletin %}
-                    <a href="{% url 'bulletin_detail' profile.bulletin.slug %}"
-                       class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
-                        View Bulletin
-                    </a>
-                {% else %}
-                    <a href=""
-                       class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
-                        Create Your Bulletin
-                    </a>
-                {% endif %}
-                 <a href="{% url 'profile_update' username=user.username %}"
-                       class="m-1 px-2 py-1 bg-gray-300 text-gray-900 rounded-md text-center hover:bg-gray-400 transition">
-                        Edit Your Profile
-                    </a>
-                </div>
+                    {% if profile.role == 'writer' and profile.bulletin %}
+                        <a href="{% url 'bulletin_detail' profile.bulletin.slug %}"
+                           class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
+                            View Bulletin
+                        </a>
+                    {% endif %}
 
+                    {% if profile.user == user %}
+                        <a href="{% url 'profile_update' username=user.username %}"
+                           class="m-1 px-2 py-1 bg-gray-300 text-gray-900 rounded-md text-center hover:bg-gray-400 transition">
+                            Edit Your Profile
+                        </a>
+                    {% endif %}
+
+                    {% if profile.user == user and profile.bulletin == None %}
+                        <a href=""
+                           class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
+                            Create Your Bulletin
+                        </a>
+                    {% endif %}
+
+                </div>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow p-6">
