@@ -46,9 +46,15 @@ class ProfileDetailView(DetailView):
 
         subscriptions = Subscription.objects.filter(
             subscriber=profile
-        ).select_related('bulletin')
+        ).select_related('bulletin', 'bulletin__owner')
 
         context['subscriptions'] = subscriptions
+
+        # only show toggle buttons on own profile
+        context['show_toggle_buttons'] = (
+                self.request.user.is_authenticated and
+                self.request.user.profile == profile
+        )
         return context
 
 

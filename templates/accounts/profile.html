@@ -115,6 +115,7 @@
                                 <p class="font-light text-gray-500 text-sm">{{ subscription.bulletin.owner }}</p>
                             </div>
 
+                            {% if show_toggle_buttons %}
                                 <form action="{% url 'toggle_subscription' subscription.bulletin.slug %}" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" name="next" value="{{ request.path }}">
@@ -123,6 +124,7 @@
                                         prestať sledovať
                                     </button>
                                 </form>
+                            {% endif %}
 
                         </div>
                     {% endfor %}
