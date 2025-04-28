@@ -89,28 +89,43 @@
             <div class="bg-white rounded-lg shadow p-3 flex-1">
                 <h2 class="mb-4 text-sm font-semibold text-gray-500 opacity-60 text-center uppercase">Ďalšie</h2>
                 <ul class="text-center flex flex-row gap-2 md:flex-col justify-center items-center">
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">Likes</li>
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">Comments</li>
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">Read Later</li>
+                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
+                        Likes
+                    </li>
+                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
+                        Comments
+                    </li>
+                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
+                        Read Later
+                    </li>
                 </ul>
             </div>
 
             <div class="bg-white rounded-lg shadow p-3 flex-2">
                 <h2 class="text-lg font-semibold text-gray-500 opacity-60 text-center uppercase">Odbery</h2>
 
-                <div class="flex flex-row items-center gap-4 m-2 p-2 hover:bg-gray-50 rounded-sm transition hover:cursor-pointer">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-800 flex items-center justify-center text-white text-3xl font-bold"></div>
-                    <div class="flex-auto">
-                        <h2 class="font-semibold text-gray-900 text-md">Buttetin Title</h2>
-                        <p class="font-light text-gray-500 text-sm">Author of Bulletin</p>
+                {% if subscriptions %}
+                    {% for subscription in subscriptions %}
+                        <div class="flex flex-row items-center gap-4 m-2 p-2 hover:bg-gray-50 rounded-sm transition hover:cursor-pointer">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-800 flex items-center justify-center text-white text-3xl font-bold">
+                                {{ subscription.bulletin.title|first|upper }}
+                            </div>
+                            <div class="flex-auto">
+                                <h2 class="font-semibold text-gray-900 text-md">{{ subscription.bulletin.title }}</h2>
+                                <p class="font-light text-gray-500 text-sm">{{ subscription.bulletin.owner }}</p>
+                            </div>
+                            <button type="submit"
+                                    class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-sm text-center hover:bg-gray-200 transition border-1 border-gray-300 hover:cursor-pointer">
+                                prestať sledovať
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-gray-500">Zatiaľ žiadne odbery.</p>
                     </div>
-                    <button class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-sm text-center hover:bg-gray-200 transition border-1 border-gray-300 hover:cursor-pointer">
-                        Subscribe
-                    </button>
-                </div>
+                {% endif %}
             </div>
-
-
 
         </div>
     </div>

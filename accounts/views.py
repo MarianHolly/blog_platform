@@ -6,6 +6,7 @@ from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.models import Profile
+from content.models import Subscription
 
 
 # Create your views here.
@@ -37,6 +38,16 @@ class ProfileDetailView(DetailView):
     context_object_name = "profile"
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
+
+    def get_context_data(self, **kwargs):
+        """ Subscriptions """
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+
+        subscriptions = Subscription.objects.filter(subscriber=profile).select_related('bulletin')
+        context['subscriptions'] = subscriptions
+
+        return context
 
 
 class ProfileUpdateView(UpdateView):
