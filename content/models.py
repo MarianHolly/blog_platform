@@ -72,4 +72,4 @@ class Subscription(Model):
         return f"Subscription(subscriber={self.subscriber}, bulletin={self.bulletin})"
 
     def __str__(self):
-        return f"{self.subscriber.title} subscribed to {self.bulletin.title}"
+        return f"{self.subscriber} subscribed to '{self.bulletin.title}'"
