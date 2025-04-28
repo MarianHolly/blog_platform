@@ -44,9 +44,11 @@ class ProfileDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
 
-        subscriptions = Subscription.objects.filter(subscriber=profile).select_related('bulletin')
-        context['subscriptions'] = subscriptions
+        subscriptions = Subscription.objects.filter(
+            subscriber=profile
+        ).select_related('bulletin')
 
+        context['subscriptions'] = subscriptions
         return context
 
 
