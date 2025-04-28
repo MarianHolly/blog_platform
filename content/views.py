@@ -137,17 +137,26 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
         bulletin = get_object_or_404(Bulletin, slug=slug)
         user_profile = request.user.profile
 
+        # check if user is not owner of bulletin
+        if bulletin.owner == user_profile:
+            next_url = request.POST.get('next', '')
+            if next_url:
+                return HttpResponseRedirect(next_url)
+            return redirect('bulletin_detail', slug=bulletin.slug)
+
         # if subscription exists
         subscription = Subscription.objects.filter(
             subscriber=user_profile,
-            bulletin=bulletin)
+            bulletin=bulletin
+        )
 
         if subscription.exists():
             subscription.delete()
         else:
             Subscription.objects.create(
                 subscriber=user_profile,
-                bulletin=bulletin)
+                bulletin=bulletin
+            )
 
         next_url = request.POST.get('next', '')
         if next_url:
