@@ -6,28 +6,42 @@
     <div class="max-w-3xl mx-auto px-4 py-8">
         <!-- Bulletin Information -->
         <div class="bg-white rounded-lg shadow">
-            <div class="flex flex-col p-6 gap-6 items-center">
+            <div class="flex flex-col p-6 gap-2 items-center">
                 <h2 class="text-2xl font-bold text-gray-800 text-center">
                     {{ bulletin }}
                 </h2>
                 <h3 class="text-md font-semibold text-gray-800 opacity-70 text-center">
                     {{ bulletin.owner }}
                 </h3>
-                <p class="text-md text-gray-600 text-center">
+                <p class="text-md text-gray-600 text-center mb-6">
                     {{ bulletin.description }}
                 </p>
 
                 {% if user.is_authenticated %}
                     {% if user.profile == bulletin.owner %}
-                        <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-md">
-                            <p class="text-sm">This is your bulletin</p>
+                        <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-md opacity-50">
+                            <p class="text-sm">Toto je tvoj bulletin.</p>
                         </div>
-                        <div class="max-w-md mx-auto mt-6 flex flex-row gap-4 mb-10">
-                            <a href="{% url 'article_create' %}" class="flex-1">
-                                <p class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
-                                    Create Article
-                                </p>
-                            </a>
+
+                        <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-md">
+                            <p class="text-sm">
+                                <a href="{% url 'article_create' %}" class="text-gray-600 hover:underline"><strong>Workplace</strong>
+                                    na
+                                    vytvorenie nového článku.</a>
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-md">
+                            <p class="text-sm">
+                                <a href="{% url 'bulletin_archive' bulletin.slug %}"
+                                   class="text-gray-600 hover:underline"><strong>Dashboard</strong>
+                                    pre manažement článkov.</a>
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-md">
+                            <p class="text-sm">
+                                <a href="{% url 'bulletin_edit' bulletin.slug %}" class="text-gray-600 hover:underline"><strong>Aktualizuj</strong>
+                                    svoj bulletin.</a>
+                            </p>
                         </div>
                     {% elif is_subscribed %}
                         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-md">
@@ -53,21 +67,6 @@
                 {% endif %}
 
 
-
-
-
-                <div class="flex justify-center">
-
-
-                    <a href="{% url 'bulletin_archive' bulletin.slug %}"
-                       class="m-1 px-2 py-1 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition hover:cursor-pointer">
-                        Archive
-                    </a>
-                    <a href="{% url 'bulletin_edit' bulletin.slug %}"
-                       class="m-1 px-2 py-1 bg-pink-200 text-pink-800 rounded-md text-center hover:bg-pink-300 transition hover:cursor-pointer">
-                        Edit
-                    </a>
-                </div>
             </div>
         </div>
         <!-- Bulletin Featured Articles -->
