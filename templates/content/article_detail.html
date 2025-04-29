@@ -19,6 +19,7 @@
             </div>
         </article>
 
+        {% if user.is_authenticated and user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
         <section>
             <!-- Author/Owner Actions -->
             <div class="max-w-md mx-auto mt-6 flex flex-row gap-4">
@@ -34,6 +35,7 @@
                 </a>
             </div>
         </section>
+        {% endif %}
 
         <section>
             <!-- Comments Section -->
