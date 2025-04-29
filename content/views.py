@@ -77,6 +77,16 @@ class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
     form_class = ArticleForm
     success_url = reverse_lazy("article_list")
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        # Set bulletin automatically
+        form.instance.bulletin = self.request.user.profile.bulletin
+        return super().form_valid(form)
+
 
 class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
     template_name = "content/form.html"
