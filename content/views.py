@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template.context_processors import request
@@ -46,6 +46,17 @@ class QAPAgeView(TemplateView):
     pass
 
 
+class WriterRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.profile.role == 'writer'
+
+
+class ArticleOwnerMixin(UserPassesTestMixin):
+    def test_func(self):
+        article = self.get_object()
+        return self.request.user.profile.role == 'writer' and article.bulletin == self.request.profile.bulletin
+
+
 # ==================================== ARTICLE RELATED ======================== #
 
 
@@ -61,20 +72,20 @@ class ArticleDetailView(DetailView):
     context_object_name = "article"
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
     template_name = "content/form.html"
     form_class = ArticleForm
     success_url = reverse_lazy("article_list")
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
     template_name = "content/form.html"
     form_class = ArticleForm
     model = Article
     success_url = reverse_lazy("article_list")
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, WriterRequiredMixin, DeleteView):
     template_name = "content/confirm_delete.html"
     model = Article
     success_url = reverse_lazy('article_list')
