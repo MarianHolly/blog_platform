@@ -7,7 +7,7 @@ from content.models import Article, Bulletin
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'subtite', 'description', 'content', 'bulletin', 'status', 'visibility']
+        fields = ['title', 'subtite', 'description', 'content', 'status', 'visibility']
         widgets = {
             'status': RadioSelect,
             'visibility': RadioSelect,
@@ -17,8 +17,20 @@ class ArticleForm(ModelForm):
             'content': Textarea(attrs={'class': 'w-full'})
         }
 
-    #This form will be accessible only for user with role 'writer'
-    #TODO: User is provided, take bulletin from user.profile.bulletin
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if self.user:
+            instance.bulletin = self.user.profile.bulletin
+        if commit:
+            instance.save()
+        return instance
+
+    def clean(self):
+        pass
 
 
 class BulletinForm(ModelForm):
