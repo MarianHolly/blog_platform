@@ -94,6 +94,7 @@ class BulletinDetailView(DetailView):
         """ Subscriptions """
         context = super().get_context_data(**kwargs)
         bulletin = self.get_object()
+        is_subscribed = None
 
         if self.request.user.is_authenticated:
             is_subscribed = Subscription.objects.filter(

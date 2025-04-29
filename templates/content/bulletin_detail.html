@@ -22,6 +22,13 @@
                         <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-md">
                             <p class="text-sm">This is your bulletin</p>
                         </div>
+                        <div class="max-w-md mx-auto mt-6 flex flex-row gap-4 mb-10">
+                            <a href="{% url 'article_create' %}" class="flex-1">
+                                <p class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
+                                    Create Article
+                                </p>
+                            </a>
+                        </div>
                     {% elif is_subscribed %}
                         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-md">
                             <p class="text-sm">Už odoberáš tento bulletin.</p>
