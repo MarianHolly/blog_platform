@@ -29,20 +29,18 @@
                         {{ profile.user.first_name }} {{ profile.user.last_name }}
                     </h1>
                     <p class="text-gray-500 opacity-60 text-md">@{{ profile.user.username }}</p>
-
                 </div>
 
                 <div class="flex flex-col">
-
-                    {% if profile.role == 'reader' and profile.user == user %}
+                    {% if profile.user == user and profile.role == 'reader' %}
                         <a href=""
                            class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
                             Staň sa autorom
                         </a>
                     {% endif %}
 
-                    {% if profile.user == user and profile.bulletin == None %}
-                        <a href=""
+                    {% if profile.user == user and not profile.bulletin %}
+                        <a href="{% url 'bulletin_create' %}"
                            class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
                             Vytvor svoj Bulletin
                         </a>

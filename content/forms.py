@@ -34,4 +34,15 @@ class ArticleForm(ModelForm):
 class BulletinForm(ModelForm):
     class Meta:
         model = Bulletin
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'slug']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if user:
+            try:
+                self.fields['owner'].initial = user.profile
+                self.fields['owner'].disabled = True
+            except:
+                pass

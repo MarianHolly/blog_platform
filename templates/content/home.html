@@ -54,10 +54,14 @@
                 <a href="{% url 'profile' username=writer.user.username %}"
                    class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                     <img src="{{ writer.avatar.url }}" alt="{{ writer.username }}"
-                         class="w-16 h-16 rounded-full mr-4 object-cover">
+                         class="w-16 h-16 rounded-full mr-4 object-cover flex-none">
                     <div>
                         <h3 class="text-lg font-semibold"> {{ writer.user.first_name }} {{ writer.user.last_name }}</h3>
-                        <p class="text-gray-500 text-sm">{{ writer.biography|truncatewords:15 }}</p>
+                        {% if writer.biography %}
+                            <p class="text-gray-500 text-sm">{{ writer.biography|truncatewords:15 }}</p>
+                        {% else %}
+                            <p class="text-gray-500 text-sm">Zatiaľ bez biografie.</p>
+                        {% endif %}
                     </div>
                 </a>
             {% endfor %}
@@ -74,10 +78,14 @@
                 <a href="{% url 'profile' username=reader.user.username %}"
                    class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                     <img src="{{ reader.avatar.url }}" alt="{{ reader.username }}"
-                         class="w-16 h-16 rounded-full mr-4 object-cover">
+                         class="w-16 h-16 rounded-full mr-4 object-cover flex-none">
                     <div>
                         <h3 class="text-lg font-semibold"> {{ reader.user.first_name }} {{ reader.user.last_name }}</h3>
-                        <p class="text-gray-500 text-sm">{{ reader.biography|truncatewords:15 }}</p>
+                        {% if reader.biography %}
+                            <p class="text-gray-500 text-sm">{{ reader.biography|truncatewords:15 }}</p>
+                        {% else %}
+                            <p class="text-gray-500 text-sm font-light">zatiaľ bez biografie</p>
+                        {% endif %}
                     </div>
                 </a>
             {% endfor %}

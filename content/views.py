@@ -130,6 +130,21 @@ class BulletinDetailView(DetailView):
         return context
 
 
+class BulletinCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
+    template_name = "content/bulletin_form.html"
+    form_class = BulletinForm
+    success_url = reverse_lazy('article_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user.profile
+        return super().form_valid(form)
+
+
 class BulletinUpdateView(UpdateView):
     template_name = "accounts/profile_form.html"
     model = Bulletin
@@ -137,6 +152,10 @@ class BulletinUpdateView(UpdateView):
     success_url = reverse_lazy('article_list')
     slug_field = "slug"
     slug_url_kwarg = 'slug'
+
+
+
+
 
 
 class BulletinDashboardView(DetailView):
@@ -154,8 +173,14 @@ class BulletinDashboardView(DetailView):
         return context
 
 
-class ArticleStatusToggleView(View):
-    pass
+class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
+    def post(self, request, id):
+        article = get_object_or_404(Article, id=id)
+
+        if article.visibility == 'public':
+            article.visibility = 'private'
+        else:
+            article.visibility = 'public'
 
 
 class SubscriptionToggleView(LoginRequiredMixin, View):
