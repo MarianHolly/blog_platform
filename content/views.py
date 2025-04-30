@@ -149,6 +149,7 @@ class BulletinDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         bulletin = self.get_object()
+        context['drafts'] = bulletin.articles.filter(status='draft')
         context['articles'] = bulletin.articles.all()
         return context
 
