@@ -21,8 +21,8 @@
         </div>
 
         <!-- DRAFTS -->
-        <div class="max-w-2xl mx-auto">
-            <h2 class="text-center text-xl font-semibold my-3">Drafts</h2>
+        <div class="max-w-2xl mx-auto mb-8">
+            <h2 class="text-center text-xl font-semibold my-3">Rozpracované články</h2>
             {% for draft in drafts %}
                 <div class="flex flex-row justify-center items-center mb-2 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 transition border-l-3 border-l-gray-500">
                     <a href="{% url 'article_detail' draft.id %}" class="flex flex-col flex-1 hover:cursor-pointer">
@@ -63,32 +63,56 @@
         </div>
 
         <!-- PUBLISHED ARTICLES -->
-
-        <!-- List of Articles -->
-        <div class="max-w-2xl mx-auto">
+        <div class="max-w-2xl mx-auto mb-8">
+            <h2 class="text-center text-xl font-semibold my-3">Publikované články</h2>
             {% for article in articles %}
-                <a href="{% url 'article_detail' article.id %}"
-                   class="block mb-2 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 transition border-l-3
-                        {% if article.status == 'draft' %}
-                                border-l-gray-500
-                            {% elif article.status == 'published' %}
-                                border-l-green-500
-                            {% elif article.status == 'under_evaluation' %}
-                                border-l-pink-500
-                            {% endif %}">
-                    <h3 class="font-medium text-sm text-gray-800">
-                        {{ article.title }}
-                    </h3>
-
-                    <div class="flex items-center mt-2 text-xs text-gray-600">
-                        <span>{{ article.created|date:"M d, Y" }}</span>
+                <div class="flex flex-row justify-center items-center mb-2 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 transition border-l-3
+                 {% if article.visibility == 'public' %}
+                 border-l-green-500
+                 {% elif article.visibility == 'private' %}
+                 border-l-blue-500
+                 {% endif %}">
+                    <a href="{% url 'article_detail' article.id %}" class="flex flex-col flex-1 hover:cursor-pointer">
+                        <h3 class="font-medium text-sm text-gray-800">
+                            {{ article.title }}
+                        </h3>
+                        <div class="flex items-center mt-2 text-xs text-gray-600">
+                            <span>{{ article.created|date:"M d, Y" }}</span>
+                        </div>
+                    </a>
+                    <div class="flex flex-row gap-2 mr-4">
+                        <a href="" class="text-xs py-1 px-3 border-1 rounded-xl
+                            {% if article.visibility == 'public' %} border-green-500 text-green-500 font-semibold
+                            {% elif article.visibility == 'private' %} opacity-50{% endif %}">Public</a>
+                        <a href="" class="text-xs py-1 px-3 border-1 rounded-xl
+                            {% if article.visibility == 'public' %} opacity-50
+                            {% elif article.visibility == 'private' %} border-blue-500 text-blue-500 font-semibold {% endif %}">Private</a>
                     </div>
-                </a>
+                    <div class="flex flex-row gap-2">
+                        <a href="{% url 'article_edit' article.id %}"
+                           class="text-orange-500 p-1 border-1 border-orange-500 rounded-xl hover:bg-orange-100 hover:cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                            </svg>
+                        </a>
+                        <a href="{% url 'article_delete' article.id %}"
+                           class="text-red-500 p-1 border-1 border-red-500 rounded-xl hover:bg-red-100 hover:cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             {% empty %}
-
-
-                <div class="text-center py-10">
-                    <p class="text-gray-500">No articles written yet.</p>
+                <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
+                    <p class="text-gray-400 font-light text-sm mb-1">Ešte nemáš žiadne články publikované.</p>
+                    <a href="{% url 'article_create' %}" class="text-gray-600 hover:cursor-pointer hover:underline">
+                        Sme zvedaný počuť tvoj názor.
+                    </a>
                 </div>
             {% endfor %}
         </div>
