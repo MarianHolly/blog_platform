@@ -46,6 +46,9 @@ class QAPAgeView(TemplateView):
     pass
 
 
+# ==================================== MIXINS ======================== #
+
+
 class WriterRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.profile.role == 'writer'
@@ -136,21 +139,22 @@ class BulletinUpdateView(UpdateView):
     slug_url_kwarg = 'slug'
 
 
-class BulletinListView(ListView):
-    template_name = "content/bulletin_archive.html"
+class BulletinDashboardView(DetailView):
     model = Bulletin
+    template_name = "content/bulletin_dashboard.html"
     context_object_name = "bulletin"
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        bulletin = self.get_object()
+        context['articles'] = bulletin.articles.all()
+        return context
 
 
-def bulletin_archive(request, slug):
-    bulletin_ = Bulletin.objects.get(slug=slug)
-    articles_ = Article.objects.all().filter(bulletin=bulletin_)
-
-    context = {
-        'bulletin': bulletin_,
-        'articles': articles_,
-    }
-    return render(request, 'content/bulletin_archive.html', context)
+class ArticleStatusToggleView(View):
+    pass
 
 
 class SubscriptionToggleView(LoginRequiredMixin, View):

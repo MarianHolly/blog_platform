@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ bulletin }} - Dashboard{% endblock %}
 
 {% block content %}
     <div class="max-w-3xl mx-auto px-4 py-8">
         <!-- Bulletin Information -->
-        <div class="bg-white rounded-lg shadow mb-8">
-            <div class="flex flex-col p-6 gap-6 items-center">
-                <h2 class="text-2xl font-medium text-center">
-                    Archive
+        <div class="bg-white rounded-lg shadow mb-8 py-6">
+            <div class="flex flex-col p-3 gap-2 items-center">
+                <h2 class="text-2xl font-semibold text-center">
+                    Dashboard
                 </h2>
+                <h3 class="text-md font-light text-center text-gray-500">
+                    {{ bulletin }}
+                </h3>
+                <p class="text-sm font-light text-center text-gray-400">
+                    Tu môžeš manažovať svoje články. <br> Tvor, edituj, vymaž. <br>Zmeň stav medzi rozpísaným, verejným a súkromným.
+                </p>
             </div>
         </div>
 
