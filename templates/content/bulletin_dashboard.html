@@ -83,7 +83,7 @@
                     <div class="flex flex-row gap-2 mr-4">
                         <form method="POST" action="{% url 'visibility_toggle' article.id %}">
                             {% csrf_token %}
-                            <button type="submit" class="text-xs py-1 px-3 border-1 rounded-xl font-medium
+                            <button type="submit" class="text-xs py-1 px-3 border-1 rounded-xl font-medium hover:cursor-pointer
                                 {% if article.visibility == 'public' %} border-green-500 text-green-500
                                 {% else %} border-blue-500 text-blue-500 {% endif %}">
                                 {% if article.visibility == 'public' %} Verejné {% else %} Súkromné {% endif %}

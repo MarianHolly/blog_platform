@@ -127,6 +127,7 @@ class BulletinDetailView(DetailView):
             ).exists()
 
         context['is_subscribed'] = is_subscribed
+        context['articles'] = bulletin.articles.filter(status='published')
         return context
 
 
@@ -165,7 +166,7 @@ class BulletinDashboardView(DetailView):
         context = super().get_context_data(**kwargs)
         bulletin = self.get_object()
         context['drafts'] = bulletin.articles.filter(status='draft')
-        context['articles'] = bulletin.articles.all()
+        context['articles'] = bulletin.articles.filter(status='published')
         return context
 
 
