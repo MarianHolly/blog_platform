@@ -57,7 +57,7 @@ class WriterRequiredMixin(UserPassesTestMixin):
 class ArticleOwnerMixin(UserPassesTestMixin):
     def test_func(self):
         article = self.get_object()
-        return self.request.user.profile.role == 'writer' and article.bulletin == self.request.profile.bulletin
+        return self.request.user.profile.role == 'writer' and article.bulletin == self.request.user.profile.bulletin
 
 
 # ==================================== ARTICLE RELATED ======================== #
@@ -173,13 +173,22 @@ class BulletinDashboardView(DetailView):
 
 
 class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
+    def get_object(self):
+        return get_object_or_404(Article, id=self.kwargs['id'])
+
     def post(self, request, id):
-        article = get_object_or_404(Article, id=id)
+        article = self.get_object()
 
         if article.visibility == 'public':
             article.visibility = 'private'
         else:
             article.visibility = 'public'
+        article.save()
+
+        next_url = request.POST.get('next', '')
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        return redirect('bulletin_dashboard', slug=article.bulletin.slug)
 
 
 class SubscriptionToggleView(LoginRequiredMixin, View):

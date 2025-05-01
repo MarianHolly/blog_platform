@@ -81,12 +81,14 @@
                         </div>
                     </a>
                     <div class="flex flex-row gap-2 mr-4">
-                        <a href="" class="text-xs py-1 px-3 border-1 rounded-xl
-                            {% if article.visibility == 'public' %} border-green-500 text-green-500 font-semibold
-                            {% elif article.visibility == 'private' %} opacity-50{% endif %}">Public</a>
-                        <a href="" class="text-xs py-1 px-3 border-1 rounded-xl
-                            {% if article.visibility == 'public' %} opacity-50
-                            {% elif article.visibility == 'private' %} border-blue-500 text-blue-500 font-semibold {% endif %}">Private</a>
+                        <form method="POST" action="{% url 'visibility_toggle' article.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="text-xs py-1 px-3 border-1 rounded-xl font-medium
+                                {% if article.visibility == 'public' %} border-green-500 text-green-500
+                                {% else %} border-blue-500 text-blue-500 {% endif %}">
+                                {% if article.visibility == 'public' %} Verejné {% else %} Súkromné {% endif %}
+                            </button>
+                        </form>
                     </div>
                     <div class="flex flex-row gap-2">
                         <a href="{% url 'article_edit' article.id %}"

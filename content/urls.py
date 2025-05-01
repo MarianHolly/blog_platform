@@ -4,7 +4,7 @@ from accounts.views import ProfileDetailView
 from content.views import HomePageView, AboutPageView, \
     ArticleListView, ArticleDetailView, ArticleUpdateView, ArticleCreateView, ArticleDeleteView, \
     BulletinDetailView, BulletinCreateView, BulletinUpdateView, BulletinDashboardView, \
-    SubscriptionToggleView
+    SubscriptionToggleView, ArticleVisibilityToggleView
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
@@ -20,7 +20,7 @@ urlpatterns = [
     path("bulletin/<slug:slug>/", BulletinDetailView.as_view(), name="bulletin_detail"),
     path("bulletin/<slug:slug>/edit/", BulletinUpdateView.as_view(), name="bulletin_edit"),
     path("bulletin/<slug:slug>/dashboard/", BulletinDashboardView.as_view(), name="bulletin_dashboard"),
+    path("bulletin/<int:id>/dashboard/visibility/", ArticleVisibilityToggleView.as_view(), name="visibility_toggle"),
 
     path("subscribe/<slug:slug>/", SubscriptionToggleView.as_view(), name="toggle_subscription"),
-
 ]
