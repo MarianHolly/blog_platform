@@ -1,12 +1,20 @@
+from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, View
 
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.models import Profile
 from content.models import Subscription
+
+
+class ReaderRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.profile.role == 'reader'
 
 
 # Create your views here.
@@ -67,3 +75,24 @@ class ProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('profile', kwargs={'username': self.object.user.username})
+
+
+class ProfileRolePromoteView(LoginRequiredMixin, ReaderRequiredMixin, View):
+    def post(self, request, username):
+        profile = request.user.profile
+
+        if profile.role == 'reader':
+            profile.role = 'writer'
+            profile.save()
+            messages.success(request, 'Stal si sa autorom.')
+
+        elif user_role == 'writer':
+            messages.warning(request, 'Už si autorom.')
+        else:
+            messages.warning(request, 'Chyba, pravdepodobne si adminom')
+
+        next_url = request.POST.get('next', '')
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        return redirect('profile', username=request.user.username)
+

@@ -154,10 +154,6 @@ class BulletinUpdateView(UpdateView):
     slug_url_kwarg = 'slug'
 
 
-
-
-
-
 class BulletinDashboardView(DetailView):
     model = Bulletin
     template_name = "content/bulletin_dashboard.html"
@@ -171,6 +167,9 @@ class BulletinDashboardView(DetailView):
         context['drafts'] = bulletin.articles.filter(status='draft')
         context['articles'] = bulletin.articles.all()
         return context
+
+
+# ==================================== ENGAGEMENT RELATED ======================== #
 
 
 class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):

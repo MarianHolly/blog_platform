@@ -22,4 +22,5 @@ urlpatterns = [
     path("bulletin/<slug:slug>/dashboard/", BulletinDashboardView.as_view(), name="bulletin_dashboard"),
 
     path("subscribe/<slug:slug>/", SubscriptionToggleView.as_view(), name="toggle_subscription"),
+
 ]
