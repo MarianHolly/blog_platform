@@ -31,7 +31,7 @@ class HomePageView(ListView):
 
 def home(request):
     context = {
-        'featured_articles': Article.objects.all(),
+        'featured_articles': Article.objects.filter(status='published').order_by('-published_date')[:9],
         'popular_bulletins': Bulletin.objects.all(),
         'recent_writers': Profile.objects.all(),
     }

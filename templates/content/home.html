@@ -16,9 +16,19 @@
                         p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition
                     {% endif %}
                 ">
-                    <a href="{% url 'article_detail' article.id %}" class="block h-full">
+                    <a href="{% url 'article_detail' article.id %}" class="flex flex-col h-full">
                         <h3 class="text-lg font-semibold mb-2">{{ article.title }}</h3>
-                        <p class="text-gray-600 text-sm">{{ article.description|truncatewords:25 }}</p>
+                        <p class="text-gray-600 text-sm mb-auto">{{ article.description|truncatewords:25 }}</p>
+                        {% if article.visibility == 'private' %}
+                            <span class="ml-auto text-gray-500 p-1 border-1 border-gray-500 rounded-xl opacity-60">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                         class="size-5">
+                                        <path fill-rule="evenodd"
+                                              d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </span>
+                        {% endif %}
                     </a>
                 </div>
             {% endfor %}
@@ -34,7 +44,8 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-6 md:mx-0">
             {% for bulletin in popular_bulletins %}
-                <a href="{% url 'bulletin_detail' bulletin.slug %}" class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                <a href="{% url 'bulletin_detail' bulletin.slug %}"
+                   class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
                     <h3 class="text-lg font-semibold text-center">{{ bulletin.title }}</h3>
                     <p class="text-gray-600 text-sm mt-2">{{ bulletin.description|truncatewords:20 }}</p>
                 </a>
