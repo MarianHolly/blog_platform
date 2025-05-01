@@ -74,6 +74,20 @@ class ArticleDetailView(DetailView):
     model = Article
     context_object_name = "article"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        article_ = self.get_object()
+        is_subscribed = None
+
+        if self.request.user.is_authenticated:
+            is_subscribed = Subscription.objects.filter(
+                subscriber=self.request.user.profile,
+                bulletin=article_.bulletin
+            ).exists()
+
+        context['is_subscribed'] = is_subscribed
+        return context
+
 
 class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
     template_name = "content/form.html"
@@ -111,8 +125,6 @@ class BulletinDetailView(DetailView):
     template_name = "content/bulletin_detail.html"
     model = Bulletin
     context_object_name = "bulletin"
-    slug_field = "slug"
-    slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
         """ Subscriptions """
@@ -159,8 +171,6 @@ class BulletinDashboardView(DetailView):
     model = Bulletin
     template_name = "content/bulletin_dashboard.html"
     context_object_name = "bulletin"
-    slug_field = 'slug'
-    slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

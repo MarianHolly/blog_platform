@@ -10,31 +10,67 @@
 
             <div class="flex flex-col mb-6 pb-4 border-b border-gray-200 justify-center items-center">
                 <div class="text-gray-600">
-                    <span class="text-sm">autor: <span class="font-medium text-gray-800">{{ article.author }}</span></span>
+                    <span class="text-sm">autor: <span
+                            class="font-medium text-gray-800">{{ article.author.full_name }}</span></span>
+                </div>
+                <div class="text-gray-600">
+                    <span class="text-sm">publikované: <span
+                            class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
                 </div>
             </div>
-
             <div class="prose max-w-none">
-                {{ article.content|safe }}
+                {% if article.visibility == 'public' %}
+                    {{ article.content|safe }}
+                {% elif article.visibility == 'private' %}
+                    {% if user.is_authenticated %}
+                        {% if is_subscribed %}
+                            {{ article.content|safe }}
+                        {% else %}
+                            {{ article.content|safe|truncatewords:175 }}
+                            <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
+                                <form action="{% url 'toggle_subscription' article.bulletin.slug %}" method="post"
+                                      class="flex justify-center items">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <p class="text-center text-gray-500">K prečítaniu súkromných článkov je nutné <br>
+                                        <button type="submit"
+                                                class="font-medium text-gray-700 hover:underline hover:text-gray-900 hover:cursor-pointer">
+                                            odoberať bulletin
+                                        </button>
+                                        .
+                                    </p>
+                                </form>
+                            </div>
+
+                        {% endif %}
+                    {% else %}
+                        {{ article.content|safe|truncatewords:175 }}
+                        <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
+                            <p class="text-center text-gray-500">K prečítaniu súkromných článkov je nutné byť najprv <br>
+                                <a href="{% url 'login' %}"
+                                   class="font-medium text-gray-700 hover:underline hover:text-gray-900">prihlásený</a>.</p>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
         </article>
 
         {% if user.is_authenticated and user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
-        <section>
-            <!-- Author/Owner Actions -->
-            <div class="max-w-md mx-auto mt-6 flex flex-row gap-4">
-                <a href="{% url 'article_edit' article.id %}" class="flex-1">
-                    <p class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
-                        Edit Article
-                    </p>
-                </a>
-                <a href="{% url 'article_delete' article.id %}" class="flex-1">
-                    <p class="px-6 py-3 bg-red-100 text-red-600 rounded-md text-center hover:bg-red-200 transition">
-                        Delete Article
-                    </p>
-                </a>
-            </div>
-        </section>
+            <section>
+                <!-- Author/Owner Actions -->
+                <div class="max-w-md mx-auto mt-6 flex flex-row gap-4">
+                    <a href="{% url 'article_edit' article.id %}" class="flex-1">
+                        <p class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
+                            Edit Article
+                        </p>
+                    </a>
+                    <a href="{% url 'article_delete' article.id %}" class="flex-1">
+                        <p class="px-6 py-3 bg-red-100 text-red-600 rounded-md text-center hover:bg-red-200 transition">
+                            Delete Article
+                        </p>
+                    </a>
+                </div>
+            </section>
         {% endif %}
 
         <section>
