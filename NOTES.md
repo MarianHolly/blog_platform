@@ -10,18 +10,18 @@
 - [x] ArticleForm with CreateView, UpdateView, and DeleteView
 
 - [x] ProfileDetailView 
-- [ ] ProfileForm with create, update, delete (update is done)
+- [x] ProfileForm with create, update, delete (update is done)
 - [x] BulletinDetailView
-- [ ] BulletinForm with create, update, delete (update is done)
-- [ ] Subscription functionality (view and manage)
-  - [ ] Update article visibility logic based on subscriptions
-  - [ ] Add subscription management to profile view
+- [x] BulletinForm with create, update, delete (update is done)
+- [x] Subscription functionality (view and manage)
+  - [x] Update article visibility logic based on subscriptions
+  - [x] Add subscription management to profile view
 
-- [ ] Profile model with role field and role-checking methods
-- [ ] Permission mixins (Writer, ArticleOwner)
-- [ ] Update views to control access based on user role
-- [ ] Update templates to show/hide UI elements based on permissions
-- [ ] Promote to writer functionality
+- [x] Profile model with role field and role-checking methods
+- [x] Permission mixins (Writer, ArticleOwner)
+- [x] Update views to control access based on user role
+- [x] Update templates to show/hide UI elements based on permissions
+- [x] Promote to writer functionality
 
 ### Secondary Features
 
