@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template.context_processors import request
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import View, DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
 from accounts.models import Profile
@@ -34,6 +34,7 @@ class AboutPageView(TemplateView):
 
 class QAPageView(TemplateView):
     template_name = "content/qa.html"
+
 
 # ==================================== ARTICLE RELATED ======================== #
 
@@ -67,7 +68,6 @@ class ArticleDetailView(DetailView):
 class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
     template_name = "content/form.html"
     form_class = ArticleForm
-    success_url = reverse_lazy("article_list")
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -79,12 +79,14 @@ class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
         form.instance.bulletin = self.request.user.profile.bulletin
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse('bulletin_detail', kwargs={'slug': self.request.user.profile.bulletin.slug})
+
 
 class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
     template_name = "content/form.html"
     form_class = ArticleForm
     model = Article
-    success_url = reverse_lazy("article_list")
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -93,11 +95,16 @@ class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
         print("Errors:", form.errors)
         return super().form_invalid(form)
 
+    def get_success_url(self):
+        return reverse('article_detail', kwargs={'pk': self.object.id})
+
 
 class ArticleDeleteView(LoginRequiredMixin, WriterRequiredMixin, DeleteView):
     template_name = "content/confirm_delete.html"
     model = Article
-    success_url = reverse_lazy('article_list')
+
+    def get_success_url(self):
+        return reverse('bulletin_dashboard', kwargs={'slug': self.request.user.profile.bulletin.slug})
 
 
 # ==================================== BULLETIN RELATED ======================== #
@@ -128,7 +135,6 @@ class BulletinDetailView(DetailView):
 class BulletinCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
     template_name = "content/bulletin_form.html"
     form_class = BulletinForm
-    success_url = reverse_lazy('article_list')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -139,14 +145,17 @@ class BulletinCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
         form.instance.owner = self.request.user.profile
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse('bulletin_detail', kwargs={'slug': self.request.user.profile.bulletin.slug})
+
 
 class BulletinUpdateView(UpdateView):
     template_name = "accounts/profile_form.html"
     model = Bulletin
     form_class = BulletinForm
-    success_url = reverse_lazy('article_list')
-    slug_field = "slug"
-    slug_url_kwarg = 'slug'
+
+    def get_success_url(self):
+        return reverse('bulletin_detail', kwargs={'slug': self.request.user.profile.bulletin.slug})
 
 
 class BulletinDashboardView(DetailView):
