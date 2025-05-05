@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -8,13 +8,9 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, View
 
 from accounts.forms import SignUpForm, ProfileForm
+from accounts.mixins import ReaderRequiredMixin
 from accounts.models import Profile
 from content.models import Subscription
-
-
-class ReaderRequiredMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.is_authenticated and self.request.user.profile.role == 'reader'
 
 
 # Create your views here.
