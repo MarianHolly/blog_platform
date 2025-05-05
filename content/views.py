@@ -22,28 +22,19 @@ class HomePageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['featured_articles'] = Article.objects.all()
+        context['featured_articles'] = Article.objects.filter(status='published')
         context['popular_bulletins'] = Bulletin.objects.all()
         context['recent_writers'] = Profile.objects.filter(role='writer')
         context['new_readers'] = Profile.objects.filter(role='reader')
         return context
 
 
-def home(request):
-    context = {
-        'featured_articles': Article.objects.filter(status='published').order_by('-published_date')[:9],
-        'popular_bulletins': Bulletin.objects.all(),
-        'recent_writers': Profile.objects.all(),
-    }
-    return render(request, "content/home.html", context)
-
-
 class AboutPageView(TemplateView):
     template_name = "content/about.html"
 
 
-class QAPAgeView(TemplateView):
-    pass
+class QAPageView(TemplateView):
+    template_name = "content/qa.html"
 
 
 # ==================================== MIXINS ======================== #

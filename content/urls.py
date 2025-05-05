@@ -4,11 +4,12 @@ from accounts.views import ProfileDetailView
 from content.views import HomePageView, AboutPageView, \
     ArticleListView, ArticleDetailView, ArticleUpdateView, ArticleCreateView, ArticleDeleteView, \
     BulletinDetailView, BulletinCreateView, BulletinUpdateView, BulletinDashboardView, \
-    SubscriptionToggleView, ArticleVisibilityToggleView
+    SubscriptionToggleView, ArticleVisibilityToggleView, QAPageView
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
     path("about/", AboutPageView.as_view(), name="about"),
+    path("qa/", QAPageView.as_view(), name="qa"),
 
     path("articles/", ArticleListView.as_view(), name="article_list"),
     path("article/<int:pk>/", ArticleDetailView.as_view(), name="article_detail"),
