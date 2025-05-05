@@ -8,16 +8,63 @@
             <div class="font-medium flex flex-row rounded-lg gap-2">
                 <a href="{% url 'home' %}" class="text-blue-950 hover:bg-gray-100 py-2 px-4 rounded-md">Domov</a>
                 <a href="{% url 'about' %}" class="text-blue-950 hover:bg-gray-100 py-2 px-4 rounded-md">O nás</a>
-                <a href="{% url 'article_list' %}" class="text-blue-950 hover:bg-gray-100 py-2 px-4 rounded-md">Články</a>
-
+                <a href="{% url 'about' %}" class="text-blue-950 hover:bg-gray-100 py-2 px-4 rounded-md">Q&A</a>
             </div>
             <div class="font-medium flex flex-row rounded-lg gap-2 items-center">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'profile' username=user.username %}" class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md">{{ user.username }}</a>
-                    <a href="{% url 'logout' %}" class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md">Odhlásenie</a>
+                    <a href="{% url 'profile' username=user.username %}"
+                       class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md flex flex-row">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                   stroke="currentColor" class="size-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                            </svg>
+                        </span>
+                        <span class="hidden md:block ml-2">
+                            {{ user.username }}
+                        </span>
+                    </a>
+                    <a href="{% url 'logout' %}"
+                       class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md flex flex-row">
+                        <span class="block md:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                        </span>
+                        <span class="hidden md:block">
+                            Odhlásenie
+                        </span>
+                    </a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md">Prihlásenie</a>
-                    <a href="{% url 'signup' %}" class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md">Registrácia</a>
+                    <a href="{% url 'signup' %}"
+                       class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md flex flex-row">
+                        <span class="block md:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"/>
+                            </svg>
+                        </span>
+                        <span class="hidden md:block">
+                            Registrácia
+                        </span>
+                    </a>
+                    <a href="{% url 'login' %}"
+                       class="text-blue-100 bg-gray-900 hover:bg-gray-700 py-2 px-4 rounded-md flex flex-row">
+                        <span class="block md:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                        </span>
+                        <span class="hidden md:block">
+                            Prihlásenie
+                        </span>
+                    </a>
                 {% endif %}
             </div>
         </div>
