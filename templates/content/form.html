@@ -2,28 +2,35 @@
 {% load tailwind_filters %}
 
 {% block title %}
-    Form
+    Článok
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-semibold my-6">Form</h1>
+    <div class="max-w-6xl mx-auto">
         <div class="container mx-auto py-8 px-4">
             <div class="max-w-3xl mx-auto">
                 <div class="bg-white rounded shadow p-6">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-8">
+                        {% if form.instance.pk %}Upraviť článok{% else %}Nový článok{% endif %}
+                    </h1>
+
                     <form method="post">
                         {% csrf_token %}
+                        {{ form.media }}
+
                         <div class="mb-6">
                             {{ form.title|as_crispy_field }}
                             {{ form.subtite|as_crispy_field }}
                             {{ form.description|as_crispy_field }}
-                            {{ form.content|as_crispy_field }}
                         </div>
 
                         <div class="mb-6">
-                            <h2 class="font-medium text-gray-700 mb-4">Nastavenia</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {{ form.bulletin|as_crispy_field }}
+                            {{ form.content }}
+                        </div>
+
+                        <div class="w-full flex flex-col justify-center border-t-1 border-gray-300 p-6 my-6">
+                            <h2 class="text-center font-medium text-gray-700 mb-4">Nastavenia</h2>
+                            <div class="flex flex-col lg:flex-row justify-evenly gap-6">
                                 {{ form.status|as_crispy_field }}
                                 {{ form.visibility|as_crispy_field }}
                             </div>
