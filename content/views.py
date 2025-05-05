@@ -8,6 +8,7 @@ from django.views.generic import View, DetailView, ListView, TemplateView, Creat
 
 from accounts.models import Profile
 from content.forms import ArticleForm, BulletinForm
+from content.mixins import WriterRequiredMixin, ArticleOwnerMixin
 from content.models import Article, Bulletin, Subscription
 
 
@@ -17,8 +18,6 @@ class HomePageView(ListView):
     template_name = "content/home.html"
     model = Article
     context_object_name = "articles"
-
-    """ Articles, Bulletins, Writers, Readers """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -35,21 +34,6 @@ class AboutPageView(TemplateView):
 
 class QAPageView(TemplateView):
     template_name = "content/qa.html"
-
-
-# ==================================== MIXINS ======================== #
-
-
-class WriterRequiredMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.is_authenticated and self.request.user.profile.role == 'writer'
-
-
-class ArticleOwnerMixin(UserPassesTestMixin):
-    def test_func(self):
-        article = self.get_object()
-        return self.request.user.profile.role == 'writer' and article.bulletin == self.request.user.profile.bulletin
-
 
 # ==================================== ARTICLE RELATED ======================== #
 
