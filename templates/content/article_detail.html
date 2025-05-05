@@ -27,7 +27,7 @@
                     {{ article.content|safe }}
                 {% elif article.visibility == 'private' %}
                     {% if user.is_authenticated %}
-                        {% if is_subscribed %}
+                        {% if is_subscribed or article.bulletin == user.profile.bulletin or user.profile.role == 'admin' %}
                             {{ article.content|safe }}
                         {% else %}
                             {{ article.content|safe|truncatewords:175 }}
