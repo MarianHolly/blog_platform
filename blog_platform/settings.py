@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "ckeditor",
+    "ckeditor_uploader",
     "crispy_forms",
     "crispy_tailwind",
 
@@ -47,6 +49,14 @@ INSTALLED_APPS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Basic',
+        'width': '100%',
+    },
+}
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
