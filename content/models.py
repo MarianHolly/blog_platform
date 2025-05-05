@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
     SlugField, ForeignKey
 
@@ -33,7 +34,7 @@ class Article(Model):
     ]
 
     title = CharField(max_length=150, null=False, blank=False, unique=True)
-    content = TextField(null=True, blank=True)
+    content = RichTextField(null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
     subtite = CharField(max_length=200, null=True, blank=True)
