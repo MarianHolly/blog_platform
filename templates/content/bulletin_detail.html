@@ -26,8 +26,7 @@
                         <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-md">
                             <p class="text-sm">
                                 <a href="{% url 'article_create' %}" class="text-gray-600 hover:underline"><strong>Workplace</strong>
-                                    na
-                                    vytvorenie nového článku.</a>
+                                    na vytvorenie nového článku.</a>
                             </p>
                         </div>
                         <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-md">
@@ -72,7 +71,6 @@
         <!-- Bulletin Articles -->
         <div class="max-w-4xl mx-auto my-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             {% for article in articles %}
-
                 <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 shadow-lg hover:bg-gray-100 transition-all">
                     <a href="{% url 'article_detail' article.id %}" class="flex flex-col h-full">
                         <h3 class="text-lg font-semibold mb-2">{{ article.title }}</h3>
@@ -94,7 +92,7 @@
                 </div>
 
             {% empty %}
-                <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
+                <div class="text-center py-10 border-1 border-gray-200 rounded-lg col-span-full">
                     <p class="text-gray-400 font-light text-sm mb-1">Ešte nemáš žiadne články publikované.</p>
                     <a href="{% url 'article_create' %}" class="text-gray-600 hover:cursor-pointer hover:underline">
                         Sme zvedaný počuť tvoj názor.

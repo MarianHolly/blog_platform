@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ profile.user.username }}'s Profile{% endblock %}
+{% block title %}{{ profile.user.username }}{% endblock %}
 
 {% block content %}
     <div class="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-4">
@@ -33,21 +33,14 @@
 
                 <div class="flex flex-col">
                     {% if profile.user == user and profile.role == 'reader' %}
-                        <a href=""
-                           class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
-                            Staň sa autorom
-                        </a>
-
-
-                                <form action="{% url 'promote_to_reader' username=user.username %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="next" value="{{ request.path }}">
-                                    <button type="submit"
-                                           class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
-                            Staň sa autorom
-                                    </button>
-                                </form>
-
+                        <form action="{% url 'promote_to_reader' username=user.username %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit"
+                                    class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
+                                Staň sa autorom
+                            </button>
+                        </form>
                     {% endif %}
 
                     {% if profile.user == user and profile.role == 'writer' and not profile.bulletin %}
