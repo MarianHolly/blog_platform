@@ -111,6 +111,13 @@ class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
     model = Article
     success_url = reverse_lazy("article_list")
 
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("Errors:", form.errors)
+        return super().form_invalid(form)
+
 
 class ArticleDeleteView(LoginRequiredMixin, WriterRequiredMixin, DeleteView):
     template_name = "content/confirm_delete.html"

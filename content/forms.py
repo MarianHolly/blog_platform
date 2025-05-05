@@ -1,3 +1,4 @@
+from ckeditor.widgets import CKEditorWidget
 from django.forms import RadioSelect, TextInput, Textarea
 from django.forms.models import ModelForm
 from django.forms.widgets import HiddenInput
@@ -8,15 +9,14 @@ from content.models import Article, Bulletin
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'subtite', 'description', 'bulletin','content', 'status', 'visibility']
+        fields = ['title', 'subtite', 'description', 'content', 'status', 'visibility']
         widgets = {
             'status': RadioSelect,
             'visibility': RadioSelect,
             'title': TextInput(attrs={'class': 'form-control'}),
             'subtite': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'w-full', 'rows': 3}),
-            'content': Textarea(attrs={'class': 'w-full'}),
-            'bulletin': HiddenInput(),
+            'content': CKEditorWidget(attrs={'class': 'w-full'}),
         }
 
     def __init__(self, *args, **kwargs):
