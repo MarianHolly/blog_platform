@@ -93,10 +93,14 @@
 
             {% empty %}
                 <div class="text-center py-10 border-1 border-gray-200 rounded-lg col-span-full">
-                    <p class="text-gray-400 font-light text-sm mb-1">Ešte nemáš žiadne články publikované.</p>
-                    <a href="{% url 'article_create' %}" class="text-gray-600 hover:cursor-pointer hover:underline">
-                        Sme zvedaný počuť tvoj názor.
-                    </a>
+                    {% if user.profile == bulletin.owner %}
+                        <p class="text-gray-400 font-light text-sm mb-1">Ešte nemáš žiadne články publikované.</p>
+                        <a href="{% url 'article_create' %}" class="text-gray-600 hover:cursor-pointer hover:underline">
+                            Sme zvedaný počuť tvoj názor.
+                        </a>
+                    {% else %}
+                        <p class="text-gray-400 font-light text-sm mb-1">Tento bulletin zatiaľ nemá žiadne články zverejnené.</p>
+                {% endif %}
                 </div>
             {% endfor %}
         </div>
