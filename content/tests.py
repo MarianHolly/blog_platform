@@ -1,16 +1,16 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.utils import timezone
 
 from accounts.models import Profile
-from content.models import Bulletin
+from content.models import Bulletin, Article
 
 
 # Create your tests here.
-
 class BulletinModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print('setUpTestData')
+        print('setUpTestData for Bulletin')
 
         test_user = User.objects.create_user(
             username='TestUser',
@@ -54,3 +54,61 @@ class BulletinModelTest(TestCase):
     def test_bulletin_str(self):
         bulletin = Bulletin.objects.get(slug='bulletin-testing')
         self.assertEqual(bulletin.__str__(), 'Bulletin Testing')
+
+    def test_bulletin_slug_unique(self):
+        pass
+
+
+class ArticleModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        print('setUpTestData for Article')
+
+        test_user = User.objects.create_user(
+            username='TestUser',
+            password='TestPassword123',
+            email='test@mail.com')
+
+        test_profile = Profile.objects.create(
+            user=test_user,
+            role='writer')
+
+        test_bulletin = Bulletin.objects.create(
+            owner=test_profile,
+            title='Bulletin Testing',
+            description='Testing of Bulletin',
+            slug='bulletin-testing', )
+
+        test_article = Article.objects.create(
+            title='Article Testing',
+            status='published',
+            visibility='public',
+            bulletin=test_bulletin,
+            published=timezone.now(),
+        )
+
+    def test_article_title(self):
+        article = Article.objects.get(title='Article Testing')
+        self.assertEqual(article.title, 'Article Testing')
+
+    def test_article_title_unique(self):
+        pass
+
+    def test_article_data(self):
+        pass
+
+    def test_article_bulletin(self):
+        pass
+
+    def test_article_writer(self):
+        pass
+
+    def test_article_author(self):
+        pass
+
+    def test_article_repr(self):
+        pass
+
+    def test_article_str(self):
+        pass
+
