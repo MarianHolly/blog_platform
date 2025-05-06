@@ -17,17 +17,18 @@
 <body class="min-h-screen bg-gray-50">
     {% include 'header.html' %}
 
-    <div class="container max-w-screen-xl mx-auto">
+    <div class="container max-w-5xl mx-auto">
         {% block content %}{% endblock %}
     </div>
 
+
    {% if messages %}
-        <div class="messages">
+        <div class="absolute bottom-0 right-0 m-6">
             {% for message in messages %}
             <div class="{% if message.tags == 'success' %}bg-green-100 text-green-700 border-green-200
                         {% elif message.tags == 'warning' %}bg-yellow-100 text-yellow-700 border-yellow-200
                         {% elif message.tags == 'error' %}bg-red-100 text-red-700 border-red-200
-                        {% else %}bg-blue-100 text-blue-700 border-blue-200{% endif %} px-4 py-3 text-center rounded-md border mb-4">
+                        {% else %}bg-blue-100 text-blue-700 border-blue-200{% endif %} px-4 py-3 text-center rounded-md border">
                 {{ message }}
             </div>
             {% endfor %}

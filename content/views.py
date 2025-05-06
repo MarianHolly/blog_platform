@@ -201,7 +201,7 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
 
         # check if user is not owner of bulletin
         if bulletin.owner == user_profile:
-            messages.warning(request, "You cannot subscribe to your own bulletin.")
+            messages.warning(request, "Nemôžeš sa prihlásiť na svoj vlastný odber.")
             next_url = request.POST.get('next', '')
             if next_url:
                 return HttpResponseRedirect(next_url)
@@ -215,13 +215,13 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
 
         if subscription.exists():
             subscription.delete()
-            messages.success(request, f'You have unsubscribed from {bulletin.title}')
+            messages.success(request, f'Zrušil si odber, {bulletin.title}')
         else:
             Subscription.objects.create(
                 subscriber=user_profile,
                 bulletin=bulletin
             )
-            messages.success(request, f'You have subscribed to {bulletin.title}')
+            messages.success(request, f'Prihlásil si sa k odberu, {bulletin.title}')
 
         next_url = request.POST.get('next', '')
         if next_url:

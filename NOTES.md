@@ -32,7 +32,7 @@
 - [ ] ArticleDetail includes comment form and list
 - [ ] ProfileDetail includes profile activities
 
-- [ ] Writer's dashboard to manage state of articles
+- [x] Writer's dashboard to manage state of articles
 - [ ] Writer's statistics section (subscribers, likes, comments)
 - [ ] Search functionality for articles and bulletins on Homepage
 - [ ] Pagination for article lists
