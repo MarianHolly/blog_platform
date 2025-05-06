@@ -10,7 +10,7 @@ from content.models import Bulletin, Article
 class BulletinModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print('setUpTestData for Bulletin')
+        print('BulletinModel - setting setUpTestData')
 
         test_user = User.objects.create_user(
             username='TestUser',
@@ -62,7 +62,7 @@ class BulletinModelTest(TestCase):
 class ArticleModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print('setUpTestData for Article')
+        print('ArticleModel - setting setUpTestData')
 
         test_user = User.objects.create_user(
             username='TestUser',
