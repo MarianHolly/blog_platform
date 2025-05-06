@@ -16,7 +16,7 @@ class ArticleForm(ModelForm):
             'title': TextInput(attrs={'class': 'form-control'}),
             'subtite': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'w-full', 'rows': 3}),
-            'content': CKEditorWidget(attrs={'class': 'w-full'}),
+            'content': CKEditorWidget(),
         }
 
     def __init__(self, *args, **kwargs):

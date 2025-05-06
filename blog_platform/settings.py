@@ -62,7 +62,6 @@ CKEDITOR_CONFIGS = {
             ['Link', 'Unlink'],
         ],
         'height': 500,
-        'width': '100%',
     },
 }
 
