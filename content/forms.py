@@ -2,6 +2,7 @@ from ckeditor.widgets import CKEditorWidget
 from django.forms import RadioSelect, TextInput, Textarea
 from django.forms.models import ModelForm
 from django.forms.widgets import HiddenInput
+from django.utils import timezone
 
 from content.models import Article, Bulletin
 
@@ -29,6 +30,17 @@ class ArticleForm(ModelForm):
                 self.fields['bulletin'].disabled = True
             except:
                 pass
+
+    def save(self, commit=True):
+        article = super().save(commit=False)
+
+        if article.status == 'published' and article.published is None:
+            article.published = timezone.now()
+
+        if commit:
+            article.save()
+
+        return article
 
 
 class BulletinForm(ModelForm):

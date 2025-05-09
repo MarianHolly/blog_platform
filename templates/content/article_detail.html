@@ -15,24 +15,32 @@
             <div class="flex flex-col mb-6 pb-4 border-b border-gray-200 justify-center items-center">
                 <div class="text-gray-600">
                     {% if user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
-                        <div class="my-4">
-                            <p class="text-gray-400 text-center">Place for Managing Visibility and Status</p>
+                        <div class="my-1">
+                            {% if article.status == 'published' %}
+                                <form method="POST" action="{% url 'visibility_toggle' article.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <button type="submit" class="text-sm px-3 py-1 border-1 rounded-md font-medium hover:cursor-pointer border-gray-400 text-gray-600 hover:bg-gray-100">
+                                        {% if article.visibility == 'public' %} zmeň na Súkromné {% else %} zmeň na Verejné {% endif %}
+                                    </button>
+                                </form>
+                                {% elif article.status == 'draft' %}
+                                <div class="text-gray-400 text-center">Form to set Draft to Publish.</div>
+                                {% elif article.status == 'under_evaluation' %}
+                                <div class="text-pink-400 text-center">Article is under evaluation of administrators.</div>
+                            {% endif %}
                         </div>
-                        {% else %}
-                    <span class="text-sm">autor: <span
-                            class="font-medium text-gray-800">{{ article.author.full_name }}</span></span>
+                    {% else %}
+                        <span class="text-sm">autor: <span class="font-medium text-gray-800">{{ article.author.full_name }}</span></span>
                     {% endif %}
-
-
                 </div>
 
-                <div class="text-gray-600">
-                    {% if user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
-                        <span class="text-sm">vytvorené: <span
-                            class="font-medium text-gray-800">{{ article.created|date:"M d, Y" }}</span></span>
-                    {% else %}
-                    <span class="text-sm">publikované: <span
-                            class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
+                <div class="text-gray-600 text-center">
+                    {% if article.bulletin == user.profile.bulletin %}
+                        <span class="text-sm my-2">vytvorené: <span class="font-medium text-gray-800">{{ article.created|date:"M d, Y" }}</span></span><br>
+                    {% endif %}
+                    {% if article.status == 'published' %}
+                        <span class="text-sm">publikované: <span class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
                     {% endif %}
                 </div>
             </div>

@@ -1,6 +1,7 @@
 from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
     SlugField, ForeignKey
+from django.utils import timezone
 
 from accounts.models import Profile
 
@@ -59,6 +60,12 @@ class Article(Model):
     @property
     def author(self):
         return self.bulletin.owner
+
+    def save(self, *args, **kwargs):
+        if self.status == 'published':
+            self.published = timezone.now()
+
+        super().save(*args, **kwargs)
 
 
 class Subscription(Model):
