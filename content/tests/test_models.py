@@ -48,7 +48,6 @@ class BulletinModelTest(TestCase):
 
     def test_bulletin_repr(self):
         bulletin = Bulletin.objects.get(slug='bulletin-testing')
-        # print(repr(bulletin))
         self.assertEqual(bulletin.__repr__(), "Bulletin(title=Bulletin Testing, owner=TestUser)")
 
     def test_bulletin_str(self):
@@ -56,7 +55,8 @@ class BulletinModelTest(TestCase):
         self.assertEqual(bulletin.__str__(), 'Bulletin Testing')
 
     def test_bulletin_slug_unique(self):
-        pass
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+
 
 
 class ArticleModelTest(TestCase):
@@ -87,28 +87,32 @@ class ArticleModelTest(TestCase):
             published=timezone.now(),
         )
 
-    def test_article_title(self):
+    def test_article_data(self):
         article = Article.objects.get(title='Article Testing')
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
         self.assertEqual(article.title, 'Article Testing')
+        self.assertEqual(article.status, 'published')
+        self.assertEqual(article.visibility, 'public')
+        self.assertEqual(article.bulletin, bulletin)
 
     def test_article_title_unique(self):
-        pass
-
-    def test_article_data(self):
-        pass
-
-    def test_article_bulletin(self):
-        pass
+        article = Article.objects.get(title='Article Testing')
 
     def test_article_writer(self):
-        pass
+        article = Article.objects.get(title='Article Testing')
+        self.assertEqual(article.bulletin.owner.user.username, 'TestUser')
 
     def test_article_author(self):
-        pass
+        article = Article.objects.get(title='Article Testing')
+        self.assertEqual(article.author, article.bulletin.owner.user)
+        self.assertEqual(article.author.username, 'TestUser')
 
     def test_article_repr(self):
-        pass
+        article = Article.objects.get(title='Article Testing')
+        expected = f"Article(title=Article Testing, created={article.created})"
+        self.assertEqual(article.__repr__(), expected)
 
     def test_article_str(self):
-        pass
+        article = Article.objects.get(title='Article Testing')
+        self.assertEqual(article.__str__(), 'Article Testing')
 
