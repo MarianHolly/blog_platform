@@ -58,7 +58,7 @@ class Article(Model):
 
     @property
     def author(self):
-        return self.bulletin.owner.user
+        return self.bulletin.owner
 
 
 class Subscription(Model):

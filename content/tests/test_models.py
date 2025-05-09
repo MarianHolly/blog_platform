@@ -125,8 +125,8 @@ class ArticleModelTest(TestCase):
 
     def test_article_author(self):
         article = Article.objects.get(title='Article Testing')
-        self.assertEqual(article.author, article.bulletin.owner.user)
-        self.assertEqual(article.author.username, 'TestUser')
+        self.assertEqual(article.author.user, article.bulletin.owner.user)
+        self.assertEqual(article.author.user.username, 'TestUser')
 
     def test_article_repr(self):
         article = Article.objects.get(title='Article Testing')

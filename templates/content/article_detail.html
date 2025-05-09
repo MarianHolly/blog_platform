@@ -14,12 +14,26 @@
 
             <div class="flex flex-col mb-6 pb-4 border-b border-gray-200 justify-center items-center">
                 <div class="text-gray-600">
+                    {% if user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
+                        <div class="my-4">
+                            <p class="text-gray-400 text-center">Place for Managing Visibility and Status</p>
+                        </div>
+                        {% else %}
                     <span class="text-sm">autor: <span
                             class="font-medium text-gray-800">{{ article.author.full_name }}</span></span>
+                    {% endif %}
+
+
                 </div>
+
                 <div class="text-gray-600">
+                    {% if user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
+                        <span class="text-sm">vytvorené: <span
+                            class="font-medium text-gray-800">{{ article.created|date:"M d, Y" }}</span></span>
+                    {% else %}
                     <span class="text-sm">publikované: <span
                             class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
+                    {% endif %}
                 </div>
             </div>
             <div class="article-content prose-sm sm:prose lg:prose-lg max-w-none">
@@ -59,7 +73,7 @@
             </div>
         </article>
 
-        {% if user.is_authenticated and user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
+        {% if user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
             <section>
                 <!-- Author/Owner Actions -->
                 <div class="max-w-md mx-auto mt-6 flex flex-row gap-4">
