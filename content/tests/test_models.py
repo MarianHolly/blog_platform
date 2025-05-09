@@ -55,8 +55,15 @@ class BulletinModelTest(TestCase):
         self.assertEqual(bulletin.__str__(), 'Bulletin Testing')
 
     def test_bulletin_slug_unique(self):
-        bulletin = Bulletin.objects.get(slug='bulletin-testing')
-
+        profile = Profile.objects.get(user__username='TestUser')
+        # profile already has bulletin with this slug
+        with self.assertRaises(Exception):
+            Bulletin.objects.create(
+                owner=profile,
+                title='Bulletin Testing',
+                description='Testing of Bulletin',
+                slug='bulletin-testing',
+            )
 
 
 class ArticleModelTest(TestCase):
@@ -96,7 +103,10 @@ class ArticleModelTest(TestCase):
         self.assertEqual(article.bulletin, bulletin)
 
     def test_article_title_unique(self):
-        article = Article.objects.get(title='Article Testing')
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+        # article with this title already exists in this bulletin
+        with self.assertRaises(Exception):
+            Article.objects.create(title='Article Testing', status='published', visibility='public', bulletin=bulletin)
 
     def test_article_writer(self):
         article = Article.objects.get(title='Article Testing')
