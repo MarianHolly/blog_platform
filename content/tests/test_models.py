@@ -60,9 +60,20 @@ class BulletinModelTest(TestCase):
         with self.assertRaises(Exception):
             Bulletin.objects.create(
                 owner=profile,
-                title='Bulletin Testing',
+                title='Second Bulletin Testing',
                 description='Testing of Bulletin',
                 slug='bulletin-testing',
+            )
+
+    def test_bulletin_title_unique(self):
+        profile = Profile.objects.get(user__username='TestUser')
+        # profile already has bulletin with this slug
+        with self.assertRaises(Exception):
+            Bulletin.objects.create(
+                owner=profile,
+                title='Bulletin Testing',
+                description='Testing of Bulletin',
+                slug='bulletin-testing-second',
             )
 
 

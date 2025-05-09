@@ -8,7 +8,7 @@ from accounts.models import Profile
 # Create your models here.
 class Bulletin(Model):
     owner = OneToOneField(Profile, on_delete=CASCADE, related_name='bulletin')
-    title = CharField(max_length=255)
+    title = CharField(max_length=255, unique=True)
     description = TextField(blank=True)
     slug = SlugField(unique=True, max_length=295)
     created = DateTimeField(auto_now_add=True)
