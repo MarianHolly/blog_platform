@@ -79,6 +79,7 @@ class ArticleFormTest(TestCase):
             data={'title': 'Testing of Article',
                   'status': 'draft',
                   'visibility': 'private',
+                  'content': 'Content for testing',
                   'bulletin': bulletin}
         )
         self.assertTrue(form.is_valid())
@@ -139,6 +140,7 @@ class ArticleFormTest(TestCase):
             'title': 'New Article From Test',
             'status': 'draft',
             'visibility': 'private',
+            'content': 'Content for testing',
         }
         form = ArticleForm(data=form_data, user=user)
         self.assertTrue(form.is_valid())
