@@ -79,6 +79,11 @@ class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
         form.instance.bulletin = self.request.user.profile.bulletin
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        if 'content' in form.errors:
+            messages.error(self.request, "Článok nemôže byť uložený, pretože nemá žiadny obsah.")
+        return super().form_invalid(form)
+
     def get_success_url(self):
         return reverse('bulletin_detail', kwargs={'slug': self.request.user.profile.bulletin.slug})
 
@@ -92,7 +97,8 @@ class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        print("Errors:", form.errors)
+        if 'content' in form.errors:
+            messages.error(self.request, "Článok nemôže byť uložený, pretože nemá žiadny obsah.")
         return super().form_invalid(form)
 
     def get_success_url(self):

@@ -1,4 +1,8 @@
+import re
+
 from ckeditor.widgets import CKEditorWidget
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.forms import RadioSelect, TextInput, Textarea
 from django.forms.models import ModelForm
 from django.forms.widgets import HiddenInput
@@ -19,6 +23,23 @@ class ArticleForm(ModelForm):
             'description': Textarea(attrs={'class': 'w-full', 'rows': 3}),
             'content': CKEditorWidget(),
         }
+        error_messages = {
+            'content': {
+                'required': "Obsah článku je povinný.",
+            }
+        }
+
+    def clean_content(self):
+        content = self.cleaned_data['content']
+
+        text_only = re.sub(r'<[^>]*>', '', content)
+        text_only = text_only.replace('&nbsp;', ' ').strip()
+
+        if not text_only:
+            raise ValidationError("Obsah článku je povinný.")
+
+        return content
+
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
