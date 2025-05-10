@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from accounts.models import Profile
-from content.models import Bulletin, Article
+from content.models import Bulletin, Article, Subscription
 
 
 # Create your tests here.
@@ -194,12 +194,24 @@ class SubscriptionModelTest(TestCase):
         subscription = Subscription.objects.create(
             subscriber=reader_profile, bulletin=writer_bulletin)
 
-    def test_subscription_data(self):
-        pass
-
     def test_subscription_srt(self):
-        pass
+        subscription = Subscription.objects.get(bulletin__slug='subscription-testing')
+        expected = f"TestReader subscribed to 'Subscription Testing'"
+        self.assertEqual(subscription.__str__(), expected)
 
     def test_subscription_repr(self):
-        pass
+        subscription = Subscription.objects.get(bulletin__slug='subscription-testing')
+        expected = f"Subscription(subscriber=TestReader, bulletin=Subscription Testing)"
+        self.assertEqual(subscription.__repr__(), expected)
 
+    def test_subscription_data(self):
+        subscription = Subscription.objects.get(bulletin__slug='subscription-testing')
+        self.assertEqual(subscription.bulletin.title, 'Subscription Testing')
+        self.assertEqual(subscription.subscriber.user.username, 'TestReader')
+
+    def test_subscription_unique(self):
+        reader = Profile.objects.get(user__username='TestReader')
+        bulletin = Bulletin.objects.get(title='Subscription Testing')
+        with self.assertRaises(Exception):
+            Subscription.objects.create(
+                subscriber=reader, bulletin=bulletin)
