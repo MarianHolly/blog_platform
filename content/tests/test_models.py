@@ -157,7 +157,7 @@ class ArticleModelTest(TestCase):
         bulletin = Bulletin.objects.get(slug='bulletin-testing')
         article = Article.objects.create(
             title='Republishing Test Article',
-            status='draft',
+            status='published',
             visibility='private',
             bulletin=bulletin
         )

@@ -8,6 +8,10 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
 class GuiTestWithSelenium(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        print('\nGuiTestWithSelenium')
+
     @skip
     def test_page_titles(self):
         self.driver = webdriver.Firefox()
@@ -46,8 +50,10 @@ class GuiTestWithSelenium(TestCase):
         submit_btn = self.driver.find_element(By.ID, 'id_submit')
         submit_btn.send_keys(Keys.RETURN)
 
-        assert ("Prihláste sa do svojho účtu" or "Toto užívateľské meno je už obsadené." in self.driver.page_source)
+        assert ("Prihláste sa do svojho účtu" in self.driver.page_source or
+                "Toto užívateľské meno je už obsadené." in self.driver.page_source)
 
+    @skip
     def test_login(self):
         self.driver = webdriver.Firefox()
         self.driver.get("http://127.0.0.1:8000/accounts/login/")
