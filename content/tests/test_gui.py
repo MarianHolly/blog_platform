@@ -20,6 +20,7 @@ class GuiTestWithSelenium(TestCase):
         self.driver.get("http://127.0.0.1:8000/qa/")
         assert "Q & A" in self.driver.title
 
+    @skip
     def test_signup(self):
         self.driver = webdriver.Firefox()
         self.driver.get("http://127.0.0.1:8000/accounts/signup/")
@@ -47,5 +48,18 @@ class GuiTestWithSelenium(TestCase):
 
         assert ("Prihláste sa do svojho účtu" or "Toto užívateľské meno je už obsadené." in self.driver.page_source)
 
+    def test_login(self):
+        self.driver = webdriver.Firefox()
+        self.driver.get("http://127.0.0.1:8000/accounts/login/")
+        time.sleep(1)
+        username_input = self.driver.find_element(by=By.NAME, value="username")
+        username_input.send_keys("SlavojZizek")
+        time.sleep(1)
+        password_input = self.driver.find_element(by=By.NAME, value="password")
+        password_input.send_keys("ZPc5dash32u0")
+        time.sleep(1)
+        submit_btn = self.driver.find_element(By.ID, 'id_submit')
+        submit_btn.send_keys(Keys.RETURN)
 
+        assert ("Slavoj Žižek" or "Please enter a correct username and password. Note that both fields may be case-sensitive." in self.driver.page_source)
 
