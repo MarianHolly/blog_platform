@@ -1,3 +1,4 @@
+import time
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
@@ -136,4 +137,43 @@ class ArticleModelTest(TestCase):
     def test_article_str(self):
         article = Article.objects.get(title='Article Testing')
         self.assertEqual(article.__str__(), 'Article Testing')
+
+    def test_article_published_date_status_set(self):
+        # testing is publishing date is set if draft is changed to published
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+        article = Article.objects.create(
+            title='Publishing Test Article',
+            status='draft',
+            visibility='private',
+            bulletin=bulletin)
+        # article is without published date
+        self.assertIsNone(article.published)
+        article.status = 'published'
+        article.save()
+        # article has published date
+        self.assertIsNotNone(article.published)
+
+    def test_article_published_date_status_change(self):
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+        article = Article.objects.create(
+            title='Republishing Test Article',
+            status='draft',
+            visibility='private',
+            bulletin=bulletin
+        )
+        first_date = article.published
+        # change status to 'draft'
+        article.status = 'draft'
+        article.save()
+        # time between change back to 'published'
+        time.sleep(1)
+        # change status to 'published'
+        article.status = 'published'
+        article.save()
+        # check if published date is changed
+        self.assertNotEqual(first_date, article.published)
+
+
+
+
 

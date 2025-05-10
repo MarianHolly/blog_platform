@@ -138,9 +138,5 @@ class ArticleFormTest(TestCase):
             'status': 'draft',
             'visibility': 'private',
         }
-        # form instance with user parameter
         form = ArticleForm(data=form_data, user=user)
-        # user's bulletin
         self.assertTrue(form.is_valid())
-        # test bulletin field in form
-        # self.assertEqual(form.fields['bulletin'].initial, user_bulletin)

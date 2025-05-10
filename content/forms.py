@@ -31,17 +31,6 @@ class ArticleForm(ModelForm):
             except:
                 pass
 
-    def save(self, commit=True):
-        article = super().save(commit=False)
-
-        if article.status == 'published' and article.published is None:
-            article.published = timezone.now()
-
-        if commit:
-            article.save()
-
-        return article
-
 
 class BulletinForm(ModelForm):
     class Meta:
