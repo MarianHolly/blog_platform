@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.test import TestCase
 
 from accounts.models import Profile
+from accounts.forms import SignUpForm
 
 
 # Create your tests here.
@@ -45,11 +47,9 @@ class ProfileModelTest(TestCase):
 
     def test_profile_username_unique(self):
         profile1 = Profile.objects.get(user__username='TestUser')
-        with self.assertRaises(Exception):
+        with self.assertRaises(IntegrityError):
             user2 = User.objects.create_user(
                 username='TestUser', password='TestPassword234')
-            Profile.objects.create(
-                user=user2, role='writer')
 
 
 class SignUpFormTest(TestCase):
@@ -57,12 +57,106 @@ class SignUpFormTest(TestCase):
     def setUpTestData(cls):
         print('\nSignUpFormTest - setting setUpTestData')
 
-    pass
+        test_user = User.objects.create_user(
+            username='TestUser', password='TestPassword123')
+        test_profile = Profile.objects.create(
+            user=test_user, role='reader')
+
+    def test_signup_form_valid(self):
+        form = SignUpForm(
+            data = {
+                'username': 'TestUser2',
+                'password1': 'TestPassword123',
+                'password2': 'TestPassword123',
+                'email': 'test@mail.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'reader'
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_signup_form_username_taken(self):
+        form = SignUpForm(
+            data={
+                'username': 'TestUser',
+                'password1': 'TestPassword123',
+                'password2': 'TestPassword123',
+                'email': 'test@mail.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'administrator'
+            }
+        )
+        self.assertFalse(form.is_valid())
 
 
-class ProfileFormTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        print('\nProfileFormTest - setting setUpTestData')
+    def test_signup_form_without_email(self):
+        form = SignUpForm(
+            data={
+                'username': 'TestUser',
+                'password1': 'TestPassword123',
+                'password2': 'TestPassword123',
+                'email': '',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'reader'
+            }
+        )
+        self.assertFalse(form.is_valid())
 
-    pass
+    def test_signup_form_invalid_email(self):
+        form = SignUpForm(
+            data={
+                'username': 'TestUser',
+                'password1': 'TestPassword123',
+                'password2': 'TestPassword123',
+                'email': 'testmail.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'reader'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_signup_form_without_password1(self):
+        form = SignUpForm(
+            data={
+                'username': 'TestUser',
+                'password1': '',
+                'password2': 'TestPassword123',
+                'email': 'testmail.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'reader'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_signup_form_without_password2(self):
+        form = SignUpForm(
+            data={
+                'username': 'TestUser',
+                'password1': 'TestPassword123',
+                'password2': '',
+                'email': 'testmail.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'reader'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_signup_form_passwords_not_match(self):
+        form = SignUpForm(
+            data={
+                'username': 'TestUser',
+                'password1': 'TestPassword123',
+                'password2': 'TestPassword1234',
+                'email': 'testmail.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': 'reader'
+            }
+        )
+        self.assertFalse(form.is_valid())
