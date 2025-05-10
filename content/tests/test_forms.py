@@ -10,7 +10,7 @@ from accounts.models import Profile
 class BulletinFormTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print('setUpTestData for BulletinForm')
+        print('\nBulletinFormTest - setting setUpTestData')
 
         test_user = User.objects.create_user(
             username='TestUser',
@@ -48,6 +48,8 @@ class BulletinFormTest(TestCase):
 class ArticleFormTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        print('\nArticleFormTest - setting setUpTestData')
+
         test_user = User.objects.create_user(
             username='TestUser',
             password='TestPassword123',

@@ -11,7 +11,7 @@ from content.models import Bulletin, Article
 class BulletinModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print('BulletinModel - setting setUpTestData')
+        print('\nBulletinModel - setting setUpTestData')
 
         test_user = User.objects.create_user(
             username='TestUser',
@@ -81,7 +81,7 @@ class BulletinModelTest(TestCase):
 class ArticleModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        print('ArticleModel - setting setUpTestData')
+        print('\nArticleModel - setting setUpTestData')
 
         test_user = User.objects.create_user(
             username='TestUser',
@@ -174,6 +174,32 @@ class ArticleModelTest(TestCase):
         self.assertNotEqual(first_date, article.published)
 
 
+class SubscriptionModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        print('\nSubscriptionModel - setting setUpTestData')
 
+        writer_user = User.objects.create_user(
+            username='TestWriter', password='TestPassword123')
+        writer_profile = Profile.objects.create(
+            user=writer_user, role='writer')
+        writer_bulletin = Bulletin.objects.create(
+            owner=writer_profile, title='Subscription Testing', slug='subscription-testing')
 
+        reader_user = User.objects.create_user(
+            username='TestReader', password='TestPassword456')
+        reader_profile = Profile.objects.create(
+            user=reader_user, role='reader')
+
+        subscription = Subscription.objects.create(
+            subscriber=reader_profile, bulletin=writer_bulletin)
+
+    def test_subscription_data(self):
+        pass
+
+    def test_subscription_srt(self):
+        pass
+
+    def test_subscription_repr(self):
+        pass
 
