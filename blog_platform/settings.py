@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     "accounts",
     "content",
+    "engagement",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
