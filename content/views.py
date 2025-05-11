@@ -10,6 +10,8 @@ from accounts.models import Profile
 from content.forms import ArticleForm, BulletinForm
 from content.mixins import WriterRequiredMixin, ArticleOwnerMixin
 from content.models import Article, Bulletin, Subscription
+from engagement.forms import CommentModelForm
+from engagement.models import Comment
 
 
 # ==================================== BLOG PLATFORM ======================== #
@@ -62,7 +64,32 @@ class ArticleDetailView(DetailView):
             ).exists()
 
         context['is_subscribed'] = is_subscribed
+        context['comment_form'] = CommentModelForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        _article = self.object
+        _profile = Profile.objects.get(user=self.request.user)
+        form = CommentModelForm(request.POST)
+
+        if form.is_valid():
+            content = form.cleaned_data['content']
+            comment_qs = Comment.objects.filter(article=_article, author=_profile)
+
+            if comment_qs.exists():
+                comment = comment_qs.first()
+                comment.content = content
+                comment.save()
+            else:
+                Comment.objects.create(
+                    article = _article,
+                    author = _profile,
+                    content = content,
+                )
+
+        return redirect(request.path)
+        # return render(request, self.template_name, context)
 
 
 class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
