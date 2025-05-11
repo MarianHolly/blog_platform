@@ -9,7 +9,7 @@
 {% block content %}
     <div class="container mx-auto px-4 py-8">
         <!-- Article Content -->
-        <article class="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+        <article class="max-w-5xl mx-auto bg-white p-6 rounded shadow mb-12">
             <h1 class="text-xl font-bold text-gray-800 mb-3 text-center">{{ article.title }}</h1>
 
             <div class="flex flex-col mb-6 pb-4 border-b border-gray-200 justify-center items-center">
@@ -99,8 +99,19 @@
             </section>
         {% endif %}
 
-        <section>
-            <!-- Comments Section -->
+        <!-- Comments Section -->
+        <section class="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+            <h1 class="text-xl font-bold text-gray-800 mb-3 text-center uppercase">Čitateľská zóna</h1>
+            <div class="flex flex-col lg:flex-row w-full justify-center items-start gap-4">
+                <!-- Comment History -->
+                <div class="w-full">
+                    <h2 class="text-gray-600 font-light text-center uppercase">Diskusia prebieha</h2>
+                </div>
+                <!-- Comment Form -->
+                <div class="w-full">
+                    <h2 class="text-gray-600 font-light text-center uppercase">Zapoj sa do diskusie</h2>
+                </div>
+            </div>
         </section>
     </div>
 {% endblock %}
