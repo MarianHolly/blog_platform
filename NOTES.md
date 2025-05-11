@@ -1,5 +1,14 @@
 # Implementation Notes
 
+### Next Improvements
+
+- [ ] Engagement Application
+- [ ] 'Comment' Model
+  - [ ] CommentForm - Create, Update, Delete
+- [ ] 'Like' Model
+  - [ ] LikeForm (similar to Subscription logic)
+- [ ] 'ReadLater' Model
+
 ### Primary Features Blog Plaform
 
 - [x] Model for Profile based on User
