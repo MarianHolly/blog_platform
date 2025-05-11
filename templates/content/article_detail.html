@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/article-content.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/article-content.css">
 {% endblock %}
 
 {% block content %}
@@ -20,27 +21,33 @@
                                 <form method="POST" action="{% url 'visibility_toggle' article.id %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="next" value="{{ request.path }}">
-                                    <button type="submit" class="text-sm px-3 py-1 border-1 rounded-md font-medium hover:cursor-pointer border-gray-400 text-gray-600 hover:bg-gray-100">
-                                        {% if article.visibility == 'public' %} zmeň na Súkromné {% else %} zmeň na Verejné {% endif %}
+                                    <button type="submit"
+                                            class="text-sm px-3 py-1 border-1 rounded-md font-medium hover:cursor-pointer border-gray-400 text-gray-600 hover:bg-gray-100">
+                                        {% if article.visibility == 'public' %} zmeň na Súkromné {% else %} zmeň na
+                                            Verejné {% endif %}
                                     </button>
                                 </form>
-                                {% elif article.status == 'draft' %}
+                            {% elif article.status == 'draft' %}
                                 <div class="text-gray-400 text-center">Form to set Draft to Publish.</div>
-                                {% elif article.status == 'under_evaluation' %}
-                                <div class="text-pink-400 text-center">Article is under evaluation of administrators.</div>
+                            {% elif article.status == 'under_evaluation' %}
+                                <div class="text-pink-400 text-center">Article is under evaluation of administrators.
+                                </div>
                             {% endif %}
                         </div>
                     {% else %}
-                        <span class="text-sm">autor: <span class="font-medium text-gray-800">{{ article.author.full_name }}</span></span>
+                        <span class="text-sm">autor: <span
+                                class="font-medium text-gray-800">{{ article.author.full_name }}</span></span>
                     {% endif %}
                 </div>
 
                 <div class="text-gray-600 text-center">
                     {% if article.bulletin == user.profile.bulletin %}
-                        <span class="text-sm my-2">vytvorené: <span class="font-medium text-gray-800">{{ article.created|date:"M d, Y" }}</span></span><br>
+                        <span class="text-sm my-2">vytvorené: <span
+                                class="font-medium text-gray-800">{{ article.created|date:"M d, Y" }}</span></span><br>
                     {% endif %}
                     {% if article.status == 'published' %}
-                        <span class="text-sm">publikované: <span class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
+                        <span class="text-sm">publikované: <span
+                                class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
                     {% endif %}
                 </div>
             </div>
@@ -67,14 +74,15 @@
                                     </p>
                                 </form>
                             </div>
-
                         {% endif %}
                     {% else %}
                         {{ article.content|safe|truncatewords:175 }}
                         <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
-                            <p class="text-center text-gray-500">K prečítaniu súkromných článkov je nutné byť najprv <br>
+                            <p class="text-center text-gray-500">K prečítaniu súkromných článkov je nutné byť najprv
+                                <br>
                                 <a href="{% url 'login' %}"
-                                   class="font-medium text-gray-700 hover:underline hover:text-gray-900">prihlásený</a>.</p>
+                                   class="font-medium text-gray-700 hover:underline hover:text-gray-900">prihlásený</a>.
+                            </p>
                         </div>
                     {% endif %}
                 {% endif %}
@@ -110,6 +118,36 @@
                 <!-- Comment Form -->
                 <div class="w-full">
                     <h2 class="text-gray-600 font-light text-center uppercase">Zapoj sa do diskusie</h2>
+                   {% if not user.is_authenticated %}
+                        <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
+                            <p class="text-center text-gray-500">K pridaniu komentaru je nutné byť najprv <br>
+                                <a href="{% url 'login' %}"
+                                   class="font-medium text-gray-700 hover:underline hover:text-gray-900">prihlásený</a>.
+                            </p>
+                        </div>
+                   {% elif article.visibility == 'public' or article.visibility == 'private' and is_subscribed or article.bulletin == user.profile.bulletin or user.profile.role == 'admin' %}
+                        <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ comment_form|crispy }}
+                                <button type="submit" name="submit_comment" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition duration-200">Odoslať komentár</button>
+                            </form>
+                        </div>
+                    {% elif article.visibility == 'private' and not is_subscribed or not article.bulletin == user.profile.bulletin or not user.profile.role == 'admin' %}
+                        <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
+                            <form action="{% url 'toggle_subscription' article.bulletin.slug %}" method="post"
+                                  class="flex justify-center items">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <p class="text-center text-gray-500">Nemôžeš komentovať článok, ktorý nevidíš.<br>
+                                    <button type="submit"
+                                            class="font-medium text-gray-700 hover:underline hover:text-gray-900 hover:cursor-pointer">
+                                        Prihlás sa na odber.
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </section>
