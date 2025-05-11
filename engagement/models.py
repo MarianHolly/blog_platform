@@ -6,8 +6,8 @@ from content.models import Article
 
 # Create your models here.
 class Comment(Model):
-    author = ForeignKey(Profile, on_delete=CASCADE)
-    article = ForeignKey(Article, on_delete=CASCADE)
+    author = ForeignKey(Profile, on_delete=CASCADE, related_name='comments')
+    article = ForeignKey(Article, on_delete=CASCADE, related_name='comments')
     content = TextField(max_length=500, blank=False, null=False)
 
     created = DateTimeField(auto_now_add=True)
