@@ -134,9 +134,9 @@
                         </button>
                     {% endif %}
                 </form>
-                <form method="post" action="{% url 'toggle_like' article.id %}">
+                <form method="post" action="{% url 'toggle_read_later' article.id %}">
                     {% csrf_token %}
-                    {% if is_liked %}
+                    {% if is_read_later %}
                         <input type="hidden" name="next" value="{{ request.path }}">
                         <button type="submit"
                                 class="flex justify-center items-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">

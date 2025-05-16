@@ -11,7 +11,7 @@ from content.forms import ArticleForm, BulletinForm
 from content.mixins import WriterRequiredMixin, ArticleOwnerMixin
 from content.models import Article, Bulletin, Subscription
 from engagement.forms import CommentModelForm
-from engagement.models import Comment, Like
+from engagement.models import Comment, Like, ReadLater
 
 
 # ==================================== BLOG PLATFORM ======================== #
@@ -59,6 +59,7 @@ class ArticleDetailView(DetailView):
         is_subscribed = None
 
         is_liked = Like.objects.filter(article=article_, author=user_profile).exists()
+        is_read_later = ReadLater.objects.filter(article=article_, author=user_profile).exists()
 
         if self.request.user.is_authenticated:
             is_subscribed = Subscription.objects.filter(
@@ -68,6 +69,7 @@ class ArticleDetailView(DetailView):
 
         context['is_subscribed'] = is_subscribed
         context['is_liked'] = is_liked
+        context['is_read_later'] = is_read_later
         context['comment_form'] = CommentModelForm()
         return context
 
