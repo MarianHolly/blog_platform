@@ -89,32 +89,31 @@
             </div>
         </article>
 
+        <!-- Author/Owner Actions -->
         {% if user.profile.role == 'writer' and article.bulletin == user.profile.bulletin %}
-            <!-- Author/Owner Actions -->
-            <section>
-                <div class="max-w-md mx-auto mt-6 flex flex-row gap-4">
-                    <a href="{% url 'article_edit' article.id %}" class="flex-1">
-                        <p class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition">
-                            Edit Article
-                        </p>
-                    </a>
-                    <a href="{% url 'article_delete' article.id %}" class="flex-1">
-                        <p class="px-6 py-3 bg-red-100 text-red-600 rounded-md text-center hover:bg-red-200 transition">
-                            Delete Article
-                        </p>
-                    </a>
-                </div>
+            <section class="bg-white max-w-sm mx-auto rounded-lg shadow mb-12 p-3 flex justify-center gap-4">
+                <a href="{% url 'article_edit' article.id %}" class="flex-1">
+                    <p class="px-6 py-3 text-gray-700 text-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md transition">
+                        Editovať
+                    </p>
+                </a>
+                <a href="{% url 'article_delete' article.id %}" class="flex-1">
+                    <p class="px-6 py-3 text-pink-700 text-center border-pink-100 border-1 hover:bg-pink-100 hover:cursor-pointer rounded-md transition">
+                        Zmazať
+                    </p>
+                </a>
             </section>
         {% endif %}
 
+        <!-- Reader Actions -->
         {% if user.is_authenticated and not article.bulletin == user.profile.bulletin %}
-            <section class="bg-white max-w-sm mx-auto rounded-lg shadow mb-12 p-3 flex justify-center gap-4">
-                <!-- Reader Actions -->
+            <section class="bg-white max-w-xs mx-auto rounded-lg shadow my-6 p-3 grid grid-cols-2 gap-2">
                 <form method="post" action="{% url 'toggle_like' article.id %}">
                     {% csrf_token %}
                     {% if is_liked %}
                         <input type="hidden" name="next" value="{{ request.path }}">
-                        <button type="submit" class="w-32 flex justify-center items-center hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">
+                        <button type="submit"
+                                class="flex justify-center items-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">
                             <p class="text-gray-400 text-sm font-medium">Už sa mi nepáči</p>
                             <svg class="size-14 p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                  fill="currentColor">
@@ -123,39 +122,46 @@
                         </button>
                     {% else %}
                         <input type="hidden" name="next" value="{{ request.path }}">
-                        <button type="submit" class="w-32 flex justify-center items-center hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">
-                            <p class="text-gray-400 text-sm font-medium">Páči sa mi</p>
-                                <svg class="size-14 p-3"
-                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"/>
-                                </svg>
+                        <button type="submit"
+                                class="flex justify-center items-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">
+                            <p class="text-gray-400 text-sm font-medium pl-2">Páči sa mi</p>
+                            <svg class="size-14 p-3"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"/>
+                            </svg>
                         </button>
                     {% endif %}
                 </form>
-
-
-
-                <a href="" class="flex flex-1 flex-row items-center justify-start hover:bg-gray-100 hover:cursor-pointer rounded-full pr-4">
-                    {% if is_saved %}
-                        <svg class="size-14 p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                             fill="currentColor">
-                            <path fill-rule="evenodd"
-                                  d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
-                                  clip-rule="evenodd"/>
-                        </svg>
-                        <p class="text-gray-400 text-sm font-medium">Uložené pre čítanie</p>
+                <form method="post" action="{% url 'toggle_like' article.id %}">
+                    {% csrf_token %}
+                    {% if is_liked %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit"
+                                class="flex justify-center items-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">
+                            <p class="text-gray-400 text-sm font-medium">Uložené pre čítanie</p>
+                            <svg class="size-14 p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+                        </button>
                     {% else %}
-                        <svg class="size-14 p-2"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
-                        </svg>
-                        <p class="text-gray-400 text-sm font-medium">Prečítať neskôr</p>
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit"
+                                class="flex justify-center items-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md p-1">
+                            <p class="text-gray-400 text-sm font-medium">Prečítať neskôr</p>
+                            <svg class="size-14 p-2"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
+                            </svg>
+                        </button>
                     {% endif %}
-                </a>
+                </form>
             </section>
         {% endif %}
 
@@ -164,13 +170,20 @@
             <h1 class="text-xl font-bold text-gray-800 mb-3 text-center uppercase">Čitateľská zóna</h1>
             <div class="flex flex-col lg:flex-row w-full justify-center items-start gap-4">
                 <!-- Comment History -->
-                <div class="w-full">
+                <div class="w-full flex flex-col">
                     <h2 class="text-gray-600 font-light text-center uppercase mb-6">Diskusia prebieha</h2>
                     <div class="flex flex-col gap-2">
                         {% for comment in article.comments.all %}
                             <div class="px-6 py-3 rounded-md bg-gray-50 border-1 border-gray-100">
                                 <p class="mb-2 text-gray-900">{{ comment.content }}</p>
-                                <p class="text-center text-gray-600 font-medium text-xs">{{ comment.author }}</p>
+                                <p class="text-center text-gray-600 font-medium text-xs">{{ comment.author.full_name }}</p>
+                            </div>
+                            {% empty %}
+                            <div class="px-6 py-3 rounded-md border-1 border-gray-100 flex flex-col gap-3 justify-center items-center w-full lg:py-42 shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-18 text-gray-400">
+                                  <path fill-rule="evenodd" d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                </svg>
+                                <p class="text-center text-gray-500 font-light">buď prvý, kto začne diskusiu</p>
                             </div>
                         {% endfor %}
                     </div>
