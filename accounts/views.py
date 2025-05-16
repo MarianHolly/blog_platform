@@ -11,7 +11,7 @@ from accounts.forms import SignUpForm, ProfileForm
 from accounts.mixins import ReaderRequiredMixin
 from accounts.models import Profile
 from content.models import Subscription
-from engagement.models import Like
+from engagement.models import Like, ReadLater
 
 
 # Create your views here.
@@ -75,7 +75,9 @@ class ProfileActivityView(DetailView):
         profile = self.get_object()
 
         likes = Like.objects.filter(author=profile)
+        read_later = ReadLater.objects.filter(author=profile)
         context['likes'] = likes
+        context['read_laters'] = read_later
         return context
 
 
