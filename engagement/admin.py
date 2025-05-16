@@ -5,7 +5,7 @@ from engagement.models import Like, Comment, ReadLater
 
 
 class CommentAdmin(ModelAdmin):
-    list_display = ['author', 'article', 'content']
+    list_display = ['author', 'article']
 
 
 class LikeAdmin(ModelAdmin):
