@@ -5,12 +5,13 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, View
+from django.views.generic import CreateView, DetailView, UpdateView, View, TemplateView
 
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.mixins import ReaderRequiredMixin
 from accounts.models import Profile
 from content.models import Subscription
+from engagement.models import Like
 
 
 # Create your views here.
@@ -59,6 +60,22 @@ class ProfileDetailView(DetailView):
                 self.request.user.is_authenticated and
                 self.request.user.profile == profile
         )
+        return context
+
+
+class ProfileActivityView(DetailView):
+    template_name = 'accounts/profile_activity.html'
+    model = Profile
+    context_object_name = "profile"
+    slug_field = 'user__username'
+    slug_url_kwarg = 'username'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+
+        likes = Like.objects.filter(author=profile)
+        context['likes'] = likes
         return context
 
 
