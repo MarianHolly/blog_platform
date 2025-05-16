@@ -3,9 +3,9 @@
 {% block title %}{{ profile.user.username }}{% endblock %}
 
 {% block content %}
-    <div class="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-4">
+    <div class="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-4">
         <!-- Main Profile Information -->
-        <div class="bg-white rounded-lg shadow">
+        <div class="w-full sm:w-xl md:w-2xl lg:w-3xl mx-auto bg-white rounded-lg shadow">
             <div class="flex flex-col md:flex-row p-6 gap-6 items-center md:items-start">
                 <!-- Profile Avatar -->
                 <div class="relative">
@@ -25,10 +25,16 @@
                 </div>
                 <!-- Profile Info -->
                 <div class="flex-1 text-center md:text-left">
-                    <h1 class="text-2xl font-bold text-gray-800">
+                    <h1 class="text-2xl font-bold text-gray-800 border-b-2 border-gray-400">
                         {{ profile.user.first_name }} {{ profile.user.last_name }}
                     </h1>
-                    <p class="text-gray-500 opacity-60 text-md">@{{ profile.user.username }}</p>
+                    <p class="text-gray-500 opacity-60 text-md mb-4">@{{ profile.user.username }}</p>
+                    {% if profile.role == 'writer' and profile.bulletin %}
+                        <a href="{% url 'bulletin_detail' profile.bulletin.slug %}"
+                           class="px-4 py-2 bg-gray-50 text-gray-900 text-md rounded-sm text-center hover:bg-gray-200 transition border-1 border-gray-100 hover:border-gray-300">
+                            {{ profile.bulletin }}
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="flex flex-col">
@@ -50,18 +56,9 @@
                         </a>
                     {% endif %}
 
-                    {% if profile.role == 'writer' and profile.bulletin %}
-                        <p class="text-center uppercase text-gray-500 font-light text-xs">Bulletin</p>
-                        <a href="{% url 'bulletin_detail' profile.bulletin.slug %}"
-                           class="m-1 px-4 py-2 bg-gray-50 text-gray-900 text-md rounded-sm text-center hover:bg-gray-200 transition border-1 border-gray-100 hover:border-gray-300">
-                            {{ profile.bulletin }}
-                        </a>
-                    {% endif %}
-
-                    <div class="w-full flex justify-end items-center">
+                    <div class="w-full flex justify-center md:justify-end items-center">
                         {% if profile.user == user %}
-                            <a href="{% url 'profile_update' username=user.username %}"
-                               class="">
+                            <a href="{% url 'profile_update' username=user.username %}">
                                 <svg class="w-10 h-10 p-1 pb-2 pl-2 bg-gray-50 text-sm rounded-md text-center hover:bg-gray-100 transition border-1 border-gray-100 hover:border-gray-300"
                                      fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 494.936 494.936"
@@ -78,7 +75,7 @@
         </div>
 
         <!-- Biography -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="w-full sm:w-xl md:w-2xl lg:w-3xl mx-auto bg-white rounded-lg shadow p-6">
             <h2 class="text-lg font-semibold text-gray-500 opacity-60 text-center uppercase">O mne</h2>
             {% if profile.biography %}
                 <p class="mt-2 text-gray-700">
@@ -90,18 +87,13 @@
         <!-- Informations about Profile's Likes, Subscriptions, Read-Later, Comments -->
         <div class="flex flex-col md:flex-row gap-2">
             <div class="bg-white rounded-lg shadow p-3 flex-1">
-                <h2 class="mb-4 text-sm font-semibold text-gray-500 opacity-60 text-center uppercase">Ďalšie</h2>
-                <ul class="text-center flex flex-row gap-2 md:flex-col justify-center items-center">
-                    <li data-tab="subscriptions" class="py-1 px-4 text-md text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm {% if active_tab == 'subscriptions' %} font-bold {% else %} font-medium {% endif %}">
-                        Odbery
-                    </li>
-                    <li data-tab="likes" class="py-1 px-4 text-md text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm {% if active_tab == 'likes' %} font-bold {% else %} font-medium {% endif %}">
-                        Likes
-                    </li>
-                    <li class="py-1 px-4 text-md text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
-                        Komenty
-                    </li>
-                </ul>
+                <a href="{% url 'profile_activity' username=user.username  %}">
+                    <h2 class="px-4 py-2 mb-3 text-sm font-medium text-gray-700 opacity-60 text-center uppercase rounded-lg hover:bg-gray-100 hover:underline transition">Tvoja aktivita</h2>
+                </a>
+                <div>
+                    <h3 class="text-center text-md font-ligh text-gray-600 mb-3">Posledná aktivita</h3>
+                </div>
+                <!-- 7 posledych aktivit 'like' / 'comment' / 'save later' -->
             </div>
 
             <div class="bg-white rounded-lg shadow p-3 flex-2">
