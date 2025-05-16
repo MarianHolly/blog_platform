@@ -30,3 +30,15 @@ class Like(Model):
 
     def __srt__(self):
         return f"{self.author} liked {self.article}"
+
+
+class ReadLater(Model):
+    author = ForeignKey(Profile, on_delete=CASCADE)
+    article = ForeignKey(Article, on_delete=CASCADE)
+    created = DateTimeField(auto_now_add=True)
+
+    def __repr__(self):
+        return f"ReadLater(author={self.author}, article={self.article})"
+
+    def __srt__(self):
+        return f"{self.author} read later on {self.article}"

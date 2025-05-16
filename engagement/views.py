@@ -31,12 +31,9 @@ class LikeToggleView(LoginRequiredMixin, View):
         if like.exists():
             like.delete()
             messages.success(request, 'Odobral si like tomuto článku.')
-            print('Like deleted')
-
         else:
             Like.objects.create(article=article, author=user_profile)
             messages.success(request, 'Dal si like tomuto článku.')
-            print('Like created')
 
         next_url = request.POST.get('next', '')
         if next_url:
