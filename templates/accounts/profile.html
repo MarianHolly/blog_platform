@@ -92,14 +92,14 @@
             <div class="bg-white rounded-lg shadow p-3 flex-1">
                 <h2 class="mb-4 text-sm font-semibold text-gray-500 opacity-60 text-center uppercase">Ďalšie</h2>
                 <ul class="text-center flex flex-row gap-2 md:flex-col justify-center items-center">
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
+                    <li data-tab="subscriptions" class="py-1 px-4 text-md text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm {% if active_tab == 'subscriptions' %} font-bold {% else %} font-medium {% endif %}">
+                        Odbery
+                    </li>
+                    <li data-tab="likes" class="py-1 px-4 text-md text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm {% if active_tab == 'likes' %} font-bold {% else %} font-medium {% endif %}">
                         Likes
                     </li>
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
-                        Comments
-                    </li>
-                    <li class="py-1 px-4 text-md font-medium text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
-                        Read Later
+                    <li class="py-1 px-4 text-md text-gray-500 hover:text-gray-950 hover:bg-gray-100 transition duration-500 ease-in-out hover:cursor-pointer rounded-sm">
+                        Komenty
                     </li>
                 </ul>
             </div>
