@@ -1,7 +1,8 @@
 from django.urls import path
 
 from accounts.views import SignUpView, logout_user, CustomLoginView, \
-    ProfileDetailView, ProfileUpdateView, ProfileRolePromoteView, ProfileActivityView
+    ProfileDetailView, ProfileUpdateView, ProfileActivityView, \
+    PromoteReaderToAdminView, PromoteReaderToWriterView
 
 urlpatterns = [
     path("login/", CustomLoginView.as_view(), name="login"),

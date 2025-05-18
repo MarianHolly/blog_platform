@@ -29,18 +29,6 @@ class ArticleForm(ModelForm):
             }
         }
 
-    def clean_content(self):
-        content = self.cleaned_data['content']
-
-        text_only = re.sub(r'<[^>]*>', '', content)
-        text_only = text_only.replace('&nbsp;', ' ').strip()
-
-        if not text_only:
-            raise ValidationError("Obsah článku je povinný.")
-
-        return content
-
-
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
@@ -56,6 +44,17 @@ class ArticleForm(ModelForm):
             ('draft', 'Draft'),
             ('published', 'Published'),
         ]
+
+    def clean_content(self):
+        content = self.cleaned_data['content']
+
+        text_only = re.sub(r'<[^>]*>', '', content)
+        text_only = text_only.replace('&nbsp;', ' ').strip()
+
+        if not text_only:
+            raise ValidationError("Obsah článku je povinný.")
+
+        return content
 
 
 class BulletinForm(ModelForm):
