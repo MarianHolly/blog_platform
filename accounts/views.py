@@ -92,7 +92,7 @@ class ProfileUpdateView(UpdateView):
         return reverse('profile', kwargs={'username': self.object.user.username})
 
 
-class ProfileRolePromoteView(LoginRequiredMixin, ReaderRequiredMixin, View):
+class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
     def post(self, request, username):
         profile = request.user.profile
 
@@ -104,10 +104,29 @@ class ProfileRolePromoteView(LoginRequiredMixin, ReaderRequiredMixin, View):
         elif user_role == 'writer':
             messages.warning(request, 'Už si autorom.')
         else:
-            messages.warning(request, 'Chyba, pravdepodobne si adminom')
+            messages.warning(request, 'Chyba, pravdepodobne si adminom.')
 
         next_url = request.POST.get('next', '')
         if next_url:
             return HttpResponseRedirect(next_url)
         return redirect('profile', username=request.user.username)
 
+
+class PromoteReaderToAdminView(View):
+    def post(self, request, username):
+        profile = request.user.profile
+
+        if profile.role == 'reader':
+            profile.role = 'admin'
+            profile.save()
+            messages.success(request, 'Stal si sa adminom.')
+
+        elif profile.role == 'writer':
+            messages.warning(request, 'Nie je možné byť autorom a adminom zároveň.')
+        else:
+            messages.warning(request, 'Chyba, pravdepodobne si adminom.')
+
+        next_url = request.POST.get('next', '')
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        return redirect('profile', username=request.user.username)
