@@ -52,6 +52,11 @@ class ArticleForm(ModelForm):
             except:
                 pass
 
+        self.fields['status'].choices = [
+            ('draft', 'Draft'),
+            ('published', 'Published'),
+        ]
+
 
 class BulletinForm(ModelForm):
     class Meta:
