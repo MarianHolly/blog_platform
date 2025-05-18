@@ -39,12 +39,21 @@
 
                 <div class="flex flex-col">
                     {% if profile.user == user and profile.role == 'reader' %}
-                        <form action="{% url 'promote_to_reader' username=user.username %}" method="post">
+                        <form action="{% url 'promote_to_writer' username=user.username %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="next" value="{{ request.path }}">
                             <button type="submit"
                                     class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
                                 Staň sa autorom
+                            </button>
+                        </form>
+
+                        <form action="{% url 'promote_to_admin' username=user.username %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit"
+                                    class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
+                                Staň sa adminom
                             </button>
                         </form>
                     {% endif %}
@@ -87,9 +96,11 @@
         <!-- Informations about Profile's Likes, Subscriptions, Read-Later, Comments -->
         <div class="flex flex-col md:flex-row gap-2">
             <div class="bg-white rounded-lg shadow p-3 flex-1">
-                <a href="{% url 'profile_activity' username=user.username  %}">
-                    <h2 class="px-4 py-2 mb-3 text-sm font-medium text-gray-700 opacity-60 text-center uppercase rounded-lg hover:bg-gray-100 hover:underline transition">Tvoja aktivita</h2>
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile_activity' username=user.username  %}">
+                        <h2 class="px-4 py-2 mb-3 text-sm font-medium text-gray-700 opacity-60 text-center uppercase rounded-lg hover:bg-gray-100 hover:underline transition">Tvoja aktivita</h2>
+                    </a>
+                {% endif %}
                 <div>
                     <h3 class="text-center text-md font-ligh text-gray-600 mb-3">Posledná aktivita</h3>
                 </div>
