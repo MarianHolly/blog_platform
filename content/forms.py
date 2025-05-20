@@ -14,12 +14,12 @@ from content.models import Article, Bulletin
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'subtite', 'description', 'content', 'status', 'visibility']
+        fields = ['title', 'subtitle', 'description', 'content', 'status', 'visibility']
         widgets = {
             'status': RadioSelect,
             'visibility': RadioSelect,
             'title': TextInput(attrs={'class': 'form-control'}),
-            'subtite': TextInput(attrs={'class': 'form-control'}),
+            'subtitle': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'w-full', 'rows': 3}),
             'content': CKEditorWidget(),
         }
