@@ -1,7 +1,16 @@
-# Blog Platform
+# Blog Platform Documentation
 
-## Brief Description of Project
-Django Blog Platform is a comprehensive content management system that enables readers to engage with articles, writers to publish and manage their content, and administrators to oversee site quality.
+## Brief Overview
+
+**Blog Platform** is a Django-based content management system that enables writers to publish articles through personal bulletins while allowing readers to engage through subscriptions, likes, and comments. The platform features a three-tier user system with role-based permissions and content visibility controls.
+
+### Core Features
+- **Multi-role User System**: Reader, Writer, Administrator roles
+- **Bulletin System**: Personal publication spaces for writers
+- **Content Management**: Rich text articles with draft/published states
+- **Subscription Model**: Private content access through subscriptions
+- **Engagement Tools**: Likes, comments, read-later functionality
+- **Permission System**: Role-based access control throughout the platform
 
 -----
 
@@ -43,98 +52,3 @@ The system supports three distinct user roles, each with specific permissions:
  - In case of administrators, articles shouldn't be judged by one administrator only for deletion. 
  - Two types of administrators - basic managing articles, advanced managing also writers.
  - Should writers be put under evaluation also?
-
------
-
-## Database
-
-![ER_DIAGRAM](./media/er_diagram.png)
-
-- [ ] Article
-  - [x] title (String)
-  - [x] subtitle (String)
-  - [ ] author (-> Profile)
-  - [x] description (String)
-  - [x] content (String)
-  - [ ] image
-  - [x] categories (n:m-> Category)
-  - [ ] status (n:n -> Status)
-  - [ ] bulletin (n:n -> Bulletin)
-  - [x] created (DateTime)
-  - [x] published (DateTime)
-  - [x] updated (DateTime)
-
-- [ ] Status
-  - [ ] draft / published_public / published_private / evaluation (String?)
-
-- [x] Category
-  - [x] name (String)
-  - [x] description (String)
-
-- [ ] Like
-  - [ ] author (-> User)
-  - [ ] article (-> Article)
-  - [ ] created (DateTime)
-
-- [ ] ReadLater
-  - [ ] author (-> User)
-  - [ ] article (-> Article)
-  - [ ] created (DateTime)
-
-- [ ] Comment
-  - [ ] author (-> User)
-  - [ ] article (-> Article)
-  - [ ] comment (String)
-  - [ ] created (DateTime)
-  - [ ] updated (DateTime)
-
-### User Management
-
-- [ ] User (default from Django)
-  - [ ] username
-  - [ ] first name
-  - [ ] last name
-  - [ ] password
-  - [ ] email
-
-- [ ] Profile
-  - [ ] user (n:n-> User)
-  - [ ] biography (String)
-  - [ ] avatar (Image)
-  - [ ] role () - options: reader, writer, admin
-  - [ ] subscribed (n:m -> Bulletin)
-  - [ ] created
-  - [ ] updated
-
-- [ ] Bulletin
-  - [ ] title (String)
-  - [ ] description (String)
-  - [ ] author (n:n-> Profile)
-  - [ ] articles (n:m -> Article)
-  - [ ] created
-  - [ ] updated
-
------
-
-## Functionalities
-
------
-
-### Forms
-- register User
-  - create Comment
-- register Writer
-  - create Bulletin
-  - create Article (dashboard page)
-- register Admin
-
-## Platform Sitemap
-
-- home page (most popular, recent articles)
-- about page (description of platform for visitors)
-
-- user profile (manage subscriptions, likes, read later)
-- writer bulletin (list of articles)
-- writer dashboard (create and manage articles)
-
------
