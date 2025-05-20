@@ -1,6 +1,6 @@
 from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
-    SlugField, ForeignKey
+    SlugField, ForeignKey, Index
 from django.utils import timezone
 
 from accounts.models import Profile
@@ -21,14 +21,21 @@ class Bulletin(Model):
     def __str__(self):
         return self.title
 
+    def get_subscribers_count(self):
+        return self.subscribers.count()
+
 
 class Article(Model):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
-        ('published', 'Published'),
-        ('under_evaluation', 'Under Evaluation'),
+        ('published', 'Published')
     ]
-
+    EVALUATION_CHOICES = [
+        ('pending', 'Pending Review'),
+        ('under_review', 'Under Review'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
     VISIBILITY_CHOICES = [
         ('public', 'Public'),
         ('private', 'Private'),
@@ -38,11 +45,12 @@ class Article(Model):
     content = RichTextField(null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
-    subtite = CharField(max_length=200, null=True, blank=True)
+    subtitle = CharField(max_length=200, null=True, blank=True)
     description = TextField(null=True, blank=True)
 
     status = CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     visibility = CharField(max_length=20, choices=VISIBILITY_CHOICES, default='private')
+    evaluation = CharField(max_length=20, choices=EVALUATION_CHOICES, default='pending')
 
     created = DateTimeField(auto_now_add=True)
     published = DateTimeField(null=True, blank=True)
@@ -50,22 +58,47 @@ class Article(Model):
 
     class Meta:
         ordering = ['-created']
+        indexes = [
+            Index(fields=['status', 'visibility', 'evaluation']),
+            Index(fields=['bulletin', 'status']),
+            Index(fields=['evaluation', 'created']),
+        ]
 
     def __repr__(self):
-        return f"Article(title={self.title}, created={self.created})"
+        return f"Article(title='{self.title}', status={self.status}, evaluation={self.evaluation})"
 
     def __str__(self):
         return self.title
-
-    @property
-    def author(self):
-        return self.bulletin.owner
 
     def save(self, *args, **kwargs):
         if self.status == 'published':
             self.published = timezone.now()
 
         super().save(*args, **kwargs)
+
+    @property
+    def author(self):
+        return self.bulletin.owner
+
+    @property
+    def is_draft(self):
+        return self.status == 'draft'
+
+    @property
+    def is_published_public(self):
+        return self.status == 'published' and self.visibility == 'public'
+
+    @property
+    def is_published_private(self):
+        return self.status == 'published' and self.visibility == 'private'
+
+    @property
+    def is_approved(self):
+        return self.evaluation == 'approved'
+
+    @property
+    def is_rejected(self):
+        return self.evaluation == 'rejected'
 
 
 class Subscription(Model):
