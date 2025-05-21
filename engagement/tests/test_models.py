@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from accounts.models import Profile
 from content.models import Article, Bulletin
-from engagement.models import Comment
+from engagement.models import Comment, Like, ReadLater
 
 
 class CommentModelTest(TestCase):
@@ -19,7 +19,6 @@ class CommentModelTest(TestCase):
             user=test_user, role='writer')
         test_bulletin = Bulletin.objects.create(
             owner=test_profile, title='TestBulletin', slug='test-bulletin')
-
         test_article = Article.objects.create(
             title='TestArticle',
             status='published',
@@ -56,8 +55,80 @@ class CommentModelTest(TestCase):
 
 
 class LikeModelTest(TestCase):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        print('\nLikeModelTest - setting setUpTestData')
+
+        test_user = User.objects.create_user(
+            username='TestUser', password='TestPassword123')
+        test_profile = Profile.objects.create(
+            user=test_user, role='writer')
+        test_bulletin = Bulletin.objects.create(
+            owner=test_profile, title='TestBulletin', slug='test-bulletin')
+        test_article = Article.objects.create(
+            title='TestArticle',
+            status='published',
+            visibility='public',
+            bulletin=test_bulletin,
+            published=timezone.now(),
+        )
+
+        test_like = Like.objects.create(
+            author=test_profile, article=test_article
+        )
+
+    def test_like_repr(self):
+        like = Like.objects.get(author__user__username='TestUser')
+        expected = f"Like(author=TestUser, article=TestArticle)"
+        self.assertEqual(like.__repr__(), expected)
+
+    def test_like_str(self):
+        like = Like.objects.get(author__user__username='TestUser')
+        expected = f"TestUser liked TestArticle"
+        self.assertEqual(like.__str__(), expected)
+
+    def test_like_author(self):
+        like = Like.objects.get(author__user__username='TestUser')
+        self.assertEqual(like.author.user.username, 'TestUser')
+
+    def test_like_article(self):
+        like = Like.objects.get(author__user__username='TestUser')
+        self.assertEqual(like.article.title, 'TestArticle')
 
 
 class ReadLaterModelTest(TestCase):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        print('\nReadLaterModelTest - setting setUpTestData')
+
+        test_user = User.objects.create_user(
+            username='TestUser', password='TestPassword123')
+        test_profile = Profile.objects.create(
+            user=test_user, role='writer')
+        test_bulletin = Bulletin.objects.create(
+            owner=test_profile, title='TestBulletin', slug='test-bulletin')
+        test_article = Article.objects.create(
+            title='TestArticle',
+            status='published',
+            visibility='public',
+            bulletin=test_bulletin,
+            published=timezone.now(),
+        )
+
+        test_readlater = ReadLater.objects.create(
+            author=test_profile, article=test_article
+        )
+
+    def test_readlater_repr(self):
+        readlater = ReadLater.objects.get(author__user__username='TestUser')
+        expected = f"ReadLater(author=TestUser, article=TestArticle)"
+        self.assertEqual(readlater.__repr__(), expected)
+
+    def test_readlater_str(self):
+        readlater = ReadLater.objects.get(author__user__username='TestUser')
+        expected = f"TestUser read later on TestArticle"
+        self.assertEqual(readlater.__str__(), expected)
+
+    def test_readlater_author(self):
+        readlater = ReadLater.objects.get(author__user__username='TestUser')
+        self.assertEqual(readlater.author.user.username, 'TestUser')
