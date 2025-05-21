@@ -23,7 +23,7 @@ class Profile(Model):
         return f"Profile(name={self.user}, role={self.role})"
 
     def __str__(self):
-        return f"{self.user.username} ({self.role})"
+        return f"{self.user.username}"
 
     @property
     def full_name(self):

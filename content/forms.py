@@ -62,13 +62,14 @@ class ArticleEvaluationForm(ModelForm):
         model = Article
         fields = ['evaluation']
         widgets = {'evaluation': RadioSelect}
+        labels = {'evaluation': ''}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields['evaluation'].choices = [
-            ('approved', 'Approved'),
-            ('rejected', 'Rejected'),
+            ('approved', 'Schválené'),
+            ('rejected', 'Zamietnuté'),
         ]
 
 
