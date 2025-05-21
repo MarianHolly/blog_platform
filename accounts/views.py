@@ -10,7 +10,6 @@ from django.views.generic import CreateView, DetailView, UpdateView, View, Templ
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.mixins import ReaderRequiredMixin, AdministratorRequiredMixin
 from accounts.models import Profile
-from content.forms import ArticleEvaluationForm
 from content.models import Article, Subscription
 from engagement.models import Like, ReadLater
 

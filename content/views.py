@@ -8,7 +8,7 @@ from django.views.generic import View, DetailView, ListView, TemplateView, Creat
 
 from accounts.mixins import AdministratorRequiredMixin, WriterRequiredMixin
 from accounts.models import Profile
-from content.forms import ArticleForm, BulletinForm
+from content.forms import ArticleForm, BulletinForm, ArticleEvaluationForm
 from content.mixins import ArticleOwnerMixin
 from content.models import Article, Bulletin, Subscription
 from engagement.forms import CommentModelForm
@@ -314,8 +314,8 @@ class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin
 
 class ArticleEvaluationDecisionView(LoginRequiredMixin, AdministratorRequiredMixin, UpdateView):
     template_name = "accounts/evaluation_form.html"
-    model = Article
     form_class = ArticleEvaluationForm
+    model = Article
     pk_url_kwarg = 'id'
 
     def form_valid(self, form):
