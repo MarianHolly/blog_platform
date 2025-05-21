@@ -269,5 +269,19 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
         return redirect('profile', username=request.user.username)
 
 
-class ArticleEvaluationView(LoginRequiredMixin, AdministratorRequiredMixin, View):
-    pass
+class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin, View):
+    """ TOGGLE VIEW - to change article state from 'pending' to 'under_review' """
+    def post(self, request, id):
+        article = get_object_or_404(Article, id=id)
+
+        if article.evaluation == 'pending':
+            article.evaluation = 'under_review'
+            article.save()
+            messages.success(request, f'{article.title} je v procese hodnotenia.')
+        else:
+            messages.warning(request, f'{article.title} je už v procese hodnotenia.')
+
+        next_url = request.POST.get('next', '')
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        return redirect('profile', username=request.user.username)
