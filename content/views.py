@@ -6,7 +6,7 @@ from django.template.context_processors import request
 from django.urls import reverse, reverse_lazy
 from django.views.generic import View, DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
-from accounts.mixins import AdministratorRequiredMixin, WriterRequiredMixin
+from accounts.mixins import AdministratorRequiredMixin, WriterRequiredMixin, WriterOrSuperAdminRequiredMixin
 from accounts.models import Profile
 from content.forms import ArticleForm, BulletinForm, ArticleEvaluationForm
 from content.mixins import ArticleOwnerMixin
@@ -147,12 +147,12 @@ class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
         return reverse('article_detail', kwargs={'pk': self.object.id})
 
 
-class ArticleDeleteView(LoginRequiredMixin, WriterRequiredMixin, DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, WriterOrSuperAdminRequiredMixin, DeleteView):
     template_name = "content/confirm_delete.html"
     model = Article
 
     def get_success_url(self):
-        return reverse('bulletin_dashboard', kwargs={'slug': self.request.user.profile.bulletin.slug})
+        return reverse('profile', kwargs={'username': self.object.user.username})
 
 
 # ==================================== BULLETIN RELATED ======================== #
