@@ -6,9 +6,10 @@ from django.template.context_processors import request
 from django.urls import reverse, reverse_lazy
 from django.views.generic import View, DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
+from accounts.mixins import AdministratorRequiredMixin, WriterRequiredMixin
 from accounts.models import Profile
 from content.forms import ArticleForm, BulletinForm
-from content.mixins import WriterRequiredMixin, ArticleOwnerMixin
+from content.mixins import ArticleOwnerMixin
 from content.models import Article, Bulletin, Subscription
 from engagement.forms import CommentModelForm
 from engagement.models import Comment, Like, ReadLater
@@ -266,3 +267,7 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
         if next_url:
             return HttpResponseRedirect(next_url)
         return redirect('profile', username=request.user.username)
+
+
+class ArticleEvaluationView(LoginRequiredMixin, AdministratorRequiredMixin, View):
+    pass
