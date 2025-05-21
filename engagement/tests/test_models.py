@@ -91,9 +91,23 @@ class LikeModelTest(TestCase):
         like = Like.objects.get(author__user__username='TestUser')
         self.assertEqual(like.author.user.username, 'TestUser')
 
+    def test_like_author_relationship(self):
+        like = Like.objects.first()
+        self.assertEqual(like.author.user.username, 'TestUser')
+        self.assertEqual(like.author.role, 'writer')
+
     def test_like_article(self):
         like = Like.objects.get(author__user__username='TestUser')
         self.assertEqual(like.article.title, 'TestArticle')
+
+    def test_like_own_article(self):
+        writer_profile = Profile.objects.get(user__username='TestUser')
+        article = Article.objects.get(title='TestArticle')
+        like = Like.objects.create(
+            author=writer_profile,
+            article=article)
+        self.assertTrue(Like.objects.filter(author=writer_profile, article=article).exists())
+
 
 
 class ReadLaterModelTest(TestCase):
