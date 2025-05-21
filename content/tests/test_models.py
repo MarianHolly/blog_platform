@@ -131,7 +131,7 @@ class ArticleModelTest(TestCase):
 
     def test_article_repr(self):
         article = Article.objects.get(title='Article Testing')
-        expected = f"Article(title=Article Testing, created={article.created})"
+        expected = f"Article(title=Article Testing, status={article.status}, evaluation={article.evaluation})"
         self.assertEqual(article.__repr__(), expected)
 
     def test_article_str(self):

@@ -101,7 +101,7 @@ class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
             profile.save()
             messages.success(request, 'Stal si sa autorom.')
 
-        elif user_role == 'writer':
+        elif profile.role == 'writer':
             messages.warning(request, 'Už si autorom.')
         else:
             messages.warning(request, 'Chyba, pravdepodobne si adminom.')

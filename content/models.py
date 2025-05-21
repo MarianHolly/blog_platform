@@ -65,7 +65,7 @@ class Article(Model):
         ]
 
     def __repr__(self):
-        return f"Article(title='{self.title}', status={self.status}, evaluation={self.evaluation})"
+        return f"Article(title={self.title}, status={self.status}, evaluation={self.evaluation})"
 
     def __str__(self):
         return self.title

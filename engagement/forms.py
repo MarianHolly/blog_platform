@@ -13,5 +13,3 @@ class CommentModelForm(ModelForm):
         widgets = {
             'content': Textarea(attrs={'placeholder': 'Vyjadri svoj názor...'}),
         }
-
-

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import View
 
 from content.models import Article
@@ -46,7 +46,7 @@ class ReadLaterToggleView(LoginRequiredMixin, View):
         user_profile = request.user.profile
 
         if article.author == user_profile:
-            message.warning(request, "Nemôžeš označiť svoj článok ako prečítať neskôr.")
+            messages.warning(request, "Nemôžeš označiť svoj článok ako prečítať neskôr.")
             next_url = request.POST.get('next', '')
             if next_url:
                 return HttpResponseRedirect(next_url)
