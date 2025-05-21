@@ -57,6 +57,21 @@ class ArticleForm(ModelForm):
         return content
 
 
+class ArticleEvaluationForm(ModelForm):
+    class Meta:
+        model = Article
+        fields = ['evaluation']
+        widgets = {'evaluation': RadioSelect}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['evaluation'].choices = [
+            ('approved', 'Approved'),
+            ('rejected', 'Rejected'),
+        ]
+
+
 class BulletinForm(ModelForm):
     class Meta:
         model = Bulletin
