@@ -1,6 +1,6 @@
 from django.urls import path
 
-from accounts.views import ProfileDetailView
+from accounts.views import ProfileDetailView, ArticleEvaluationDashboardView
 from content.views import HomePageView, AboutPageView, \
     ArticleListView, ArticleDetailView, ArticleUpdateView, ArticleCreateView, ArticleDeleteView, \
     BulletinDetailView, BulletinCreateView, BulletinUpdateView, BulletinDashboardView, \
@@ -25,4 +25,5 @@ urlpatterns = [
 
     path("subscribe/<slug:slug>/", SubscriptionToggleView.as_view(), name="toggle_subscription"),
     path("evaluate/<int:id>/", ArticleEvaluationToggleView.as_view(), name="article_evaluation"),
+    path("evaluate/dashboard/", ArticleEvaluationDashboardView.as_view(), name="article_evaluation_dashboard"),
 ]

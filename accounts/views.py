@@ -5,12 +5,12 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, View, TemplateView
+from django.views.generic import CreateView, DetailView, UpdateView, View, TemplateView, ListView
 
 from accounts.forms import SignUpForm, ProfileForm
-from accounts.mixins import ReaderRequiredMixin
+from accounts.mixins import ReaderRequiredMixin, AdministratorRequiredMixin
 from accounts.models import Profile
-from content.models import Subscription
+from content.models import Article, Subscription
 from engagement.models import Like, ReadLater
 
 
@@ -112,7 +112,7 @@ class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
         return redirect('profile', username=request.user.username)
 
 
-class PromoteReaderToAdminView(View):
+class PromoteReaderToAdminView(LoginRequiredMixin, ReaderRequiredMixin, View):
     def post(self, request, username):
         profile = request.user.profile
 
@@ -130,3 +130,15 @@ class PromoteReaderToAdminView(View):
         if next_url:
             return HttpResponseRedirect(next_url)
         return redirect('profile', username=request.user.username)
+
+
+class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMixin, ListView):
+    template_name = 'accounts/admin_dashboard.html'
+    model = Article
+    context_object_name = "articles"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['unreviewed_articles'] = Article.objects.filter(evaluation='under_review')
+        context['reviewed_articles'] = Article.objects.filter(evaluation__in=['approved', 'rejected'])
+        return context
