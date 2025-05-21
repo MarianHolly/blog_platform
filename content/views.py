@@ -277,9 +277,9 @@ class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin
         if article.evaluation == 'pending':
             article.evaluation = 'under_review'
             article.save()
-            messages.success(request, f'{article.title} je v procese hodnotenia.')
+            messages.success(request, f'{article.title} - je v procese hodnotenia.')
         else:
-            messages.warning(request, f'{article.title} je už v procese hodnotenia.')
+            messages.warning(request, f'{article.title} - je už v procese hodnotenia.')
 
         next_url = request.POST.get('next', '')
         if next_url:

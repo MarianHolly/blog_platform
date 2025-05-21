@@ -11,7 +11,15 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Article Content -->
         <article class="max-w-5xl mx-auto bg-white p-6 rounded shadow mb-12">
-            <h1 class="text-xl font-bold text-gray-800 mb-3 text-center">{{ article.title }}</h1>
+            <div class="w-full flex flex-col items-center">
+                <h1 class="text-xl text-center font-bold w-fit text-gray-800 mb-2 {% if article.evaluation == 'approved' %} border-b-2 border-green-400 {% endif %}">
+                    {{ article.title }}</h1>
+                {% if article.evaluation == 'approved' %}
+                    <div class="text-white text-xs font-medium px-2 py-1 rounded-full bg-green-400">
+                        Overený
+                    </div>
+                {% endif %}
+            </div>
 
             <div class="flex flex-col mb-6 pb-4 border-b border-gray-200 justify-center items-center">
                 <div class="text-gray-600">
@@ -105,6 +113,35 @@
             </section>
         {% endif %}
 
+        <!-- Admin Actions -->
+        {% if user.profile.role == 'admin' %}
+            <section class="bg-white max-w-sm mx-auto rounded-lg shadow mb-4 p-3 flex flex-col items-center">
+                {% if article.evaluation == 'under_review' %}
+                    <a href="{% url 'profile' username=user.username %}"
+                       class="px-6 py-3 text-blue-700 text-center border-blue-100 border-1 hover:bg-blue-50 hover:cursor-pointer rounded-md transition">
+                        Článok čaká na vyhodnotenie
+                    </a>
+                {% elif article.evaluation == 'approved' %}
+                    <p class="px-6 py-3 text-green-700 text-center border-green-100 border-1 rounded-md bg-green-50">
+                        Článok bol schválený a overený.
+                    </p>
+                {% elif article.evaluation == 'rejected' %}
+                    <p class="px-6 py-3 text-red-700 text-center border-red-100 border-1 rounded-md bg-red-50">
+                        Článok bol zamietnutý.
+                    </p>
+                {% else %}
+                    <form method="post" action="{% url 'article_evaluation' article.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit"
+                                class="px-6 py-3 text-gray-700 text-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md transition">
+                            Začať proces overenia
+                        </button>
+                    </form>
+                {% endif %}
+            </section>
+        {% endif %}
+
         <!-- Reader Actions -->
         {% if user.is_authenticated and not article.bulletin == user.profile.bulletin %}
             <section class="bg-white max-w-xs mx-auto rounded-lg shadow my-6 p-3 grid grid-cols-2 gap-2">
@@ -178,10 +215,13 @@
                                 <p class="mb-2 text-gray-900">{{ comment.content }}</p>
                                 <p class="text-center text-gray-600 font-medium text-xs">{{ comment.author.full_name }}</p>
                             </div>
-                            {% empty %}
+                        {% empty %}
                             <div class="px-6 py-3 rounded-md border-1 border-gray-100 flex flex-col gap-3 justify-center items-center w-full lg:py-42 shadow">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-18 text-gray-400">
-                                  <path fill-rule="evenodd" d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                     class="size-18 text-gray-400">
+                                    <path fill-rule="evenodd"
+                                          d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
+                                          clip-rule="evenodd"/>
                                 </svg>
                                 <p class="text-center text-gray-500 font-light">buď prvý, kto začne diskusiu</p>
                             </div>
