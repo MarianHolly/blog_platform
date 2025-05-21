@@ -16,7 +16,7 @@ class Comment(Model):
     def __repr__(self):
         return f"Comment(author={self.author}, article={self.article})"
 
-    def __srt__(self):
+    def __str__(self):
         return f"{self.author} commented on {self.article}"
 
 
@@ -28,7 +28,7 @@ class Like(Model):
     def __repr__(self):
         return f"Like(author={self.author}, article={self.article})"
 
-    def __srt__(self):
+    def __str__(self):
         return f"{self.author} liked {self.article}"
 
 
@@ -40,5 +40,5 @@ class ReadLater(Model):
     def __repr__(self):
         return f"ReadLater(author={self.author}, article={self.article})"
 
-    def __srt__(self):
+    def __str__(self):
         return f"{self.author} read later on {self.article}"
