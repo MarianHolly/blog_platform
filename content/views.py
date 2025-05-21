@@ -39,7 +39,7 @@ class QAPageView(TemplateView):
     template_name = "content/qa.html"
 
 
-# ==================================== ARTICLE RELATED ======================== #
+# ==================================== CONTENT RELATED ======================== #
 
 
 class ArticleListView(ListView):
@@ -55,22 +55,30 @@ class ArticleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_profile = self.request.user.profile
         article_ = self.get_object()
-        is_subscribed = None
-
-        is_liked = Like.objects.filter(article=article_, author=user_profile).exists()
-        is_read_later = ReadLater.objects.filter(article=article_, author=user_profile).exists()
 
         if self.request.user.is_authenticated:
+            user_profile = self.request.user.profile
+
+            is_liked = Like.objects.filter(
+                article=article_,
+                author=user_profile).exists()
+            is_read_later = ReadLater.objects.filter(
+                article=article_,
+                author=user_profile).exists()
             is_subscribed = Subscription.objects.filter(
                 subscriber=self.request.user.profile,
                 bulletin=article_.bulletin
             ).exists()
 
-        context['is_subscribed'] = is_subscribed
-        context['is_liked'] = is_liked
-        context['is_read_later'] = is_read_later
+            context['is_subscribed'] = is_subscribed
+            context['is_liked'] = is_liked
+            context['is_read_later'] = is_read_later
+        else:
+            context['is_subscribed'] = False
+            context['is_liked'] = False
+            context['is_read_later'] = False
+
         context['comment_form'] = CommentModelForm()
         return context
 
@@ -78,10 +86,10 @@ class ArticleDetailView(DetailView):
         self.object = self.get_object()
         _article = self.object
         _profile = Profile.objects.get(user=self.request.user)
-        form = CommentModelForm(request.POST)
+        comment_form = CommentModelForm(request.POST)
 
-        if form.is_valid():
-            content = form.cleaned_data['content']
+        if comment_form.is_valid():
+            content = comment_form.cleaned_data['content']
             comment_qs = Comment.objects.filter(article=_article, author=_profile)
 
             if comment_qs.exists():
@@ -90,9 +98,9 @@ class ArticleDetailView(DetailView):
                 comment.save()
             else:
                 Comment.objects.create(
-                    article = _article,
-                    author = _profile,
-                    content = content,
+                    article=_article,
+                    author=_profile,
+                    content=content,
                 )
 
         return redirect(request.path)
@@ -211,26 +219,7 @@ class BulletinDashboardView(DetailView):
         return context
 
 
-# ==================================== ENGAGEMENT RELATED ======================== #
-
-
-class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
-    def get_object(self):
-        return get_object_or_404(Article, id=self.kwargs['id'])
-
-    def post(self, request, id):
-        article = self.get_object()
-
-        if article.visibility == 'public':
-            article.visibility = 'private'
-        else:
-            article.visibility = 'public'
-        article.save()
-
-        next_url = request.POST.get('next', '')
-        if next_url:
-            return HttpResponseRedirect(next_url)
-        return redirect('bulletin_dashboard', slug=article.bulletin.slug)
+# ==================================== SUBSCRIPTION ======================== #
 
 
 class SubscriptionToggleView(LoginRequiredMixin, View):
@@ -269,8 +258,44 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
         return redirect('profile', username=request.user.username)
 
 
+# ==================================== WRITER FEATURES ======================== #
+
+
+class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
+    def get_object(self):
+        return get_object_or_404(Article, id=self.kwargs['id'])
+
+    def post(self, request, id):
+        article = self.get_object()
+
+        if article.visibility == 'public':
+            article.visibility = 'private'
+        else:
+            article.visibility = 'public'
+        article.save()
+
+        next_url = request.POST.get('next', '')
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        return redirect('bulletin_dashboard', slug=article.bulletin.slug)
+
+
+# ==================================== ADMIN FEATURES ======================== #
+
+
+class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMixin, ListView):
+    template_name = 'accounts/admin_dashboard.html'
+    model = Article
+    context_object_name = "articles"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['unreviewed_articles'] = Article.objects.filter(evaluation='under_review')
+        context['reviewed_articles'] = Article.objects.filter(evaluation__in=['approved', 'rejected'])
+        return context
+
+
 class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin, View):
-    """ TOGGLE VIEW - to change article state from 'pending' to 'under_review' """
     def post(self, request, id):
         article = get_object_or_404(Article, id=id)
 
@@ -285,3 +310,16 @@ class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin
         if next_url:
             return HttpResponseRedirect(next_url)
         return redirect('profile', username=request.user.username)
+
+
+class ArticleEvaluationDecisionView(LoginRequiredMixin, AdministratorRequiredMixin, UpdateView):
+    template_name = "accounts/evaluation_form.html"
+    model = Article
+    form_class = ArticleEvaluationForm
+    pk_url_kwarg = 'id'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('article_evaluation_dashboard')

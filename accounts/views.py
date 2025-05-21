@@ -10,6 +10,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, View, Templ
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.mixins import ReaderRequiredMixin, AdministratorRequiredMixin
 from accounts.models import Profile
+from content.forms import ArticleEvaluationForm
 from content.models import Article, Subscription
 from engagement.models import Like, ReadLater
 
@@ -130,15 +131,3 @@ class PromoteReaderToAdminView(LoginRequiredMixin, ReaderRequiredMixin, View):
         if next_url:
             return HttpResponseRedirect(next_url)
         return redirect('profile', username=request.user.username)
-
-
-class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMixin, ListView):
-    template_name = 'accounts/admin_dashboard.html'
-    model = Article
-    context_object_name = "articles"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['unreviewed_articles'] = Article.objects.filter(evaluation='under_review')
-        context['reviewed_articles'] = Article.objects.filter(evaluation__in=['approved', 'rejected'])
-        return context
