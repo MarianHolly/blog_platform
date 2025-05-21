@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+
+{% block title %}
+    Evaluation
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto max-w-xl px-2 py-4">
+        <div class="bg-white shadow-sm rounded-sm p-4">
+            <h2 class="text-2xl font-semibold mb-6 text-center uppercase text-gray-700">Verifikácia</h2>
+
+            <form method="post" class="space-y-6 text-center" autocomplete="off" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    {{ form|crispy }}
+                </div>
+                <textarea
+                        class="textarea border-gray-300 focus:outline-none text-gray-700 block appearance-none leading-normal bg-white px-4 rounded-lg w-full py-2 border"
+                        rows="4" placeholder="Dôvody pre hodnotenie..."></textarea>
+                <div class="flex justify-center">
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 hover:cursor-pointer">
+                        Uložiť
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
