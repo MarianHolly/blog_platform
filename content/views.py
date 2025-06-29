@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template.context_processors import request
@@ -323,3 +324,27 @@ class ArticleEvaluationDecisionView(LoginRequiredMixin, AdministratorRequiredMix
 
     def get_success_url(self):
         return reverse('article_evaluation_dashboard')
+
+
+# ==================================== FEATURES ======================== #
+
+class ArticleSearchView(ListView):
+    template_name = "content/search_results.html"
+    model = Article
+    context_object_name = 'articles'
+    paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            return Article.objects.filter(
+                Q(title__icontains=query),
+                status='published'
+            ).select_related('bulletin__owner')
+        return Article.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '').strip()
+        context['article_count'] = self.get_queryset().count()
+        return context
