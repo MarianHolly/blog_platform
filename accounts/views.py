@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -45,17 +46,29 @@ class ProfileDetailView(DetailView):
     slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
-        """ Subscriptions """
+        """ Subscriptions + Recent Articles """
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
 
+        # Subscriptions
         subscriptions = Subscription.objects.filter(
             subscriber=profile
         ).select_related('bulletin', 'bulletin__owner')
-
         context['subscriptions'] = subscriptions
 
-        # only show toggle buttons on own profile
+        # Recent activities (5 of each type)
+        recent_likes = Like.objects.filter(
+            author=profile
+        ).select_related('article__bulletin__owner').order_by('-created')[:5]
+
+        recent_read_later = ReadLater.objects.filter(
+            author=profile
+        ).select_related('article__bulletin__owner').order_by('-created')[:5]
+
+        context['recent_likes'] = recent_likes
+        context['recent_read_later'] = recent_read_later
+
+        # Only show toggle buttons on own profile
         context['show_toggle_buttons'] = (
                 self.request.user.is_authenticated and
                 self.request.user.profile == profile
@@ -74,10 +87,24 @@ class ProfileActivityView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
 
-        likes = Like.objects.filter(author=profile)
-        read_later = ReadLater.objects.filter(author=profile)
-        context['likes'] = likes
-        context['read_laters'] = read_later
+        # Get page numbers for likes and read_later
+        likes_page = self.request.GET.get('likes_page', 1)
+        read_later_page = self.request.GET.get('read_later_page', 1)
+
+        # Paginate likes
+        likes_queryset = Like.objects.filter(author=profile).select_related('article__bulletin__owner').order_by('-created')
+        likes_paginator = Paginator(likes_queryset, 10)
+        likes_page_obj = likes_paginator.get_page(likes_page)
+
+        # Paginate read later
+        read_later_queryset = ReadLater.objects.filter(author=profile).select_related('article__bulletin__owner').order_by('-created')
+        read_later_paginator = Paginator(read_later_queryset, 10)
+        read_later_page_obj = read_later_paginator.get_page(read_later_page)
+
+        context['likes'] = likes_page_obj.object_list
+        context['likes_page_obj'] = likes_page_obj
+        context['read_laters'] = read_later_page_obj.object_list
+        context['read_later_page_obj'] = read_later_page_obj
         return context
 
 
