@@ -65,34 +65,57 @@
                     </div>
                 {% endif %}
 
-
             </div>
         </div>
         <!-- Bulletin Articles -->
-        <div class="max-w-4xl mx-auto my-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for article in articles %}
-                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 shadow-lg hover:bg-gray-100 transition-all">
-                    <a href="{% url 'article_detail' article.id %}" class="flex flex-col h-full">
-                        <h3 class="text-lg font-semibold mb-2">{{ article.title }}</h3>
-                        <p class="text-gray-600 text-sm pb-auto flex-1">{{ article.description|truncatewords:25 }}</p>
-                        <div class="flex flex-row items-center mt-4">
-                            {% if article.visibility == 'private' %}
-                                <span class="text-gray-500 p-1 border-1 border-gray-500 rounded-xl opacity-60">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                         class="size-5">
-                                        <path fill-rule="evenodd"
-                                              d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </span>
-                            {% endif %}
-                            <p class="text-gray-400 text-sm mt-3 ml-auto">{{ article.published|date:"M d, Y" }}</p>
-                        </div>
-                    </a>
+        <div class="max-w-4xl mx-auto my-8">
+            {% if articles %}
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold text-center">Články</h2>
+                    <p class="text-gray-600 text-center text-sm">
+                        {{ paginator.count }}
+                        {% if paginator.count == 1 %}
+                            článok
+                        {% elif paginator.count < 5 %}
+                            články
+                        {% else %}
+                            článkov
+                        {% endif %}
+                    </p>
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for article in articles %}
+                        <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 shadow-lg hover:bg-gray-100 transition-all">
+                            <a href="{% url 'article_detail' article.id %}" class="flex flex-col h-full">
+                                <h3 class="text-lg font-semibold mb-2">{{ article.title }}</h3>
+                                <p class="text-gray-600 text-sm pb-auto flex-1">{{ article.description|truncatewords:25 }}</p>
+                                <div class="flex flex-row items-center mt-4">
+                                    {% if article.visibility == 'private' %}
+                                        <span class="text-gray-500 p-1 border-1 border-gray-500 rounded-xl opacity-60">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                 class="size-5">
+                                                <path fill-rule="evenodd"
+                                                      d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
+                                                      clip-rule="evenodd"/>
+                                            </svg>
+                                        </span>
+                                    {% endif %}
 
-            {% empty %}
-                <div class="text-center py-10 border-1 border-gray-200 rounded-lg col-span-full">
+                                    {% if article.evaluation == 'approved' %}
+                                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full mr-2">
+                                            Overený
+                                        </span>
+                                    {% endif %}
+
+                                    <p class="text-gray-400 text-sm mt-3 ml-auto">{{ article.published|date:"M d, Y" }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% include 'pagination.html' %}
+            {% else %}
+                <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
                     {% if user.profile == bulletin.owner %}
                         <p class="text-gray-400 font-light text-sm mb-1">Ešte nemáš žiadne články publikované.</p>
                         <a href="{% url 'article_create' %}" class="text-gray-600 hover:cursor-pointer hover:underline">
@@ -100,9 +123,9 @@
                         </a>
                     {% else %}
                         <p class="text-gray-400 font-light text-sm mb-1">Tento bulletin zatiaľ nemá žiadne články zverejnené.</p>
-                {% endif %}
+                    {% endif %}
                 </div>
-            {% endfor %}
+            {% endif %}
         </div>
 
     </div>

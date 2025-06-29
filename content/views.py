@@ -164,25 +164,30 @@ class ArticleDeleteView(LoginRequiredMixin, WriterOrSuperAdminRequiredMixin, Del
 # ==================================== BULLETIN RELATED ======================== #
 
 
-class BulletinDetailView(DetailView):
+class BulletinDetailView(ListView):
     template_name = "content/bulletin_detail.html"
-    model = Bulletin
-    context_object_name = "bulletin"
+    model = Article
+    context_object_name = "articles"
+    paginate_by = 6
+
+    def get_queryset(self):
+        self.bulletin = get_object_or_404(Bulletin, slug=self.kwargs['slug'])
+        return self.bulletin.articles.filter(
+            status='published'
+        ).select_related('bulletin__owner').order_by('-published')
 
     def get_context_data(self, **kwargs):
-        """ Subscriptions """
         context = super().get_context_data(**kwargs)
-        bulletin = self.get_object()
-        is_subscribed = None
+        context['bulletin'] = self.bulletin
 
+        is_subscribed = None
         if self.request.user.is_authenticated:
             is_subscribed = Subscription.objects.filter(
                 subscriber=self.request.user.profile,
-                bulletin=bulletin
+                bulletin=self.bulletin
             ).exists()
-
         context['is_subscribed'] = is_subscribed
-        context['articles'] = bulletin.articles.filter(status='published')
+
         return context
 
 
