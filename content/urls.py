@@ -5,7 +5,7 @@ from content.views import HomePageView, AboutPageView, \
     ArticleListView, ArticleDetailView, ArticleUpdateView, ArticleCreateView, ArticleDeleteView, \
     BulletinDetailView, BulletinCreateView, BulletinUpdateView, BulletinDashboardView, \
     SubscriptionToggleView, ArticleVisibilityToggleView, QAPageView, ArticleEvaluationToggleView, \
-    ArticleEvaluationDashboardView, ArticleEvaluationDecisionView
+    ArticleEvaluationDashboardView, ArticleEvaluationDecisionView, ArticleSearchView
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
@@ -28,5 +28,7 @@ urlpatterns = [
     path("evaluate/dashboard/", ArticleEvaluationDashboardView.as_view(), name="article_evaluation_dashboard"),
     path("evaluate/<int:id>/", ArticleEvaluationToggleView.as_view(), name="article_evaluation_toggle"),
     path("evaluate/decision/<int:id>/", ArticleEvaluationDecisionView.as_view(), name="article_evaluation_decision"),
+
+    path("search/", ArticleSearchView.as_view(), name="article_search"),
 
 ]
