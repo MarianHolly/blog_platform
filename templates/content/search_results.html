@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if query %}Výsledky vyhľadávania pre "{{ query }}"{% else %}Vyhľadávanie{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Search Header -->
+        <div class="mb-8">
+            {% if query %}
+                <h1 class="text-3xl font-bold mb-2">Výsledky vyhľadávania</h1>
+                <p class="text-gray-600 text-lg">Hľadanie pre: "<span class="font-semibold text-gray-800">{{ query }}</span>"</p>
+            {% else %}
+                <h1 class="text-3xl font-bold mb-4">Vyhľadávanie článkov</h1>
+            {% endif %}
+        </div>
+        <!-- Search Results -->
+    </div>
+{% endblock %}
