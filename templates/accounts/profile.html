@@ -97,19 +97,80 @@
         <div class="flex flex-col md:flex-row gap-2">
             <div class="flex-1">
                 <div class="bg-white rounded-lg shadow p-3 mb-4">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'profile_activity' username=user.username %}">
-                            <h2 class="px-4 py-2 mb-3 text-sm font-medium text-gray-700 opacity-60 text-center uppercase rounded-lg hover:bg-gray-100 hover:underline transition">
-                                Tvoja aktivita</h2>
-                        </a>
-                    {% endif %}
-                    <div>
-                        <!--
-                            <h3 class="text-center text-md font-ligh text-gray-600 mb-3">Posledná aktivita</h3>
-                        -->
-                        <!-- 7 posledych aktivit 'like' / 'comment' / 'save later' -->
+                    <div class="flex flex-col justify-between items-center mb-6">
+                        <h2 class="text-sm font-medium text-gray-700 opacity-60 uppercase">
+                            {% if user.profile == profile %}Tvoja nedávna aktivita{% else %}Nedávna aktivita{% endif %}
+                        </h2>
+                        {% if user.is_authenticated and user.profile == profile %}
+                            <a href="{% url 'profile_activity' username=user.username %}"
+                               class="text-gray-600 hover:text-gray-800 text-sm hover:underline">
+                                Zobraziť všetko
+                            </a>
+                        {% endif %}
                     </div>
+
+                    {% if recent_likes or recent_read_later %}
+                        <!-- Recent Likes -->
+                        {% if recent_likes %}
+                            <div class="mb-4">
+                                <h3 class="text-xs text-center font-medium text-gray-600 uppercase mb-2">
+                                    Páči sa mi
+                                </h3>
+                                <div class="space-y-1">
+                                    {% for like in recent_likes %}
+                                        <div class="flex items-center justify-between p-1 hover:bg-gray-50 rounded-sm transition">
+                                            <div class="flex-1">
+                                                <p class="text-sm text-gray-800 leading-tight">
+                                                    <a href="{% url 'article_detail' like.article.id %}"
+                                                       class="hover:text-gray-600 hover:underline">
+                                                        {{ like.article.title|truncatechars:35 }}
+                                                    </a>
+                                                </p>
+                                                <p class="text-xs text-gray-500">{{ like.created|timesince }} dozadu</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Recent Read Later -->
+                        {% if recent_read_later %}
+                            <div>
+                                <h3 class="text-xs text-center font-medium text-gray-600 uppercase mb-2">
+                                    Prečítať neskôr
+                                </h3>
+                                <div class="space-y-1">
+                                    {% for read_later in recent_read_later %}
+                                        <div class="flex items-center justify-between p-1 hover:bg-gray-50 rounded-sm transition">
+                                            <div class="flex-1">
+                                                <p class="text-sm text-gray-800 leading-tight">
+                                                    <a href="{% url 'article_detail' read_later.article.id %}"
+                                                       class="hover:text-gray-600 hover:underline">
+                                                        {{ read_later.article.title|truncatechars:35 }}
+                                                    </a>
+                                                </p>
+                                                <p class="text-xs text-gray-500">{{ read_later.created|timesince }} dozadu</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-6">
+                            <p class="text-gray-500 text-sm">
+                                {% if user.profile == profile %}
+                                    Zatiaľ žiadna aktivita. Začni čítať články!
+                                {% else %}
+                                    {{ profile.user.username }} zatiaľ nemá žiadnu aktivitu.
+                                {% endif %}
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
+
+
                 {% if user.profile.role == 'admin' %}
                     <div class="bg-white rounded-lg shadow p-3">
                         <a href="{% url 'article_evaluation_dashboard' %}">
@@ -121,6 +182,7 @@
 
             </div>
 
+            <!-- Subscriptions Section -->
             <div class="bg-white rounded-lg shadow p-3 flex-2">
                 <h2 class="text-lg font-semibold text-gray-500 opacity-60 text-center uppercase">Odbery</h2>
 
@@ -154,7 +216,6 @@
                     </div>
                 {% endif %}
             </div>
-
         </div>
     </div>
 {% endblock %}

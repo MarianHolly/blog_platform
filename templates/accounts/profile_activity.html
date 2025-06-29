@@ -4,17 +4,20 @@
 
 {% block content %}
     <div class="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-4">
+        <!-- Likes Section -->
         <div class="bg-white rounded-lg shadow pt-6 pb-8">
             <h2 class="text-center font-medium text-xl mb-1">Páči sa mi</h2>
             <div class="text-center font-light text-gray-400 text-sm my-3">
-                {% if likes %}
-                    {% if likes.count == 1 %}
-                        Páči sa ti <strong class="font-semibold text-gray-800">jeden</strong> článok.
-                    {% elif likes.count > 1 and likes.count < 5 %}
-                        Páčia sa ti <strong class="font-semibold text-gray-800">{{ likes.count }}</strong> články.
-                    {% elif likes.count >= 5 %}
-                        Páči sa ti <strong class="font-semibold text-gray-800">{{ likes.count }}</strong> článkov.
-                    {% endif %}
+                {% if likes_page_obj.paginator.count %}
+                    {% with total=likes_page_obj.paginator.count %}
+                        {% if total == 1 %}
+                            Páči sa ti <strong class="font-semibold text-gray-800">jeden</strong> článok.
+                        {% elif total > 1 and total < 5 %}
+                            Páčia sa ti <strong class="font-semibold text-gray-800">{{ total }}</strong> články.
+                        {% elif total >= 5 %}
+                            Páči sa ti <strong class="font-semibold text-gray-800">{{ total }}</strong> článkov.
+                        {% endif %}
+                    {% endwith %}
                 {% else %}
                     <p class="text-gray-400 font-light text-sm mb-1">Zatiaľ nemáš žiadne články, ktoré sa ti páčia.</p>
                 {% endif %}
@@ -38,7 +41,7 @@
                             <div>
                                 <form method="post" action="{% url 'toggle_like' like.article.id %}">
                                     {% csrf_token %}
-                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <input type="hidden" name="next" value="{{ request.path }}?likes_page={{ likes_page_obj.number }}{% if read_later_page_obj.number > 1 %}&read_later_page={{ read_later_page_obj.number }}{% endif %}">
                                     <button type="submit" class="hover:bg-gray-100 p-1 rounded-lg hover:cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -50,25 +53,59 @@
                             </div>
                         </a>
                     </div>
-                {% empty %}
-                    <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
-                        <p class="text-gray-400 font-light text-sm mb-1">Objav články a najdi svoje záujmy.</p>
-                    </div>
                 {% endfor %}
+
+                <!-- Likes Pagination -->
+                {% if likes_page_obj.paginator.num_pages > 1 %}
+                <div class="flex justify-center items-center mt-6 space-x-4">
+                    {% if likes_page_obj.has_previous %}
+                        <a href="?likes_page={{ likes_page_obj.previous_page_number }}{% if read_later_page_obj.number > 1 %}&read_later_page={{ read_later_page_obj.number }}{% endif %}"
+                           class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700 text-sm">
+                            ← Predchádzajúca
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-1 bg-gray-100 border border-gray-200 rounded-md text-gray-400 cursor-not-allowed text-sm">
+                            ← Predchádzajúca
+                        </span>
+                    {% endif %}
+
+                    <span class="px-4 py-2 bg-gray-600 text-white rounded-md">
+                        {{ likes_page_obj.number }} z {{ likes_page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if likes_page_obj.has_next %}
+                        <a href="?likes_page={{ likes_page_obj.next_page_number }}{% if read_later_page_obj.number > 1 %}&read_later_page={{ read_later_page_obj.number }}{% endif %}"
+                           class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700 text-sm">
+                            Nasledujúca →
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-1 bg-gray-100 border border-gray-200 rounded-md text-gray-400 cursor-not-allowed text-sm">
+                            Nasledujúca →
+                        </span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
+                    <p class="text-gray-400 font-light text-sm mb-1">Objav články a najdi svoje záujmy.</p>
+                </div>
             {% endif %}
         </div>
 
+        <!-- Read Later Section -->
         <div class="bg-white rounded-lg shadow pt-6 pb-8">
             <h2 class="text-center font-medium text-xl mb-1">Prečítať neskôr</h2>
             <div class="text-center font-light text-gray-400 text-sm my-3">
-                {% if read_laters %}
-                    {% if read_laters.count == 1 %}
-                        Máš odložený <strong class="font-semibold text-gray-800">jeden</strong> článok.
-                    {% elif read_laters.count > 1 and read_laters.count < 5 %}
-                        Máš odložené <strong class="font-semibold text-gray-800">{{ read_laters.count }}</strong> články.
-                    {% elif read_laters.count >= 5 %}
-                        Máš odložených <strong class="font-semibold text-gray-800">{{ read_laters.count }}</strong> článkov.
-                    {% endif %}
+                {% if read_later_page_obj.paginator.count %}
+                    {% with total=read_later_page_obj.paginator.count %}
+                        {% if total == 1 %}
+                            Máš odložený <strong class="font-semibold text-gray-800">jeden</strong> článok.
+                        {% elif total > 1 and total < 5 %}
+                            Máš odložené <strong class="font-semibold text-gray-800">{{ total }}</strong> články.
+                        {% elif total >= 5 %}
+                            Máš odložených <strong class="font-semibold text-gray-800">{{ total }}</strong> článkov.
+                        {% endif %}
+                    {% endwith %}
                 {% else %}
                     <p class="text-gray-400 font-light text-sm mb-1">Žiadne odložené články.</p>
                 {% endif %}
@@ -92,7 +129,7 @@
 
                             <form method="post" action="{% url 'toggle_read_later' read_later.article.id %}">
                                 {% csrf_token %}
-                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <input type="hidden" name="next" value="{{ request.path }}?read_later_page={{ read_later_page_obj.number }}{% if likes_page_obj.number > 1 %}&likes_page={{ likes_page_obj.number }}{% endif %}">
                                 <button type="submit" class="hover:bg-gray-100 p-1 rounded-lg hover:cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                         <path fill-rule="evenodd" d="M18.97 3.659a2.25 2.25 0 0 0-3.182 0l-10.94 10.94a3.75 3.75 0 1 0 5.304 5.303l7.693-7.693a.75.75 0 0 1 1.06 1.06l-7.693 7.693a5.25 5.25 0 1 1-7.424-7.424l10.939-10.94a3.75 3.75 0 1 1 5.303 5.304L9.097 18.835l-.008.008-.007.007-.002.002-.003.002A2.25 2.25 0 0 1 5.91 15.66l7.81-7.81a.75.75 0 0 1 1.061 1.06l-7.81 7.81a.75.75 0 0 0 1.054 1.068L18.97 6.84a2.25 2.25 0 0 0 0-3.182Z" clip-rule="evenodd" />
@@ -101,11 +138,42 @@
                             </form>
                         </a>
                     </div>
-                {% empty %}
-                    <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
-                        <p class="text-gray-400 font-light text-sm mb-1">Objav články a najdi svoje záujmy.</p>
-                    </div>
                 {% endfor %}
+
+                <!-- Read Later Pagination -->
+                {% if read_later_page_obj.paginator.num_pages > 1 %}
+                <div class="flex justify-center items-center mt-6 space-x-4">
+                    {% if read_later_page_obj.has_previous %}
+                        <a href="?read_later_page={{ read_later_page_obj.previous_page_number }}{% if likes_page_obj.number > 1 %}&likes_page={{ likes_page_obj.number }}{% endif %}"
+                           class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700 text-sm">
+                            ← Predchádzajúca
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-1 bg-gray-100 border border-gray-200 rounded-md text-gray-400 cursor-not-allowed text-sm">
+                            ← Predchádzajúca
+                        </span>
+                    {% endif %}
+
+                    <span class="px-4 py-2 bg-gray-600 text-white rounded-md">
+                        {{ read_later_page_obj.number }} z {{ read_later_page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if read_later_page_obj.has_next %}
+                        <a href="?read_later_page={{ read_later_page_obj.next_page_number }}{% if likes_page_obj.number > 1 %}&likes_page={{ likes_page_obj.number }}{% endif %}"
+                           class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700 text-sm">
+                            Nasledujúca →
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-1 bg-gray-100 border border-gray-200 rounded-md text-gray-400 cursor-not-allowed text-sm">
+                            Nasledujúca →
+                        </span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-10 border-1 border-gray-200 rounded-lg">
+                    <p class="text-gray-400 font-light text-sm mb-1">Objav články a najdi svoje záujmy.</p>
+                </div>
             {% endif %}
         </div>
     </div>
