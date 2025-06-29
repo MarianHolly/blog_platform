@@ -338,7 +338,8 @@ class ArticleSearchView(ListView):
         query = self.request.GET.get('q', '').strip()
         if query:
             return Article.objects.filter(
-                Q(title__icontains=query),
+                Q(title__icontains=query) |
+                Q(description__icontains=query),
                 status='published'
             ).select_related('bulletin__owner')
         return Article.objects.none()
