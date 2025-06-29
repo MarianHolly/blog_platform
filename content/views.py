@@ -21,14 +21,19 @@ from engagement.models import Comment, Like, ReadLater
 class HomePageView(ListView):
     template_name = "content/home.html"
     model = Article
-    context_object_name = "articles"
+    context_object_name = "featured_articles"
+    paginate_by = 9
+
+    def get_queryset(self):
+        return Article.objects.filter(
+            status='published'
+        ).select_related('bulletin__owner').order_by('-created')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['featured_articles'] = Article.objects.filter(status='published')
-        context['popular_bulletins'] = Bulletin.objects.all()
-        context['recent_writers'] = Profile.objects.filter(role='writer')
-        context['new_readers'] = Profile.objects.filter(role='reader')
+        context['popular_bulletins'] = Bulletin.objects.all()[:3]
+        context['recent_writers'] = Profile.objects.filter(role='writer')[:3]
+        context['new_readers'] = Profile.objects.filter(role='reader')[:3]
         return context
 
 
