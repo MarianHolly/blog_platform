@@ -1,0 +1,1499 @@
+[
+  {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2025-05-11T11:02:24.895Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Administrator",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2025-05-11T11:02:34.513Z",
+      "user": 1,
+      "content_type": 4,
+      "object_id": "1",
+      "object_repr": "Administrator",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2025-05-18T22:32:23.462Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "VincentVanGogh (reader)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Role\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2025-05-21T09:48:28.775Z",
+      "user": 1,
+      "content_type": 9,
+      "object_id": "6",
+      "object_repr": "Káva v kaviarni a úzkosť bytia",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2025-05-21T09:48:42.230Z",
+      "user": 1,
+      "content_type": 9,
+      "object_id": "3",
+      "object_repr": "Ráno som vstal, ale nebol som tam",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Evaluation\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2025-05-21T09:50:03.724Z",
+      "user": 1,
+      "content_type": 9,
+      "object_id": "7",
+      "object_repr": "Dasein",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2025-05-21T10:38:07.431Z",
+      "user": 1,
+      "content_type": 9,
+      "object_id": "5",
+      "object_repr": "Jablko ako otázka pravdy: medzi zrakom a hmotou",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2025-05-21T10:38:20.429Z",
+      "user": 1,
+      "content_type": 9,
+      "object_id": "3",
+      "object_repr": "Ráno som vstal, ale nebol som tam",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2025-05-21T10:38:25.932Z",
+      "user": 1,
+      "content_type": 9,
+      "object_id": "1",
+      "object_repr": "Zápach starého papiera a iné vône detstva",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Evaluation\"]}}]"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 4,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 4,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 4,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 4,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 5,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 5,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 5,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 5,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 6,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 6,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 6,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 6,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add profile",
+      "content_type": 7,
+      "codename": "add_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change profile",
+      "content_type": 7,
+      "codename": "change_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete profile",
+      "content_type": 7,
+      "codename": "delete_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view profile",
+      "content_type": 7,
+      "codename": "view_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add bulletin",
+      "content_type": 8,
+      "codename": "add_bulletin"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change bulletin",
+      "content_type": 8,
+      "codename": "change_bulletin"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete bulletin",
+      "content_type": 8,
+      "codename": "delete_bulletin"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view bulletin",
+      "content_type": 8,
+      "codename": "view_bulletin"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add article",
+      "content_type": 9,
+      "codename": "add_article"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change article",
+      "content_type": 9,
+      "codename": "change_article"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete article",
+      "content_type": 9,
+      "codename": "delete_article"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view article",
+      "content_type": 9,
+      "codename": "view_article"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add subscription",
+      "content_type": 10,
+      "codename": "add_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change subscription",
+      "content_type": 10,
+      "codename": "change_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete subscription",
+      "content_type": 10,
+      "codename": "delete_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view subscription",
+      "content_type": 10,
+      "codename": "view_subscription"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add comment",
+      "content_type": 11,
+      "codename": "add_comment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change comment",
+      "content_type": 11,
+      "codename": "change_comment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete comment",
+      "content_type": 11,
+      "codename": "delete_comment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view comment",
+      "content_type": 11,
+      "codename": "view_comment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add like",
+      "content_type": 12,
+      "codename": "add_like"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change like",
+      "content_type": 12,
+      "codename": "change_like"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete like",
+      "content_type": 12,
+      "codename": "delete_like"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view like",
+      "content_type": 12,
+      "codename": "view_like"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add read later",
+      "content_type": 13,
+      "codename": "add_readlater"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change read later",
+      "content_type": 13,
+      "codename": "change_readlater"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete read later",
+      "content_type": 13,
+      "codename": "delete_readlater"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view read later",
+      "content_type": 13,
+      "codename": "view_readlater"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$HAmpmSGOLUjfPXQ9uh1km3$T+b4wePx3K2sihPaj96Wa32UHNGb8wuWXMlhssNamlM=",
+      "last_login": "2025-06-29T13:07:35.497Z",
+      "is_superuser": true,
+      "username": "Administrator",
+      "first_name": "Marián",
+      "last_name": "Hollý",
+      "email": "administrator@mail.io",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-05-11T11:01:38Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$m55fAe8DI7yTj8KH8xSGDK$NnszBnOKinHjtKmOmnpMGKucErN22SkyH5Q0hs21xsI=",
+      "last_login": "2025-06-29T14:09:40.120Z",
+      "is_superuser": false,
+      "username": "MarcelProust",
+      "first_name": "Marcel",
+      "last_name": "Proust",
+      "email": "marcelproust@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-11T11:03:15.940Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$sdjm9tybMHf1UwT0GDlVOo$LMrjUo9ETJn1DH52P+FgUCOlBYryPuaBvAmq7eFyHvc=",
+      "last_login": "2025-05-21T22:21:03.818Z",
+      "is_superuser": false,
+      "username": "MartinHeidegger",
+      "first_name": "Martin",
+      "last_name": "Heidegger",
+      "email": "martinheidegger@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-11T11:06:12.506Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$GK2EeeJIUfrzmd7EW27Nig$VQnZArFmjUtxv7UHx8pT9MDefl5vhAbwahDJXZFtVG8=",
+      "last_login": "2025-05-18T22:32:40.544Z",
+      "is_superuser": false,
+      "username": "VincentVanGogh",
+      "first_name": "Vincent",
+      "last_name": "Van Gogh",
+      "email": "vincentvangogh@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-11T11:08:34.848Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$leIdiMslrChjXcHDD3qveg$4MNpENHvcMlyLhVonpnLqIPCgWDc1YUilTY7CZgd5Ck=",
+      "last_login": "2025-05-22T14:03:37.091Z",
+      "is_superuser": false,
+      "username": "AlbertCamus",
+      "first_name": "Albert",
+      "last_name": "Camus",
+      "email": "albertcamus@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-21T09:18:51.123Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$g3DrwnzZl0KzQ4kg5u2zew$ji7Qi+wrs06eHYP9GotB+P6DzicrZM+OkR21MNKVQc0=",
+      "last_login": "2025-06-29T13:35:34.653Z",
+      "is_superuser": false,
+      "username": "PaulCezanne",
+      "first_name": "Paul",
+      "last_name": "Cezanne",
+      "email": "paulcezanne@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-21T09:25:44.475Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$Zr0HDMXP12CAjRuy1i5sSd$u29l0+sbDusDHVcFdRziEANHYvZAM4XN8NKPc5OCYPw=",
+      "last_login": "2025-05-22T13:14:23.710Z",
+      "is_superuser": false,
+      "username": "ClaudeDebussy",
+      "first_name": "Claude",
+      "last_name": "Debussy",
+      "email": "claudedebussy@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-21T09:29:16.001Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$CffkZKrrFsMMtjeWMasl4E$uNaBXAhhagPtPWh47Bw6S9ZkZWRV/8bs49nLu6mR6g0=",
+      "last_login": "2025-05-22T13:59:13.277Z",
+      "is_superuser": false,
+      "username": "SigmundFreud",
+      "first_name": "Sigmund",
+      "last_name": "Freud",
+      "email": "signmund@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-22T13:58:04.244Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$mC91FdeukeXizRtM71Zihm$1gRCaYVCYvDpQSivjVp7ijjd/PDEOsso/yGY2IohAXc=",
+      "last_login": "2025-05-22T14:15:38.560Z",
+      "is_superuser": false,
+      "username": "SlavojZizek",
+      "first_name": "Slavoj",
+      "last_name": "Žižek",
+      "email": "slavojzizek@mail.io",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-05-22T14:14:59.749Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "auth",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "accounts",
+      "model": "profile"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "content",
+      "model": "bulletin"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "content",
+      "model": "article"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "content",
+      "model": "subscription"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "engagement",
+      "model": "comment"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "engagement",
+      "model": "like"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "engagement",
+      "model": "readlater"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "0aqdipp3nkfl8kkfhuvm78z0ltwi6zs3",
+    "fields": {
+      "session_data": ".eJxVjEsOAiEQBe_C2hAaBwgu3XsG0g3dMmogmc9q4t11klno9lXV21TCdalpnXlKY1EX5dTpdyPMT247KA9s965zb8s0kt4VfdBZ33rh1_Vw_w4qzvVbB4bMYoiEHAB6I3COfuBgDbnATqJYI5ghCEiBbCOX7MkOJoi1OKj3BwIzOII:1uI6WH:NcSRKV57yHIsmxad5ctWp6gJxj67EFUVQeasZ1kA748",
+      "expire_date": "2025-06-05T14:03:37.094Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "9io75v17akgyenqqg351g0m7bwljywcx",
+    "fields": {
+      "session_data": ".eJxVjEEOwiAQRe_C2pAwdCi4dO8ZCAyDVA0kpV0Z764kXej2vff_S_iwb8XvnVe_JHEWIE6_LAZ6cB0i3UO9NUmtbusS5UjkYbu8tsTPy9H-HZTQy1gnq5gYyUZgRZgd5Vmx1WjclMwXW5wtZY46GgBUmplATTCxCxq1eH8ACT04RQ:1uVsiy:8ZeuevoppVEcjNoERCNIVmCGHxyGFbabDGERWMwbO8c",
+      "expire_date": "2025-07-13T14:09:40.125Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "cc6mcn166w98emrobiz71qabjktvtrx8",
+    "fields": {
+      "session_data": ".eJxVjDsOwyAQBe9CHSHAsCwp0_sMaPkFJxGWjF1FuXtsyUXSvpl5b-ZpW6vfel78lNiVOXb53QLFZ24HSA9q95nHua3LFPih8JN2Ps4pv26n-3dQqde9jsIUgwSaZCxoSQjrNBQqJHHAjEOSGYJ0AGAcqKzQObsjClomJQP7fAHaIjcr:1uI6hu:Fk1cvLJXb1a8DQa6ivRpGV9avWZQskDOKnbNzbDPdzM",
+      "expire_date": "2025-06-05T14:15:38.564Z"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "role": "admin",
+      "biography": "",
+      "avatar": "default_avatar.png"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "role": "writer",
+      "biography": "Som spisovateľ, známy najmä pre rozsiahle dielo Hľadanie strateného času. Mojím hlavným záujmom je komplexná povaha pamäti a subjektívneho zážitku. Niekedy sa zdá, že venujem priveľa pozornosti detailom, no verte mi, každý má svoje opodstatnenie. A áno, mám istú slabosť pre madeleinky namočené v čaji.",
+      "avatar": "profile_pics/MarcelProust_jYlGNza.jpg"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "role": "writer",
+      "biography": "Zaoberám sa otázkami bytia a času, hoci, ako sa zdá, čas plynie pre mnohých rýchlejšie ako pre moje publikácie. Snažím sa preniknúť k fundamentálnym štruktúram existencie. A ak dovolíte osobnú poznámku, prechádzky po lesoch Schwarzwald sú pre mňa rovnako dôležité ako starostlivé štúdium starogréckych textov.",
+      "avatar": "profile_pics/MartinHeidegger_F3N8j7B.jpg"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "role": "reader",
+      "biography": "Som človek vášnivý, možno až príliš. Svet vnímam cez intenzívne farby a silné emócie, ktoré sa snažím preniesť na plátno. Slnečnice, hviezdne noci, autoportréty... to sú niektoré z mojich obľúbených tém. Niekedy mám pocit, že ľudia mojej tvorbe nerozumejú, ale verím, že čas ukáže. A áno, jedno ucho mi občas robilo problémy, ale to je už iný príbeh.",
+      "avatar": "profile_pics/VincentVanGogh_Z21b25F.jpg"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "role": "admin",
+      "biography": null,
+      "avatar": "default_avatar.png"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "role": "writer",
+      "biography": "Maľujem nie preto, aby som kopíroval svet, ale aby som ho znovuobjavil cez oko a ruku. V tichu Aix-en-Provence nachádzam formu, farbu a poriadok, ktoré sa ukazujú iba tomu, kto ich trpezlivo hľadá. Nehovorím veľa, ale ak sa pozorne zadívate, všetko dôležité je v mojich plátnach.",
+      "avatar": "default_avatar.png"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 7,
+    "fields": {
+      "user": 7,
+      "role": "reader",
+      "biography": "Snažím sa vytvárať hudbu, ktorá evokuje skôr pocity a nálady než striktné formy. Inšpiruje ma príroda, impresionistické maliarstvo a zvukové farby. Chcem, aby moja hudba \"maľovala\" zvukom, ak mi dovolíte túto metaforu. A áno, mám istú náklonnosť k netradičným harmóniám a občas sa vzdialim od tradičných pravidiel, ale robím to s najlepším úmyslom, aby som zachytil prchavú krásu okamihu.",
+      "avatar": "profile_pics/ClaudeDebussy_ami5K0K.jpg"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 8,
+    "fields": {
+      "user": 8,
+      "role": "writer",
+      "biography": "Lorem",
+      "avatar": "profile_pics/SigmundFreud_ZdUaQQz.jpg"
+    }
+  },
+  {
+    "model": "accounts.profile",
+    "pk": 9,
+    "fields": {
+      "user": 9,
+      "role": "reader",
+      "biography": null,
+      "avatar": "default_avatar.png"
+    }
+  },
+  {
+    "model": "content.bulletin",
+    "pk": 1,
+    "fields": {
+      "owner": 2,
+      "title": "Hľadanie Strateného Času",
+      "description": "Vitajte v mojom skromnom online priestore, kde sa budem s vami deliť o prchavé záblesky pamäti, zamyslenia nad plynutím času a postrehy z každodenného života, ktoré sa mi zdajú byť, povedzme, pozoruhodné. Očakávajte detailné opisy pocitov, úvahy o spoločnosti a občasné exkurzie do sveta umenia a literatúry. Prosím, buďte trpezliví, moje myšlienky niekedy potrebujú svoj čas, aby sa plne rozvinuli.",
+      "slug": "hladanie-strateneho-casu",
+      "created": "2025-05-11T11:03:47.159Z",
+      "updated": "2025-05-11T11:03:47.159Z"
+    }
+  },
+  {
+    "model": "content.bulletin",
+    "pk": 2,
+    "fields": {
+      "owner": 3,
+      "title": "Bytie a Čas",
+      "description": "Vítam vás na mojom skromnom priestore, kde sa budem zaoberať fundamentálnymi otázkami bytia, času a existencie. Budeme spoločne hľadať stopy pravdy na lesných cestách myslenia, skúmať zmysel pobytu vo svete a pýtať sa na to, čo skutočne znamená byť. Očakávajte hlboké ponory do ontológie, fenomenológie a jazyka, s občasnými odbočkami k poézii a tichu prírody.",
+      "slug": "bytie-a-cas",
+      "created": "2025-05-11T11:06:47.432Z",
+      "updated": "2025-05-11T11:06:47.432Z"
+    }
+  },
+  {
+    "model": "content.bulletin",
+    "pk": 3,
+    "fields": {
+      "owner": 6,
+      "title": "Tiché formy v pohybe",
+      "description": "Vitajte v mojom ateliéri myšlienok a farieb. Tento priestor venujem úvahám o pozorovaní, vnímaní a prežívaní skutočnosti cez maliarsku skúsenosť. Budeme sa spoločne pozerať na svet nielen očami, ale aj cez vzťahy medzi tvarmi, farbami a perspektívou, ktorá sa rodí pomaly, znovu a znovu. Očakávajte meditácie o jablkách, horách a maľbe, ktorá nie je len obrazom, ale aktom poznávania.",
+      "slug": "tiche-formy-v-pohybe",
+      "created": "2025-05-21T09:26:11.169Z",
+      "updated": "2025-05-21T09:26:11.169Z"
+    }
+  },
+  {
+    "model": "content.bulletin",
+    "pk": 4,
+    "fields": {
+      "owner": 8,
+      "title": "Magazin",
+      "description": "",
+      "slug": "magazin",
+      "created": "2025-05-22T14:01:45.350Z",
+      "updated": "2025-05-22T14:01:45.350Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 1,
+    "fields": {
+      "title": "Zápach starého papiera a iné vône detstva",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": "Pre tých, čo rozumejú knihám nosom.",
+      "description": "Detská izba, kde som čítaval Balzaca, vonia inak než svet dospelých. Vôňa kníh, naftalínu, babičkinej kabelky. Spomínam si na to, ako vône dokážu spustiť lavínu spomienok, silnejších než akýkoľvek obraz či slovo. Čuch ako najvernejší archivár duše.",
+      "status": "approved",
+      "visibility": "private",
+      "evaluation": "approved",
+      "created": "2025-05-11T11:04:39.105Z",
+      "published": "2025-05-21T12:52:57.350Z",
+      "updated": "2025-05-21T14:15:50.102Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 2,
+    "fields": {
+      "title": "Ticho medzi dvoma lyžičkami čaju",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": "Pre čitateľov, čo počúvajú spomienky v šume porcelánu.",
+      "description": "Popoludní v Combray som zacítil, že aj tie najmenšie chvíle, keď čaj pomaly chladne a koláčik sa láme, sú veľkolepým priestorom pamäti. Píšem o tom, čo všetko sa v človeku prebudí medzi dvoma dúškami. Čas sa tu nezastaví, ale spomalí natoľko, že ho možno počuť dýchať.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "evaluation",
+      "created": "2025-05-11T11:05:04.586Z",
+      "published": "2025-05-22T14:03:17.020Z",
+      "updated": "2025-05-22T14:03:17.020Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 3,
+    "fields": {
+      "title": "Ráno som vstal, ale nebol som tam",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<h2>Disposedness and Moods</h2>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<h2>Understanding and Interpretation</h2>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 2,
+      "subtitle": "Pre tých, čo cítia, že prebudiť sa ešte neznamená byť.",
+      "description": "Dnes ráno som sa zobudil, no moja bytosť ešte nedorazila. Človek môže mať otvorené oči, no nie otvorené bytie. Skúmam ten čudný rozpor medzi bdením a autentickým prebývaním vo svete. Kedy sa vlastne Dasein stáva skutočne prítomným?",
+      "status": "published",
+      "visibility": "private",
+      "evaluation": "approved",
+      "created": "2025-05-11T11:07:17.159Z",
+      "published": "2025-05-21T10:38:20.428Z",
+      "updated": "2025-05-21T10:38:20.428Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 4,
+    "fields": {
+      "title": "Čas neplynie. My v ňom hynieme.",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 2,
+      "subtitle": "Pre tých, čo cítia čas ako trhlinu, nie ako hodiny.",
+      "description": "Čas nie je prúd, v ktorom plávame – je horizontom, ktorý nás konštituuje. Smrť nie je koniec, ale to, čo dáva zmysel nášmu Bytiu už teraz. Zápis o tom, ako sa k smrti možno neblížime, ale už v nej vlastne sme.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "evaluation",
+      "created": "2025-05-11T11:07:46.255Z",
+      "published": "2025-05-11T11:07:46.254Z",
+      "updated": "2025-05-11T11:07:46.255Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 5,
+    "fields": {
+      "title": "Jablko ako otázka pravdy: medzi zrakom a hmotou",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas.&nbsp;Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 3,
+      "subtitle": "Ad litora torquent per conubia nostra inceptos himenaeos.",
+      "description": "Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu.",
+      "status": "rejected",
+      "visibility": "public",
+      "evaluation": "under_review",
+      "created": "2025-05-21T09:27:47.455Z",
+      "published": "2025-05-21T10:52:35.911Z",
+      "updated": "2025-05-21T13:44:10.536Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 6,
+    "fields": {
+      "title": "Káva v kaviarni a úzkosť bytia",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 2,
+      "subtitle": "Quisque faucibus ex sapien vitae pellentesque sem placerat.",
+      "description": "Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "rejected",
+      "created": "2025-05-21T09:48:28.770Z",
+      "published": "2025-05-21T14:15:56.195Z",
+      "updated": "2025-05-21T14:15:56.195Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 7,
+    "fields": {
+      "title": "Dasein",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 2,
+      "subtitle": "Tempus leo eu aenean sed diam urna tempor.",
+      "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "rejected",
+      "created": "2025-05-21T09:50:03.719Z",
+      "published": "2025-05-21T09:50:53.133Z",
+      "updated": "2025-05-21T09:50:53.133Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 8,
+    "fields": {
+      "title": "Blednúca vôňa: Kľúč k stratenému času",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "Vôňa je mocný kľúč k minulosti, otvárajúci dvere zabudnutých spomienok. Akoby samotné atómy vzduchu v sebe niesli ozveny dávno minulých chvíľ. Takto sa obyčajná vôňa madlenky stáva bránou do celého detstva.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:19:51.138Z",
+      "published": "2025-06-29T13:32:55.308Z",
+      "updated": "2025-06-29T13:32:55.309Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 9,
+    "fields": {
+      "title": "Umenie čakať: Rozjímanie o nečinnosti",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "V najväčšej nehybnosti tela sa často prebudí najintenzívnejší život ducha. Ležiac v posteli, odrezaný od sveta, objavujem nekonečné divadlo v mysli. Pasivita tela otvára dvere k bohatej introspekcii.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:33:34.326Z",
+      "published": "2025-06-29T13:33:34.324Z",
+      "updated": "2025-06-29T13:33:34.326Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 10,
+    "fields": {
+      "title": "Neviditeľné nite: Spoločnosť formuje dušu",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "Spoločenské konvencie tkajú okolo nás neviditeľnú pavučinu. Nevedomky ovplyvňujú naše myšlienky, správanie a dokonca aj emócie. Pozorujem, ako sa prispôsobujeme alebo bojujeme s týmito tichými tlakmi.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:33:59.950Z",
+      "published": "2025-06-29T13:33:59.950Z",
+      "updated": "2025-06-29T13:33:59.950Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 11,
+    "fields": {
+      "title": "Šťastie prchá: Hľadanie v spomienkach",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "Šťastie je prchavý motýľ, ktorý nám uniká z rúk, keď sa ho snažíme chytiť. Často ho nachádzame skôr v zábleskoch minulých radostí než v prítomnosti. Je to skôr stav mysle, než hmatateľná realita.",
+      "status": "published",
+      "visibility": "private",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:34:22.408Z",
+      "published": "2025-06-29T13:34:22.408Z",
+      "updated": "2025-06-29T13:34:22.408Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 12,
+    "fields": {
+      "title": "Hľadanie Ja: Odhaľovanie vedomia v čase",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "Kto sme v neúprosnom prúde času, ktorý nás mení? Naše „Ja“ sa neustále vyvíja, stráca a znova objavuje. Snažím sa pochopiť jeho podstatu skôr cez umenie a reflexiu, než priame poznanie.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:34:49.633Z",
+      "published": "2025-06-29T13:34:49.631Z",
+      "updated": "2025-06-29T13:34:49.633Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 13,
+    "fields": {
+      "title": "Jablká a misy: Geometria tichého života",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 3,
+      "subtitle": null,
+      "description": "Tichá zátišia sú pre mňa ako cvičenie, hľadám v nich formu a objem. Každé jablko, každá misa má svoju vlastnú váhu a miesto. Je to o pochopení základných geometrických tvarov v realite.",
+      "status": "published",
+      "visibility": "private",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:36:24.444Z",
+      "published": "2025-06-29T13:36:24.443Z",
+      "updated": "2025-06-29T13:36:24.444Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 14,
+    "fields": {
+      "title": "Farba a svetlo: Budovanie sveta vrstvami",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 3,
+      "subtitle": null,
+      "description": "Farba nie je len odtieň, je to sila, ktorá modeluje objem. Každý ťah štetcom pridáva hmotu, buduje priestor a hĺbku. Svetlo nie je len osvetlenie, je to vlastnosť farby samotnej.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T13:36:52.789Z",
+      "published": "2025-06-29T13:36:52.789Z",
+      "updated": "2025-06-29T13:36:52.789Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 15,
+    "fields": {
+      "title": "Večer u Verdurinovcov: Divadlo salónu",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "Salón Verdurinovcov je javiskom plným pretvárky a skrytých motívov. Umenie konverzácie sa stáva hrou masiek a spoločenskej hierarchie. Za leskom sa skrývajú banálne túžby a prázdne gestá.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T14:11:48.047Z",
+      "published": "2025-06-29T14:11:48.046Z",
+      "updated": "2025-06-29T14:11:48.047Z"
+    }
+  },
+  {
+    "model": "content.article",
+    "pk": 16,
+    "fields": {
+      "title": "Krása Odette: Predstavivosť ju uchováva",
+      "content": "<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>",
+      "bulletin": 1,
+      "subtitle": null,
+      "description": "Krása, rovnako ako kvet, je odsúdená na zvädnutie. Avšak predstavivosť dokáže túto krásu premeniť a povýšiť. Ideály krásy pretrvávajú v mysli, dlho po tom, čo sa reálne predlohy stratia.",
+      "status": "published",
+      "visibility": "public",
+      "evaluation": "pending",
+      "created": "2025-06-29T14:12:32.218Z",
+      "published": "2025-06-29T14:12:32.218Z",
+      "updated": "2025-06-29T14:12:32.218Z"
+    }
+  },
+  {
+    "model": "content.subscription",
+    "pk": 1,
+    "fields": {
+      "subscriber": 3,
+      "bulletin": 1,
+      "created": "2025-05-11T11:07:58.491Z"
+    }
+  },
+  {
+    "model": "content.subscription",
+    "pk": 5,
+    "fields": {
+      "subscriber": 7,
+      "bulletin": 1,
+      "created": "2025-05-21T09:30:16.520Z"
+    }
+  },
+  {
+    "model": "content.subscription",
+    "pk": 7,
+    "fields": {
+      "subscriber": 7,
+      "bulletin": 3,
+      "created": "2025-05-21T09:30:25.706Z"
+    }
+  },
+  {
+    "model": "content.subscription",
+    "pk": 8,
+    "fields": {
+      "subscriber": 2,
+      "bulletin": 2,
+      "created": "2025-05-21T22:14:04.818Z"
+    }
+  },
+  {
+    "model": "content.subscription",
+    "pk": 9,
+    "fields": {
+      "subscriber": 2,
+      "bulletin": 3,
+      "created": "2025-05-21T22:14:08.734Z"
+    }
+  },
+  {
+    "model": "content.subscription",
+    "pk": 10,
+    "fields": {
+      "subscriber": 8,
+      "bulletin": 2,
+      "created": "2025-05-22T13:59:37.355Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 1,
+    "fields": {
+      "author": 1,
+      "article": 4,
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "created": "2025-05-11T13:25:21.509Z",
+      "updated": "2025-05-11T13:37:18.101Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 2,
+    "fields": {
+      "author": 2,
+      "article": 4,
+      "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "created": "2025-05-11T13:37:50.588Z",
+      "updated": "2025-05-11T13:37:50.588Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 3,
+    "fields": {
+      "author": 2,
+      "article": 1,
+      "content": "Mozno",
+      "created": "2025-05-16T17:03:57.210Z",
+      "updated": "2025-05-16T17:04:06.282Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 4,
+    "fields": {
+      "author": 3,
+      "article": 1,
+      "content": "Mo",
+      "created": "2025-05-16T17:15:17.548Z",
+      "updated": "2025-05-16T17:15:17.548Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 5,
+    "fields": {
+      "author": 5,
+      "article": 1,
+      "content": "Ano",
+      "created": "2025-05-21T13:45:28.477Z",
+      "updated": "2025-05-21T13:45:28.477Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 6,
+    "fields": {
+      "author": 3,
+      "article": 7,
+      "content": "Urcite",
+      "created": "2025-05-21T22:15:44.624Z",
+      "updated": "2025-05-21T22:15:44.624Z"
+    }
+  },
+  {
+    "model": "engagement.comment",
+    "pk": 7,
+    "fields": {
+      "author": 8,
+      "article": 6,
+      "content": "Koent",
+      "created": "2025-05-22T14:00:17.932Z",
+      "updated": "2025-05-22T14:00:17.932Z"
+    }
+  },
+  {
+    "model": "engagement.like",
+    "pk": 35,
+    "fields": {
+      "author": 3,
+      "article": 1,
+      "created": "2025-05-16T18:26:25.302Z"
+    }
+  },
+  {
+    "model": "engagement.like",
+    "pk": 39,
+    "fields": {
+      "author": 2,
+      "article": 14,
+      "created": "2025-06-29T17:32:37.347Z"
+    }
+  },
+  {
+    "model": "engagement.like",
+    "pk": 40,
+    "fields": {
+      "author": 2,
+      "article": 4,
+      "created": "2025-06-29T17:32:43.424Z"
+    }
+  },
+  {
+    "model": "engagement.like",
+    "pk": 41,
+    "fields": {
+      "author": 2,
+      "article": 6,
+      "created": "2025-06-29T17:32:45.014Z"
+    }
+  },
+  {
+    "model": "engagement.readlater",
+    "pk": 2,
+    "fields": {
+      "author": 3,
+      "article": 1,
+      "created": "2025-05-16T18:26:28.644Z"
+    }
+  },
+  {
+    "model": "engagement.readlater",
+    "pk": 3,
+    "fields": {
+      "author": 8,
+      "article": 6,
+      "created": "2025-05-22T14:00:09.757Z"
+    }
+  },
+  {
+    "model": "engagement.readlater",
+    "pk": 4,
+    "fields": {
+      "author": 2,
+      "article": 3,
+      "created": "2025-06-29T17:32:48.249Z"
+    }
+  },
+  {
+    "model": "engagement.readlater",
+    "pk": 5,
+    "fields": {
+      "author": 2,
+      "article": 14,
+      "created": "2025-06-29T17:32:57.503Z"
+    }
+  },
+  {
+    "model": "engagement.readlater",
+    "pk": 6,
+    "fields": {
+      "author": 2,
+      "article": 13,
+      "created": "2025-06-29T17:33:04.463Z"
+    }
+  }
+]
