@@ -183,3 +183,32 @@ class CriticalSecurityTests(TestCase):
         """CRITICAL: Verify anonymous users can't create articles"""
         response = self.client.get(reverse('article_create'))
         self.assertEqual(response.status_code, 302, "SECURITY BREACH: Anonymous user can create articles!")
+
+
+class PermissionTests(TestCase):
+    """Test role-based permissions"""
+
+    def setUp(self):
+        # Create users with different roles
+        self.reader_user = User.objects.create_user('reader', 'reader@test.com', 'Password123')
+        self.reader_profile = Profile.objects.create(user=self.reader_user, role='reader')
+
+        self.writer_user = User.objects.create_user('writer', 'writer@test.com', 'Password123')
+        self.writer_profile = Profile.objects.create(user=self.writer_user, role='writer')
+
+        self.admin_user = User.objects.create_user('admin', 'admin@test.com', 'Password123')
+        self.admin_profile = Profile.objects.create(user=self.admin_user, role='admin')
+
+        # Create bulletin and article
+        self.bulletin = Bulletin.objects.create(
+            owner=self.writer_profile,
+            title='Test Bulletin',
+            slug='test-bulletin'
+        )
+        self.article = Article.objects.create(
+            title='Test Article',
+            bulletin=self.bulletin,
+            status='published',
+            visibility='public'
+        )
+
