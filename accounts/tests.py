@@ -5,6 +5,7 @@ from django.test import TestCase, Client
 
 from accounts.models import Profile
 from accounts.forms import SignUpForm
+from content.models import Bulletin, Article
 
 
 # Create your tests here.
@@ -214,12 +215,12 @@ class PermissionTests(TestCase):
 
     def test_reader_cannot_create_article(self):
         """Readers should not be able to create articles"""
-        self.client.login(username='reader', password='pass123')
+        self.client.login(username='reader', password='Password123')
         response = self.client.get(reverse('article_create'))
         self.assertEqual(response.status_code, 403)  # Forbidden
 
     def test_writer_can_create_article(self):
         """Writers should be able to create articles"""
-        self.client.login(username='writer', password='pass123')
+        self.client.login(username='writer', password='Password123')
         response = self.client.get(reverse('article_create'))
         self.assertEqual(response.status_code, 200)
