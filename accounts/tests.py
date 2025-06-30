@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.test import TestCase
+from django.urls import reverse
+from django.test import TestCase, Client
 
 from accounts.models import Profile
 from accounts.forms import SignUpForm
@@ -160,3 +161,25 @@ class SignUpFormTest(TestCase):
             }
         )
         self.assertFalse(form.is_valid())
+
+
+class CriticalSecurityTests(TestCase):
+    def setUp(self):
+        # create Reader
+        self.reader_user = User.objects.create_user('reader', 'rsecurity@test.com', 'Security123')
+        Profile.objects.create(user=self.reader_user, role='reader')
+
+        # create Writer
+        self.writer_user = User.objects.create_user('writer', 'wsecurity@test.com', 'Security234')
+        Profile.objects.create(user=self.writer_user, role='writer')
+
+    def test_reader_cannot_create_article(self):
+        """CRITICAL: Verify readers can't create articles"""
+        self.client.login(username='reader', password='Security123')
+        response = self.client.get(reverse('article_create'))
+        self.assertEqual(response.status_code, 403, "SECURITY BREACH: Reader can create articles!")
+
+    def test_unauthenticated_cannot_create_article(self):
+        """CRITICAL: Verify anonymous users can't create articles"""
+        response = self.client.get(reverse('article_create'))
+        self.assertEqual(response.status_code, 302, "SECURITY BREACH: Anonymous user can create articles!")
