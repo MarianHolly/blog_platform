@@ -152,6 +152,12 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 AWS_S3_CUSTOM_DOMAIN = os.environ.get("AWS_S3_CUSTOM_DOMAIN")
 
+# Debug: Print configuration (remove in production)
+print(f"DEBUG: AWS_ACCESS_KEY_ID set: {bool(AWS_ACCESS_KEY_ID)}")
+print(f"DEBUG: AWS_SECRET_ACCESS_KEY set: {bool(AWS_SECRET_ACCESS_KEY)}")
+print(f"DEBUG: AWS_STORAGE_BUCKET_NAME: {AWS_STORAGE_BUCKET_NAME}")
+print(f"DEBUG: AWS_S3_REGION_NAME: {AWS_S3_REGION_NAME}")
+
 # Check if we should use S3
 USE_S3 = all([
     AWS_ACCESS_KEY_ID,
@@ -160,7 +166,11 @@ USE_S3 = all([
     AWS_S3_REGION_NAME
 ])
 
+print(f"DEBUG: USE_S3 = {USE_S3}")
+
 if USE_S3:
+    print("DEBUG: Configuring S3 storage")
+
     # S3 Storage Configuration
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_OBJECT_PARAMETERS = {
@@ -170,17 +180,22 @@ if USE_S3:
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_SIGNATURE_VERSION = 's3v4'
 
+    # More explicit bucket configuration
+    AWS_LOCATION = ''  # This ensures files go to bucket root, not a subfolder
+
     # Use S3 for storage
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.StaticS3Boto3Storage'
 
-    # Set media URL
+    # Set media URL - be very explicit
     if AWS_S3_CUSTOM_DOMAIN:
         MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
     else:
         MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'
 
+    print(f"DEBUG: MEDIA_URL set to: {MEDIA_URL}")
+
 else:
+    print("DEBUG: Using local storage")
     # Local storage fallback
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'

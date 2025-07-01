@@ -25,6 +25,23 @@ class Profile(Model):
     def __str__(self):
         return f"{self.user.username}"
 
+    def save(self, *args, **kwargs):
+        """Override save to add debugging information"""
+        if self.avatar:
+            print(f"DEBUG: Saving profile with avatar: {self.avatar}")
+            print(f"DEBUG: Avatar file object: {type(self.avatar)}")
+            if hasattr(self.avatar, 'file'):
+                print(f"DEBUG: Avatar file: {self.avatar.file}")
+
+        # Call the original save method
+        result = super().save(*args, **kwargs)
+
+        if self.avatar:
+            print(f"DEBUG: After save, avatar path: {self.avatar}")
+            print(f"DEBUG: Avatar URL: {self.avatar.url}")
+
+        return result
+
     @property
     def full_name(self):
         return self.user.get_full_name() or self.user.username
