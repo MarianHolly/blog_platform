@@ -108,7 +108,7 @@ class ProfileActivityView(DetailView):
         return context
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "accounts/profile_form.html"
     model = Profile
     form_class = ProfileForm
