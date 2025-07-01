@@ -73,10 +73,17 @@ class ProfileForm(ModelForm):
 
     avatar = ImageField(
         required=False,
-        help_text='',
-        widget=FileInput(
-            attrs={
-                "class": "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-200 hover:cursor-pointer border border-gray-300 rounded-3xl"
-            }
-        )
+        help_text='Vyberte obrázok (JPEG, PNG, max 5MB)',
+        widget=FileInput(attrs={
+            "class": "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-200 hover:cursor-pointer border border-gray-300 rounded-3xl",
+            "accept": "image/*"
+        })
     )
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        if avatar:
+            # Validate file size (5MB limit)
+            if avatar.size > 5 * 1024 * 1024:
+                raise forms.ValidationError("Obrázok je príliš veľký. Maximálna veľkosť je 5MB.")
+        return avatar

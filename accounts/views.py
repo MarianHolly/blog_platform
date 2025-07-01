@@ -115,6 +115,25 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     slug_field = 'user__username'
     slug_url_kwarg = 'username'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Ensure users can only edit their own profile
+        if request.user.username != kwargs.get('username'):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+            messages.success(self.request, 'Profil bol úspešne aktualizovaný.')
+            return response
+        except Exception as e:
+            messages.error(self.request, f'Chyba pri ukladaní profilu: {str(e)}')
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Formulár obsahuje chyby. Skontrolujte prosím zadané údaje.')
+        return super().form_invalid(form)
+
     def get_success_url(self):
         return reverse('profile', kwargs={'username': self.object.user.username})
 
