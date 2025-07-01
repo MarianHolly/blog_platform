@@ -71,7 +71,7 @@ class ProfileForm(ModelForm):
         model = Profile
         fields = ['biography', 'avatar']
 
-    avatar = FileField(
+    avatar = ImageField(
         required=False,
         help_text='',
         widget=FileInput(
