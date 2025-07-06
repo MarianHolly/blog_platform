@@ -13,7 +13,7 @@ class Profile(Model):
     user = OneToOneField(User, on_delete=CASCADE, related_name='profile')
     role = CharField(max_length=20, choices=USER_ROLES, default='reader')
     biography = TextField(max_length=500, null=True, blank=True)
-    avatar = ImageField(default='default_avatar.jpg', upload_to='static/images')
+    avatar = ImageField(upload_to='profile_pics/', null=True, blank=True)
     auto_subscribed_to_platform = BooleanField(default=True)
 
     class Meta:
