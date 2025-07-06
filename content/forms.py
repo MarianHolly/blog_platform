@@ -33,13 +33,6 @@ class ArticleForm(ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        if user:
-            try:
-                self.fields['bulletin'].initial = user.profile.bulletin
-                self.fields['bulletin'].disabled = True
-            except:
-                pass
-
         self.fields['status'].choices = [
             ('draft', 'Draft'),
             ('published', 'Published'),
