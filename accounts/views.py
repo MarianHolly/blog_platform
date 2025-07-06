@@ -10,7 +10,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, View, TemplateView, ListView
 
 from accounts.forms import SignUpForm, ProfileForm
-from accounts.mixins import ReaderRequiredMixin, AdministratorRequiredMixin
+from accounts.mixins import AdministratorRequiredMixin, ReaderRequiredMixin, WriterOrSuperAdminRequiredMixin
 from accounts.models import Profile
 from content.models import Article, Subscription
 from engagement.models import Like, ReadLater

@@ -1,8 +1,9 @@
 import time
+import os
 
 from django.test import TestCase
 
-from unittest import skip
+from unittest import skip, skipIf
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
@@ -13,7 +14,7 @@ class GuiTestWithSelenium(TestCase):
     def setUpTestData(cls):
         print('\nGuiTestWithSelenium')
 
-    @skip
+    @skipIf(not os.environ.get('RUN_SELENIUM_TESTS'), "Selenium tests disabled")
     def test_page_titles(self):
         self.driver = webdriver.Firefox()
         self.driver.get("http://127.0.0.1:8000/")
@@ -24,8 +25,9 @@ class GuiTestWithSelenium(TestCase):
         time.sleep(1)
         self.driver.get("http://127.0.0.1:8000/qa/")
         assert "Q & A" in self.driver.title
+        self.driver.quit()
 
-    @skip
+    @skipIf(not os.environ.get('RUN_SELENIUM_TESTS'), "Selenium tests disabled")
     def test_signup(self):
         self.driver = webdriver.Firefox()
         self.driver.get("http://127.0.0.1:8000/accounts/signup/")
@@ -50,11 +52,12 @@ class GuiTestWithSelenium(TestCase):
         time.sleep(3)
         submit_btn = self.driver.find_element(By.ID, 'id_submit')
         submit_btn.send_keys(Keys.RETURN)
+        self.driver.quit()
 
         assert ("Prihláste sa do svojho účtu" in self.driver.page_source or
                 "Toto užívateľské meno je už obsadené." in self.driver.page_source)
 
-    @skip
+    @skipIf(not os.environ.get('RUN_SELENIUM_TESTS'), "Selenium tests disabled")
     def test_login(self):
         self.driver = webdriver.Firefox()
         self.driver.get("http://127.0.0.1:8000/accounts/login/")
@@ -67,6 +70,10 @@ class GuiTestWithSelenium(TestCase):
         time.sleep(1)
         submit_btn = self.driver.find_element(By.ID, 'id_submit')
         submit_btn.send_keys(Keys.RETURN)
+        self.driver.quit()
 
         assert ("Slavoj Žižek" or "Please enter a correct username and password. Note that both fields may be case-sensitive." in self.driver.page_source)
 
+    def tearDown(self):
+        if hasattr(self, 'driver'):
+            self.driver.quit()
