@@ -112,6 +112,45 @@ class ArticleDetailView(DetailView):
         return redirect(request.path)
         # return render(request, self.template_name, context)
 
+    def dispatch(self, request, *args, **kwargs):
+        article = self.get_object()
+
+        # Public articles are always accessible
+        if article.visibility == 'public' and article.status == 'published':
+            return super().dispatch(request, *args, **kwargs)
+
+        # Private articles need special access
+        if article.visibility == 'private' and article.status == 'published':
+            # Owner can always access
+            if request.user.is_authenticated and article.bulletin.owner == request.user.profile:
+                return super().dispatch(request, *args, **kwargs)
+
+            # Admins can always access
+            if request.user.is_authenticated and request.user.profile.is_admin:
+                return super().dispatch(request, *args, **kwargs)
+
+            # Subscribers can access
+            if request.user.is_authenticated:
+                is_subscribed = Subscription.objects.filter(
+                    subscriber=request.user.profile,
+                    bulletin=article.bulletin
+                ).exists()
+                if is_subscribed:
+                    return super().dispatch(request, *args, **kwargs)
+
+        # Draft articles only for owner and admin
+        if article.status == 'draft':
+            if request.user.is_authenticated and (
+                    article.bulletin.owner == request.user.profile or
+                    request.user.profile.is_admin
+            ):
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                raise PermissionDenied("This article is not published yet.")
+
+        # If we get here, show limited access
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
     template_name = "content/form.html"
