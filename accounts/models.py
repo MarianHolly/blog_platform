@@ -13,7 +13,7 @@ class Profile(Model):
     user = OneToOneField(User, on_delete=CASCADE, related_name='profile')
     role = CharField(max_length=20, choices=USER_ROLES, default='reader')
     biography = TextField(max_length=500, null=True, blank=True)
-    avatar = ImageField(default='default_avatar.png', upload_to='profile_pics')
+    avatar = ImageField(default='default_avatar.jpg', upload_to='static/images')
     auto_subscribed_to_platform = BooleanField(default=True)
 
     class Meta:
@@ -34,6 +34,10 @@ class Profile(Model):
     @property
     def is_admin(self):
         return self.role == 'admin'
+
+    @property
+    def is_super_admin(self):
+        return self.user.is_superuser
 
     @property
     def display_role(self):
