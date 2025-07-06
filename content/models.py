@@ -1,6 +1,7 @@
 from ckeditor.fields import RichTextField
-from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
-    SlugField, ForeignKey, Index
+from django.core.exceptions import ValidationError
+from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, \
+    SlugField, ForeignKey, Index, BooleanField, OneToOneField
 from django.utils import timezone
 
 from accounts.models import Profile
@@ -8,18 +9,61 @@ from accounts.models import Profile
 
 # Create your models here.
 class Bulletin(Model):
+    # Constants
+    RESERVED_TITLES = ['Platformová dokumentácia', 'platformova dokumentacia']
+    RESERVED_SLUGS = ['platformova-dokumentacia', 'platform-docs']
+
+    # Database Fields
     owner = OneToOneField(Profile, on_delete=CASCADE, related_name='bulletin')
     title = CharField(max_length=255, unique=True)
     description = TextField(blank=True)
     slug = SlugField(unique=True, max_length=295)
+    is_platform_docs = BooleanField(default=False)
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['title']
+
+    def __str__(self):
+        if self.is_platform_docs:
+            return f"SuperAdmin - {self.title}"
+        return self.title
 
     def __repr__(self):
         return f"Bulletin(title={self.title}, owner={self.owner})"
 
-    def __str__(self):
-        return self.title
+    # Decorator
+    @property
+    def is_superadmin_bulletin(self):
+        return self.owner.is_super_admin
+
+    # Methods
+    def clean(self):
+        if not self.owner.is_super_admin:
+            if self.title in self.RESERVED_TITLES:
+                raise ValidationError('Tento názov je rezervovaný.')
+
+        if self.is_platform_docs:
+            existing = Bulletin.objects.filter(is_platform_docs=True).exclude(pk=self.pk)
+            if existing.exists():
+                raise ValidationError('Platformová dokumentácia už existuje.')
+
+    def save(self, *args, **kwargs):
+        if self.owner.is_super_admin:
+            self.is_platform_docs = True
+            if not self.title:
+                self.title = 'Platformová dokumentácia'
+            if not self.slug:
+                self.slug = 'platformova-dokumentacia'
+
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.is_platform_docs:
+            raise ValidationError('Nemôžete vymazať platformovú dokumentáciu.')
+        super().delete(*args, **kwargs)
 
     def get_subscribers_count(self):
         return self.subscribers.count()
@@ -70,12 +114,6 @@ class Article(Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        if self.status == 'published':
-            self.published = timezone.now()
-
-        super().save(*args, **kwargs)
-
     @property
     def author(self):
         return self.bulletin.owner
@@ -99,6 +137,16 @@ class Article(Model):
     @property
     def is_rejected(self):
         return self.evaluation == 'rejected'
+
+    def save(self, *args, **kwargs):
+        if self.status == 'published' and not self.published:
+            self.published = timezone.now()
+
+        if self.bulletin.owner.is_super_admin:
+            self.evaluation = 'approved'
+
+        super().save(*args, **kwargs)
+
 
 
 class Subscription(Model):
