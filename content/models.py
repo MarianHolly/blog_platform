@@ -40,9 +40,10 @@ class Bulletin(Model):
 
     # Methods
     def clean(self):
-        if not self.owner.is_super_admin:
-            if self.title in self.RESERVED_TITLES:
-                raise ValidationError('Tento názov je rezervovaný.')
+        if hasattr(self, 'owner') and self.owner:
+            if not self.owner.is_super_admin:
+                if self.title in self.RESERVED_TITLES:
+                    raise ValidationError('Tento názov je rezervovaný.')
 
         if self.is_platform_docs:
             existing = Bulletin.objects.filter(is_platform_docs=True).exclude(pk=self.pk)
@@ -139,14 +140,25 @@ class Article(Model):
         return self.evaluation == 'rejected'
 
     def save(self, *args, **kwargs):
-        if self.status == 'published' and not self.published:
-            self.published = timezone.now()
+        is_new_publication = False
 
-        if self.bulletin.owner.is_super_admin:
-            self.evaluation = 'approved'
+        if self.pk:
+            try:
+                old_instance = self.__class__.objects.get(pk=self.pk)
+                if old_instance.status != 'published' and self.status == 'published':
+                    is_new_publication = True
+            except self.__class__.DoesNotExist:
+                pass
+
+        if self.status == 'published':
+            if not self.published or is_new_publication:
+                self.published = timezone.now()
+
+        if hasattr(self, 'bulletin') and self.bulletin and hasattr(self.bulletin, 'owner'):
+            if self.bulletin.owner.is_super_admin:
+                self.evaluation = 'approved'
 
         super().save(*args, **kwargs)
-
 
 
 class Subscription(Model):
