@@ -36,28 +36,13 @@ class Profile(Model):
         return self.role == 'admin'
 
     @property
-    def is_super_admin(self):
-        return self.role == 'writer' and self.user.is_superuser
-
-    @property
-    def can_promote_users(self):
-        return self.is_super_admin or self.role == 'admin'
-
-    @property
-    def effective_role(self):
-        if self.is_super_admin:
-            return 'superadmin'
-        return self.role
-
-    @property
     def display_role(self):
         role_names = {
             'reader': 'Čitateľ',
             'writer': 'Autor',
-            'admin': 'Administrátor',
-            'superadmin': 'Super Administrátor'
+            'admin': 'Administrátor'
         }
-        return role_names.get(self.effective_role, self.role)
+        return role_names.get(self.role, self.role)
 
     def __repr__(self):
         return f"Profile(name={self.user}, role={self.role})"
