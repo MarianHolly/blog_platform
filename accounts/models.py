@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
-from django.db.models import CASCADE, Model, OneToOneField, ImageField, ForeignKey
-from django.db.models.fields import CharField, TextField, DateTimeField
+from django.db.models import CASCADE, Model, OneToOneField, ImageField
+from django.db.models.fields import BooleanField, CharField, TextField
 
 
-# Extending existing User model
 class Profile(Model):
     USER_ROLES = [
         ('reader', 'Reader'),
@@ -14,16 +13,11 @@ class Profile(Model):
     user = OneToOneField(User, on_delete=CASCADE, related_name='profile')
     role = CharField(max_length=20, choices=USER_ROLES, default='reader')
     biography = TextField(max_length=500, null=True, blank=True)
-    avatar = ImageField(default='default_avatar.png', upload_to='profile_pics')
+    avatar = ImageField(upload_to='profile_pics/', null=True, blank=True)
+    auto_subscribed_to_platform = BooleanField(default=True)
 
     class Meta:
         ordering = ['user__username']
-
-    def __repr__(self):
-        return f"Profile(name={self.user}, role={self.role})"
-
-    def __str__(self):
-        return f"{self.user.username}"
 
     @property
     def full_name(self):
@@ -40,3 +34,25 @@ class Profile(Model):
     @property
     def is_admin(self):
         return self.role == 'admin'
+
+    @property
+    def is_super_admin(self):
+        return self.user.is_superuser
+
+    @property
+    def display_role(self):
+        role_names = {
+            'reader': 'Čitateľ',
+            'writer': 'Autor',
+            'admin': 'Administrátor'
+        }
+        return role_names.get(self.role, self.role)
+
+    def __repr__(self):
+        return f"Profile(name={self.user}, role={self.role})"
+
+    def __str__(self):
+        return f"{self.user.username}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
