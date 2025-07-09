@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import CASCADE, Model, OneToOneField, ImageField, ForeignKey
-from django.db.models.fields import CharField, TextField, DateTimeField
+from django.db.models.fields import CharField, TextField, DateTimeField, BooleanField
 
 
 # Extending existing User model
@@ -15,6 +15,7 @@ class Profile(Model):
     role = CharField(max_length=20, choices=USER_ROLES, default='reader')
     biography = TextField(max_length=500, null=True, blank=True)
     avatar = ImageField(default='default_avatar.png', upload_to='profile_pics')
+    auto_subscribed_to_platform = BooleanField(default=False)
 
     class Meta:
         ordering = ['user__username']
