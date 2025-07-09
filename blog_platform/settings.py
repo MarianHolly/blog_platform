@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
-
+import csp
 from dotenv import load_dotenv
 
 
@@ -26,7 +26,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", default="django-insecure-m!w*jfpwo7=*6^w!qf
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -42,7 +41,8 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "crispy_forms",
     "crispy_tailwind",
-    'django_bleach',
+    "csp",
+    "django_bleach",
 
     "accounts",
     "content",
@@ -79,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = "blog_platform.urls"
@@ -162,4 +163,5 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
 
