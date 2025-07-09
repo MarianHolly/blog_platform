@@ -1,3 +1,4 @@
+from bleach import clean
 from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
     SlugField, ForeignKey, Index
@@ -41,6 +42,9 @@ class Article(Model):
         ('private', 'Private'),
     ]
 
+    ALLOWED_TAGS = ['p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'h1', 'h2', 'h3']
+    ALLOWED_ATTRIBUTES = {}
+
     title = CharField(max_length=150, null=False, blank=False, unique=True)
     content = RichTextField(null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
@@ -71,6 +75,9 @@ class Article(Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        if self.content:
+            self.content = clean(self.content, tags=self.ALLOWED_TAGS, attributes=self.ALLOWED_ATTRIBUTES, strip=True)
+
         if self.status == 'published':
             self.published = timezone.now()
 
