@@ -66,6 +66,11 @@ class SignUpForm(UserCreationForm):
         return user
 
 
+def validate_image_size(value):
+    if value.size > 5 * 1024 * 1024:  # 5MB limit
+        raise ValidationError("Image too large (max 5MB)")
+
+
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
@@ -74,6 +79,9 @@ class ProfileForm(ModelForm):
     avatar = FileField(
         required=False,
         help_text='',
+        validators=[
+            validate_image_size,
+        ],
         widget=FileInput(
             attrs={
                 "class": "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-200 hover:cursor-pointer border border-gray-300 rounded-3xl"
