@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, RegexValidator
 from django.db.transaction import atomic
 from django.forms import Form, CharField, ModelForm, ImageField, FileField
 from django.forms.fields import EmailField, FileInput
@@ -33,6 +34,11 @@ class SignUpForm(UserCreationForm):
             },
         }
 
+    username = CharField(
+        validators=[
+            RegexValidator(r'^[a-zA-Z0-9_]+$', 'Username contains invalid characters')
+        ]
+    )
     password1 = CharField(
         widget=PasswordInput(attrs={'autocomplete': 'new-password', 'placeholder': 'Vyber si silné heslo'}),
         required=True,
@@ -54,6 +60,12 @@ class SignUpForm(UserCreationForm):
             'required': 'E-mailová adresa je povinná.',
             'invalid': 'Zadajte platnú e-mailovú adresu.',
         })
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Email already registered")
+        return email
 
     @atomic
     def save(self, commit=True):
