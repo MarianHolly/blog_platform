@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.db.transaction import atomic
 from django.forms import Form, CharField, ModelForm, ImageField, FileField
 from django.forms.fields import EmailField, FileInput
@@ -90,6 +91,7 @@ class ProfileForm(ModelForm):
         required=False,
         help_text='',
         validators=[
+            FileExtensionValidator(['jpg', 'jpeg', 'png', 'gif']),
             validate_image_size,
             validate_image_content
         ],
