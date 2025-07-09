@@ -1,8 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from django.db.transaction import atomic
 from django.forms import Form, CharField, ModelForm, ImageField, FileField
 from django.forms.fields import EmailField, FileInput
 from django.forms.widgets import PasswordInput, Textarea, ClearableFileInput
+from PIL import Image
 
 from accounts.models import Profile
 
@@ -71,6 +73,14 @@ def validate_image_size(value):
         raise ValidationError("Image too large (max 5MB)")
 
 
+def validate_image_content(value):
+    try:
+        img = Image.open(value)
+        img.verify()
+    except Exception:
+        raise ValidationError("Invalid image file")
+
+
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
@@ -81,6 +91,7 @@ class ProfileForm(ModelForm):
         help_text='',
         validators=[
             validate_image_size,
+            validate_image_content
         ],
         widget=FileInput(
             attrs={
