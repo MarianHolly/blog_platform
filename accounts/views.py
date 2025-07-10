@@ -144,8 +144,22 @@ class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
 
 class PromoteReaderToAdminView(LoginRequiredMixin, ReaderRequiredMixin, View):
     def post(self, request, username):
+        # Only superusers can promote to admin
+        if not request.user.is_superuser:
+            messages.error(request, 'Nedostatočné oprávnenia pre túto akciu.')
+            return redirect('profile', username=request.user.username)
 
-        profile = request.user.profile
+        if request.user.username != username and not request.user.is_superuser:
+            messages.error(request, 'Nemôžeš meniť role iných používateľov.')
+            return redirect('profile', username=request.user.username)
+
+        # Get target user profile
+        try:
+            target_user = User.objects.get(username=username)
+            profile = target_user.profile
+        except User.DoesNotExist:
+            messages.error(request, 'Používateľ neexistuje.')
+            return redirect('profile', username=request.user.username)
 
         if profile.role == 'reader':
             profile.role = 'admin'
