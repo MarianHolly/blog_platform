@@ -121,13 +121,16 @@ class ProfileUpdateView(UpdateView):
 
 class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
     def post(self, request, username):
+        if request.user.username != username:
+            messages.error(request, 'Nemôžeš meniť role iných používateľov.')
+            return redirect('profile', username=request.user.username)
+
         profile = request.user.profile
 
         if profile.role == 'reader':
             profile.role = 'writer'
             profile.save()
             messages.success(request, 'Stal si sa autorom.')
-
         elif profile.role == 'writer':
             messages.warning(request, 'Už si autorom.')
         else:
@@ -141,6 +144,7 @@ class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
 
 class PromoteReaderToAdminView(LoginRequiredMixin, ReaderRequiredMixin, View):
     def post(self, request, username):
+
         profile = request.user.profile
 
         if profile.role == 'reader':
