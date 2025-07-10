@@ -43,7 +43,10 @@ class Article(Model):
     ]
 
     ALLOWED_TAGS = ['p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'h1', 'h2', 'h3']
-    ALLOWED_ATTRIBUTES = {}
+    ALLOWED_ATTRIBUTES = {
+        'a': ['href', 'title'],
+        '*': ['class']
+    }
 
     title = CharField(max_length=150, null=False, blank=False, unique=True)
     content = RichTextField(null=True, blank=True)
