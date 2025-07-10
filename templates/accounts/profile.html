@@ -37,25 +37,42 @@
                     {% endif %}
                 </div>
 
+                <!-- Role Promotion Section -->
                 <div class="flex flex-col">
-                    {% if profile.user == user and profile.role == 'reader' %}
-                        <form action="{% url 'promote_to_writer' username=user.username %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit"
-                                    class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
-                                Staň sa autorom
-                            </button>
-                        </form>
+                    {% if user.is_authenticated and profile.user == user %}
+                        {% if profile.role == 'reader' %}
+                            <!-- Reader can promote self to writer -->
+                            <form action="{% url 'promote_to_writer' username=user.username %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit"
+                                        class="m-1 px-2 py-1 bg-green-100 text-green-800 text-sm uppercase rounded-xs text-center hover:bg-green-200 transition border-1 border-green-300">
+                                    Staň sa autorom
+                                </button>
+                            </form>
+                        {% endif %}
 
-                        <form action="{% url 'promote_to_admin' username=user.username %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit"
-                                    class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
-                                Staň sa adminom
-                            </button>
-                        </form>
+                        {% if profile.role == 'writer' and not profile.bulletin %}
+                            <!-- Writer without bulletin can create one -->
+                            <a href="{% url 'bulletin_create' %}"
+                               class="m-1 px-2 py-1 bg-blue-100 text-blue-800 text-sm uppercase rounded-xs text-center hover:bg-blue-200 transition border-1 border-blue-300">
+                                Vytvor svoj Bulletin
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if user.is_superuser and profile.user != user %}
+                        <!-- Superuser viewing other user's profile -->
+                        {% if profile.role == 'reader' %}
+                            <!-- Superuser can promote any reader to admin -->
+                            <form action="{% url 'promote_to_admin' username=profile.user.username %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
+                                    Povýš na admina
+                                </button>
+                            </form>
+                        {% endif %}
                     {% endif %}
 
                     {% if profile.user == user and profile.role == 'writer' and not profile.bulletin %}
