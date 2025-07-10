@@ -50,8 +50,11 @@ class ProfileModelTest(TestCase):
     def test_profile_username_unique(self):
         profile1 = Profile.objects.get(user__username='TestUser')
         with self.assertRaises(IntegrityError):
-            user2 = User.objects.create_user(
-                username='TestUser', password='TestPassword234')
+            User.objects.create_user(
+                username='TestUser',
+                password='TestPassword234',
+                email='different@mail.com'
+            )
 
 
 class SignUpFormTest(TestCase):
@@ -224,3 +227,84 @@ class PermissionTests(TestCase):
         self.client.login(username='writer', password='Password123')
         response = self.client.get(reverse('article_create'))
         self.assertEqual(response.status_code, 200)
+
+class RolePromotionSecurityTest(TestCase):
+    def setUp(self):
+        self.reader_user = User.objects.create_user('reader', 'reader@test.com', 'Password123')
+        self.reader_profile = Profile.objects.create(user=self.reader_user, role='reader')
+
+        # Create another reader
+        self.other_reader = User.objects.create_user('other_reader', 'other@test.com', 'Password123')
+        self.other_profile = Profile.objects.create(user=self.other_reader, role='reader')
+
+        # Create superuser
+        self.superuser = User.objects.create_superuser('superuser', 'super@test.com', 'Password123')
+        self.super_profile = Profile.objects.create(user=self.superuser, role='reader')
+
+        self.client = Client()
+
+    def test_reader_can_promote_self_to_writer(self):
+        self.client.login(username='reader', password='Password123')
+        response = self.client.post(reverse('promote_to_writer', kwargs={'username': 'reader'}))
+
+        self.assertEqual(response.status_code, 302)
+
+        # Check role changed
+        self.reader_profile.refresh_from_db()
+        self.assertEqual(self.reader_profile.role, 'writer')
+
+    def test_reader_cannot_promote_other_user(self):
+        self.client.login(username='reader', password='Password123')
+        response = self.client.post(reverse('promote_to_writer', kwargs={'username': 'other_reader'}))
+
+        self.assertEqual(response.status_code, 302)
+
+        self.other_profile.refresh_from_db()
+        self.assertEqual(self.other_profile.role, 'reader')
+
+    def test_reader_cannot_promote_to_admin(self):
+        self.client.login(username='reader', password='Password123')
+        response = self.client.post(reverse('promote_to_admin', kwargs={'username': 'reader'}))
+
+        self.assertEqual(response.status_code, 302)
+
+        # Role should remain reader
+        self.reader_profile.refresh_from_db()
+        self.assertEqual(self.reader_profile.role, 'reader')
+
+    def test_superuser_can_promote_others_to_admin(self):
+        self.client.login(username='superuser', password='Password123')
+        response = self.client.post(reverse('promote_to_admin', kwargs={'username': 'reader'}))
+
+        self.assertEqual(response.status_code, 302)
+
+        # Check role changed
+        self.reader_profile.refresh_from_db()
+        self.assertEqual(self.reader_profile.role, 'admin')
+
+    def test_anonymous_cannot_promote_anyone(self):
+        response = self.client.post(reverse('promote_to_writer', kwargs={'username': 'reader'}))
+
+        # Should redirect to login
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response.url)
+
+        # Role should remain unchanged
+        self.reader_profile.refresh_from_db()
+        self.assertEqual(self.reader_profile.role, 'reader')
+
+    def test_template_shows_correct_buttons(self):
+        # Reader viewing own profile should see "become writer" button
+        self.client.login(username='reader', password='Password123')
+        response = self.client.get(reverse('profile', kwargs={'username': 'reader'}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Staň sa autorom')
+        self.assertNotContains(response, 'Povýš na admina')
+
+        # Superuser viewing other profile should see admin promotion
+        self.client.login(username='superuser', password='Password123')
+        response = self.client.get(reverse('profile', kwargs={'username': 'reader'}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Povýš na admina')
