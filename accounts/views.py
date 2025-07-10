@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
@@ -119,7 +120,7 @@ class ProfileUpdateView(UpdateView):
         return reverse('profile', kwargs={'username': self.object.user.username})
 
 
-class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
+class PromoteReaderToWriterView(LoginRequiredMixin, View):
     def post(self, request, username):
         if request.user.username != username:
             messages.error(request, 'Nemôžeš meniť role iných používateľov.')
@@ -142,7 +143,7 @@ class PromoteReaderToWriterView(LoginRequiredMixin, ReaderRequiredMixin, View):
         return redirect('profile', username=request.user.username)
 
 
-class PromoteReaderToAdminView(LoginRequiredMixin, ReaderRequiredMixin, View):
+class PromoteReaderToAdminView(LoginRequiredMixin, View):
     def post(self, request, username):
         # Only superusers can promote to admin
         if not request.user.is_superuser:
