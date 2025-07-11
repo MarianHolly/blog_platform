@@ -1,0 +1,10 @@
+name: blog-platform
+
+services:
+  app:
+    image: blog-platform
+    container_name: blog-platform-container
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
