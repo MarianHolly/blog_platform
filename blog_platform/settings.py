@@ -149,6 +149,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Redis
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',  # Different DB than Celery used
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
+CACHE_TTL = 60 * 15
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
