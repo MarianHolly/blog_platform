@@ -1,10 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.cache import cache
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template.context_processors import request
+from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
+from django.views.decorators.cache import cache_page
 from django.views.generic import View, DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
 from accounts.mixins import AdministratorRequiredMixin, WriterRequiredMixin, WriterOrSuperAdminRequiredMixin
@@ -18,6 +21,7 @@ from engagement.models import Comment, Like, ReadLater
 
 # ==================================== BLOG PLATFORM ======================== #
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class HomePageView(ListView):
     template_name = "content/home.html"
     model = Article
@@ -31,6 +35,17 @@ class HomePageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        popular_bulletins = cache.get('popular_bulletins')
+        if popular_bulletins is None:
+            popular_bulletins = list(Bulletin.objects.all()[:3])
+            cache.set('popular_bulletins', popular_bulletins, 60 * 30)
+
+        recent_writers = cache.get('recent_writers')
+        if recent_writers is None:
+            recent_writers = list(Profile.objects.filter(role='writer')[:3])
+            cache.set('recent_writers', recent_writers, 60 * 15)  # 15 min
+
         context['popular_bulletins'] = Bulletin.objects.all()[:3]
         context['recent_writers'] = Profile.objects.filter(role='writer')[:3]
         context['new_readers'] = Profile.objects.filter(role='reader')[:3]
