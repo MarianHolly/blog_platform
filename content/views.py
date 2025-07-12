@@ -187,9 +187,16 @@ class BulletinDetailView(ListView):
 
     def get_queryset(self):
         self.bulletin = get_object_or_404(Bulletin, slug=self.kwargs['slug'])
-        return self.bulletin.articles.filter(
-            status='published'
-        ).select_related('bulletin__owner').order_by('-published')
+        # Cache the queryset for this bulletin
+        cache_key = f'bulletin_articles_{self.bulletin.id}_{self.request.GET.get("page", 1)}'
+        articles = cache.get(cache_key)
+        if articles is None:
+            articles = self.bulletin.articles.filter(
+                status='published'
+            ).select_related('bulletin__owner').order_by('-published')
+            cache.set(cache_key, articles, 60 * 10)
+
+        return articles
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
