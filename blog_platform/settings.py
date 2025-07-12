@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "csp",
     "django_bleach",
+    "django_celery_results",
 
     "accounts",
     "content",
@@ -126,11 +127,14 @@ DATABASES = {
         "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "HOST": "postgres",
+        "PORT": 5432,
     }
 }
 
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_EXTENDED = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
