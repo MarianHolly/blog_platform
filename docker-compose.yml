@@ -1,6 +1,19 @@
 name: blog-platform
 
 services:
+  app:
+    build: .
+    image: blog-platform-image
+    container_name: blog-platform-container
+    command: /app/entrypoint.sh
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+
   postgres:
     image: postgres
     container_name: postgres-container
@@ -14,5 +27,26 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  redis:
+    image: "redis:alpine"
+    container_name: redis-container
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  celery:
+    image: blog-platform-image
+    container_name: celery-container
+    command: celery -A blog_platform worker -E -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+      - app
+
 volumes:
   postgres_data:
+  redis_data:
