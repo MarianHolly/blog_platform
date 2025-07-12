@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "csp",
     "django_bleach",
-    "django_celery_results",
 
     "accounts",
     "content",
@@ -67,10 +66,6 @@ CKEDITOR_CONFIGS = {
         'height': 500,
     },
 }
-
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_RESTRICT_BY_USER = True
-CKEDITOR_BROWSE_SHOW_DIRS = True
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

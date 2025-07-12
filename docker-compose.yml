@@ -36,17 +36,6 @@ services:
     volumes:
       - redis_data:/data
 
-  celery:
-    image: blog-platform-image
-    container_name: celery-container
-    command: celery -A blog_platform worker -E -l info
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-      - redis
-      - app
-
 volumes:
   postgres_data:
   redis_data:
