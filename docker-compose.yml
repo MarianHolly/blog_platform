@@ -1,10 +1,18 @@
 name: blog-platform
 
 services:
-  app:
-    image: blog-platform
-    container_name: blog-platform-container
+  postgres:
+    image: postgres
+    container_name: postgres-container
     ports:
-      - "8001:8000"
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: always
     volumes:
-      - .:/app
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
