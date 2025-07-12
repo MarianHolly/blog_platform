@@ -1,0 +1,7 @@
+.venv
+.idea
+.env
+Dockerfile
+migrations/
+db.sqlite3
+.DS_Store
