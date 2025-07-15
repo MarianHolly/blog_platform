@@ -1,35 +1,24 @@
 name: blog-platform
 
 services:
-  app:
-    build: .
-    image: blog-platform-image
-    container_name: blog-platform-container
-    command: /app/entrypoint.sh
-    ports:
-      - "8001:8000"
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-      - redis
-
+  # PostgreSQL Database
   postgres:
-    image: postgres
-    container_name: postgres-container
+    image: postgres:17
+    container_name: blog-platform-postgres
     ports:
       - "5432:5432"
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    restart: always
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # Redis Cache & Sessions
   redis:
-    image: "redis:alpine"
-    container_name: redis-container
+    image: redis:7-alpine
+    container_name: blog-platform-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
