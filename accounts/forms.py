@@ -86,27 +86,16 @@ def validate_image_size(value):
         raise ValidationError("Image too large (max 5MB)")
 
 
-def validate_image_content(value):
-    try:
-        img = Image.open(value)
-        img.verify()
-    except Exception:
-        raise ValidationError("Invalid image file")
-
-
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['biography', 'avatar']
 
-    avatar = FileField(
+    avatar = ImageField(
         required=False,
         help_text='',
         validators=[
-            FileExtensionValidator(['jpg', 'jpeg', 'png', 'gif']),
-            validate_image_size,
-            validate_image_content
-        ],
+            FileExtensionValidator(['jpg', 'jpeg', 'png', 'gif']), validate_image_size],
         widget=FileInput(
             attrs={
                 "class": "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-200 hover:cursor-pointer border border-gray-300 rounded-3xl"
