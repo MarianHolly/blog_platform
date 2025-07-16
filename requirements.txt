@@ -12,6 +12,7 @@ dj3-cloudinary-storage==0.0.6
 Django==5.2
 django-bleach==3.1.0
 django-ckeditor==6.7.2
+django-cloudinary-storage==0.3.0
 django-crispy-forms==2.3
 django-csp==4.0
 django-environ==0.12.0
