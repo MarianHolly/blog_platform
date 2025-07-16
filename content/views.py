@@ -21,7 +21,7 @@ from engagement.models import Comment, Like, ReadLater
 
 # ==================================== BLOG PLATFORM ======================== #
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
+@method_decorator(cache_page(60 * 1), name='dispatch')
 class HomePageView(ListView):
     template_name = "content/home.html"
     model = Article
@@ -39,12 +39,12 @@ class HomePageView(ListView):
         popular_bulletins = cache.get('popular_bulletins')
         if popular_bulletins is None:
             popular_bulletins = list(Bulletin.objects.all()[:3])
-            cache.set('popular_bulletins', popular_bulletins, 60 * 30)
+            cache.set('popular_bulletins', popular_bulletins, 60 * 2)
 
         recent_writers = cache.get('recent_writers')
         if recent_writers is None:
             recent_writers = list(Profile.objects.filter(role='writer')[:3])
-            cache.set('recent_writers', recent_writers, 60 * 15)  # 15 min
+            cache.set('recent_writers', recent_writers, 60 * 2)  # 2 min
 
         context['popular_bulletins'] = Bulletin.objects.all()[:3]
         context['recent_writers'] = Profile.objects.filter(role='writer')[:3]
