@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import django.core.files.storage
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,7 +20,9 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "cloudinary_storage",
     "django.contrib.staticfiles",
+    "cloudinary",
 
     # Third party apps
     "ckeditor",
@@ -35,18 +38,15 @@ INSTALLED_APPS = [
     "engagement",
 ]
 
-# Only add Cloudinary if credentials are provided
-if os.getenv('CLOUDINARY_CLOUD_NAME'):
-    INSTALLED_APPS.insert(-3, "cloudinary_storage")
-    INSTALLED_APPS.insert(-3, "cloudinary")
+# Cloudinary Configuration
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
 
-    # Cloudinary Configuration
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-    }
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Media URL (keep for compatibility)
+MEDIA_URL = "/media/"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
@@ -79,7 +79,7 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-# Security headers (lighter for development)
+# Security headers
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
@@ -124,6 +124,7 @@ WSGI_APPLICATION = "blog_platform.wsgi.application"
 if os.getenv("DATABASE_URL"):
     # Production database configuration
     import dj_database_url
+
     DATABASES = {
         'default': dj_database_url.config(
             default=os.getenv('DATABASE_URL'),
@@ -133,6 +134,12 @@ if os.getenv("DATABASE_URL"):
     }
 else:
     # Local development database
+    db_port = os.getenv("DB_PORT", "5432")
+    try:
+        db_port = int(db_port)
+    except (ValueError, TypeError):
+        db_port = 5432
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -140,7 +147,7 @@ else:
             "USER": os.getenv("DB_USER", "postgres"),
             "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
             "HOST": os.getenv("DB_HOST", "localhost"),
-            "PORT": os.getenv("DB_PORT", "5432"),
+            "PORT": db_port,
         }
     }
 
@@ -155,7 +162,7 @@ CACHES = {
 }
 
 # Celery
-CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_BROKER_URL = redis_url.replace('/0', '/1') if '/0' in redis_url else 'redis://localhost:6379/1'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_RESULT_EXTENDED = True
 
@@ -164,7 +171,6 @@ SESSION_CACHE_ALIAS = 'default'
 CACHE_TTL = 60 * 15
 
 # Password validation
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -193,10 +199,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 if DEBUG:
     STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# Media files
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -221,3 +223,13 @@ if DEBUG:
             },
         },
     }
+
+# Set Cloudinary as default file storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+if hasattr(django.core.files.storage, 'default_storage'):
+    if hasattr(django.core.files.storage.default_storage, '_wrapped'):
+        django.core.files.storage.default_storage._wrapped = None
+
+print("🔧 SIMPLE FORCE: Cloudinary storage set")
+print(f"   DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
