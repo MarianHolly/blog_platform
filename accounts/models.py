@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import CASCADE, Model, OneToOneField, ImageField, ForeignKey
 from django.db.models.fields import CharField, TextField, DateTimeField, BooleanField
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 # Extending existing User model
@@ -14,7 +15,11 @@ class Profile(Model):
     user = OneToOneField(User, on_delete=CASCADE, related_name='profile')
     role = CharField(max_length=20, choices=USER_ROLES, default='reader')
     biography = TextField(max_length=500, null=True, blank=True)
-    avatar = ImageField(default='default_avatar.png', upload_to='profile_pics')
+    avatar = ImageField(
+        default='default_avatar.png',
+        upload_to='profile_pics/',
+        storage=MediaCloudinaryStorage()
+    )
     auto_subscribed_to_platform = BooleanField(default=False)
 
     class Meta:
