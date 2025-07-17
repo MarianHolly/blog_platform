@@ -107,10 +107,23 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_MAX_AGE = 31536000
+
 # Security headers
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
+
+CONTENT_SECURITY_POLICY = {'DIRECTIVES': {'connect-src': ("'self'",),
+                'default-src': ("'self'",),
+                'font-src': ("'self'", 'data:'),
+                'frame-src': ('*',),
+                'img-src': ("'self'", '*', 'data:'),
+                'script-src': ("'self'",),
+                'style-src': ("'self'", "'unsafe-inline'")}}
+
 
 # Only enable HTTPS redirects in production, not in development
 if not DEBUG:
@@ -214,9 +227,6 @@ else:
 
 CACHE_TTL = 60 * 15
 
-# WhiteNoise Configuration for static files
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['js', 'css']
 
 # Password validation
@@ -241,12 +251,14 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 # Static files
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-if DEBUG:
-    STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
