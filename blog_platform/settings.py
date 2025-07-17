@@ -95,17 +95,6 @@ CKEDITOR_5_CONFIGS = {
 
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
-if not DEBUG:
-    # CSP Configuration for CKEditor
-    CSP_DEFAULT_SRC = ("'self'",)
-    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'")
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
-    CSP_IMG_SRC = ("'self'", "data:", "blob:", "*.cloudinary.com")
-    CSP_FONT_SRC = ("'self'", "data:")
-else:
-    # Disable CSP in development
-    CSP_DEFAULT_SRC = None
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
