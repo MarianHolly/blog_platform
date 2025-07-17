@@ -50,7 +50,7 @@ class Article(Model):
     }
 
     title = CharField(max_length=150, null=False, blank=False, unique=True)
-    content = CKEditor5Field(null=True, blank=True)
+    content = CKEditor5Field('Content', config_name='default', null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
     subtitle = CharField(max_length=200, null=True, blank=True)

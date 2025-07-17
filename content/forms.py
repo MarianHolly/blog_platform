@@ -22,7 +22,7 @@ class ArticleForm(ModelForm):
             'title': TextInput(attrs={'class': 'form-control'}),
             'subtitle': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'w-full', 'rows': 3}),
-            'content': CKEditor5Widget(),
+            'content': CKEditor5Widget(attrs={'class': 'django_ckeditor_5'}, config_name='default'),
         }
         error_messages = {
             'content': {
@@ -49,6 +49,9 @@ class ArticleForm(ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data['content']
+
+        if not content or content.strip() == '':
+            raise ValidationError("Obsah článku je povinný.")
 
         text_only = re.sub(r'<[^>]*>', '', content)
         text_only = text_only.replace('&nbsp;', ' ').strip()
