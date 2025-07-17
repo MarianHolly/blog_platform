@@ -25,7 +25,6 @@ INSTALLED_APPS = [
 
     # Third party apps
     "django_ckeditor_5",
-    "ckeditor_uploader",
     "crispy_forms",
     "crispy_tailwind",
     "csp",
@@ -50,6 +49,7 @@ MEDIA_URL = "/media/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
+CKEDITOR_5_CUSTOM_CSS = '../static/article-content.css'
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': {
@@ -93,7 +93,7 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

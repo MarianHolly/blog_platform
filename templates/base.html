@@ -9,10 +9,14 @@
     <link rel="stylesheet" href="{% static 'css/article-content.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        .django-ckeditor-widget {
-      width: inherit;
-    }
-</style>
+        .django_ckeditor_5 {
+            width: 100% !important;
+            min-height: 500px;
+        }
+        .ck-editor__editable {
+            min-height: 500px;
+        }
+    </style>
 </head>
 <body class="min-h-screen bg-gray-50">
     {% include 'header.html' %}
