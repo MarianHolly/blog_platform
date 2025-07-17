@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load tailwind_filters %}
 
+{% block header %}
+    {{ form.media }}
+{% endblock %}
+
 {% block title %}
     {% if form.instance.pk %}Upraviť článok{% else %}Nový článok{% endif %}
 {% endblock %}
@@ -16,7 +20,6 @@
 
                     <form method="post">
                         {% csrf_token %}
-                        {{ form.media }}
 
                         <div class="mb-6">
                             {{ form.title|as_crispy_field }}
