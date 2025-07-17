@@ -95,6 +95,17 @@ CKEDITOR_5_CONFIGS = {
 
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
+if not DEBUG:
+    # CSP Configuration for CKEditor
+    CSP_DEFAULT_SRC = ("'self'",)
+    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'")
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+    CSP_IMG_SRC = ("'self'", "data:", "blob:", "*.cloudinary.com")
+    CSP_FONT_SRC = ("'self'", "data:")
+else:
+    # Disable CSP in development
+    CSP_DEFAULT_SRC = None
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -104,7 +115,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "csp.middleware.CSPMiddleware",
+    # "csp.middleware.CSPMiddleware",
 ]
 
 # Security headers
@@ -112,7 +123,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-# IMPORTANT: Only enable HTTPS redirects in production, not in development
+# Only enable HTTPS redirects in production, not in development
 if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -216,6 +227,8 @@ CACHE_TTL = 60 * 15
 
 # WhiteNoise Configuration for static files
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['js', 'css']
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
