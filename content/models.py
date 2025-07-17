@@ -3,6 +3,7 @@ from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
     SlugField, ForeignKey, Index
 from django.utils import timezone
+from django_ckeditor_5.fields import CKEditor5Field
 
 from accounts.models import Profile
 
@@ -49,7 +50,7 @@ class Article(Model):
     }
 
     title = CharField(max_length=150, null=False, blank=False, unique=True)
-    content = RichTextField(null=True, blank=True)
+    content = CKEditor5Field(null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
     subtitle = CharField(max_length=200, null=True, blank=True)

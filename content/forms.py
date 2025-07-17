@@ -7,6 +7,7 @@ from django.forms import RadioSelect, TextInput, Textarea
 from django.forms.models import ModelForm
 from django.forms.widgets import HiddenInput
 from django.utils import timezone
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 from content.models import Article, Bulletin
 
@@ -21,7 +22,7 @@ class ArticleForm(ModelForm):
             'title': TextInput(attrs={'class': 'form-control'}),
             'subtitle': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'w-full', 'rows': 3}),
-            'content': CKEditorWidget(),
+            'content': CKEditor5Widget(),
         }
         error_messages = {
             'content': {
@@ -32,6 +33,7 @@ class ArticleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+        self.fields["content"].required = False
 
         if user:
             try:
