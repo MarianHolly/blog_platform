@@ -75,13 +75,6 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if profile.user == user and profile.role == 'writer' and not profile.bulletin %}
-                        <a href="{% url 'bulletin_create' %}"
-                           class="m-1 px-2 py-1 bg-gray-100 text-gray-800 text-sm uppercase rounded-xs text-center hover:bg-gray-200 transition border-1 border-gray-300">
-                            Vytvor svoj Bulletin
-                        </a>
-                    {% endif %}
-
                     <div class="w-full flex justify-center md:justify-end items-center">
                         {% if profile.user == user %}
                             <a href="{% url 'profile_update' username=user.username %}">
