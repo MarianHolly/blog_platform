@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import django.core.files.storage
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +10,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.onrender.com").split(",")
 
 # Application definition
 INSTALLED_APPS = [
@@ -70,6 +69,7 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -84,21 +84,18 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-# Development security settings
-if DEBUG:
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-else:
-    SECURE_SSL_REDIRECT = True
+# IMPORTANT: Only enable HTTPS redirects in production, not in development
+if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
 
+# Session security
+SESSION_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_HTTPONLY = True
 
 ROOT_URLCONF = "blog_platform.urls"
@@ -152,23 +149,45 @@ else:
     }
 
 # Redis Configuration
-redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv('REDIS_URL')
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': redis_url,
+if REDIS_URL:
+    print(f"🎯 Redis URL found: {REDIS_URL[:30]}...")
+    try:
+        # Simple Redis configuration without SSL complications
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+                'LOCATION': REDIS_URL,
+            }
+        }
+        SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+        SESSION_CACHE_ALIAS = 'default'
+        print("✅ Redis: Configured")
+    except Exception as e:
+        print(f"⚠️ Redis failed: {e}")
+        # Fallback to database
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+            }
+        }
+        SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+        print("📝 Using database sessions instead")
+else:
+    # No Redis - use database sessions
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
     }
-}
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+    print("🎯 Redis: Skipped (using database sessions)")
 
-# Celery
-CELERY_BROKER_URL = redis_url.replace('/0', '/1') if '/0' in redis_url else 'redis://localhost:6379/1'
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_RESULT_EXTENDED = True
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default'
 CACHE_TTL = 60 * 15
+
+# WhiteNoise Configuration for static files
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -206,8 +225,40 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-# Logging for development
-if DEBUG:
+# Set Cloudinary as default file storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Logging configuration
+if not DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+                'style': '{',
+            },
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose',
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+        },
+    }
+else:
+    # Simple logging for development
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -224,12 +275,7 @@ if DEBUG:
         },
     }
 
-# Set Cloudinary as default file storage
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-if hasattr(django.core.files.storage, 'default_storage'):
-    if hasattr(django.core.files.storage.default_storage, '_wrapped'):
-        django.core.files.storage.default_storage._wrapped = None
-
-print("🔧 SIMPLE FORCE: Cloudinary storage set")
-print(f"   DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
+print("🔧 Cloudinary storage configured")
+print(f"🗄️ Database: {'Production (PostgreSQL)' if os.getenv('DATABASE_URL') else 'Local Development'}")
+print(f"🎯 Redis: {'Connected' if REDIS_URL else 'Not configured (using fallback)'}")
+print(f"🔒 Debug Mode: {DEBUG}")
