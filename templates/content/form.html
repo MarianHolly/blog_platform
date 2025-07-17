@@ -28,6 +28,23 @@
                             {{ form.content }}
                         </div>
 
+                        <div class="ck-editor-container">
+                            <textarea id="id_text" name="text" class="django_ckeditor_5" >
+                            </textarea>
+                            <div></div> <!-- this div or any empty element is required -->
+                            <span class="word-count" id="id_text_script-word-count"></span>
+                       </div>
+                        <input type="hidden" id="id_text_script-ck-editor-5-upload-url" data-upload-url="/ckeditor5/image_upload/" data-csrf_cookie_name="new_csrf_cookie_name">
+   <span id="id_text_script-span"><script id="id_text_script" type="application/json">
+       const config = {};
+window.ClassicEditor
+   .create( document.querySelector( '#editor' ), config )
+   .catch( error => {
+       console.error( error );
+   } );
+}
+   </script></span>
+
                         <div class="w-full flex flex-col justify-center border-t-1 border-gray-300 p-6 my-6">
                             <h2 class="text-center font-medium text-gray-700 mb-4">Nastavenia</h2>
                             <div class="flex flex-col lg:flex-row justify-evenly gap-6">
