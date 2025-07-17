@@ -49,7 +49,7 @@ MEDIA_URL = "/media/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
-CKEDITOR_5_CUSTOM_CSS = '../static/article-content.css'
+CKEDITOR_5_CUSTOM_CSS = '/static/css/article-content.css'
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': {
