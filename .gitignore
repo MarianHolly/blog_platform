@@ -3,3 +3,6 @@ media
 .idea
 db.sqlite3
 .env
+__pycache__/
+
+.claude/
