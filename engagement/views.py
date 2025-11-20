@@ -10,6 +10,23 @@ from engagement.models import Like, ReadLater
 
 # Create your views here.
 class LikeToggleView(LoginRequiredMixin, View):
+    """Toggle like status for an article (like/unlike).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - Self-engagement prevention: Users cannot like their own articles
+
+    Behavior:
+    - Retrieves article by ID from URL parameter
+    - Validates user is not the article author
+    - Creates like if doesn't exist
+    - Deletes like if already exists
+    - Shows success/warning messages accordingly
+    - Redirects to referrer if provided, otherwise to article detail
+
+    Returns:
+    - Redirect to article detail or referrer after toggling like
+    """
     def post(self, request, id):
         # get article
         article = get_object_or_404(Article, id=id)
@@ -41,6 +58,23 @@ class LikeToggleView(LoginRequiredMixin, View):
 
 
 class ReadLaterToggleView(LoginRequiredMixin, View):
+    """Toggle read-later (bookmark) status for an article.
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - Self-engagement prevention: Users cannot bookmark their own articles
+
+    Behavior:
+    - Retrieves article by ID from URL parameter
+    - Validates user is not the article author
+    - Creates read-later record if doesn't exist
+    - Deletes read-later record if already exists
+    - Shows success/warning messages accordingly
+    - Redirects to referrer if provided, otherwise to article detail
+
+    Returns:
+    - Redirect to article detail or referrer after toggling bookmark
+    """
     def post(self, request, id):
         article = get_object_or_404(Article, id=id)
         user_profile = request.user.profile

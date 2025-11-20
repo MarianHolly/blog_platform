@@ -22,6 +22,20 @@ PROFILE_ROLE_ADMIN = 'admin'
 
 # Create your views here.
 class SignUpView(CreateView):
+    """Create new user account and associated reader profile.
+
+    Permissions:
+    - Any anonymous user can create account (no authentication required)
+
+    Behavior:
+    - Creates new User and associated Profile with role='reader'
+    - Auto-subscribes user to platform if configured
+    - Redirects to login page after successful registration
+
+    Returns:
+    - Template context with signup form and validation errors
+    - Redirect to login on successful creation
+    """
     form_class = SignUpForm
     template_name = "accounts/signup.html"
     success_url = reverse_lazy('login')
@@ -33,6 +47,21 @@ def logout_user(request):
 
 
 class CustomLoginView(LoginView):
+    """Authenticate user and create session.
+
+    Permissions:
+    - Any anonymous user can attempt login
+    - Authenticated users are redirected to home page
+
+    Behavior:
+    - Accepts username/password credentials
+    - Creates session on successful authentication
+    - Redirects already-authenticated users to home page
+
+    Returns:
+    - Login form template for GET requests
+    - Redirect to next URL or home page on successful authentication
+    """
     template_name = 'accounts/login.html'
     redirect_authenticated_user = True
 
@@ -44,6 +73,22 @@ class CustomLoginView(LoginView):
 
 
 class ProfileDetailView(DetailView):
+    """Display user profile with subscriptions and recent activities.
+
+    Permissions:
+    - Any user can view any public profile
+    - Shows toggle buttons only on own profile for authenticated users
+
+    Behavior:
+    - Loads user subscriptions (bulletins they follow)
+    - Retrieves 5 most recent likes and read-later bookmarks
+    - Conditionally shows role promotion buttons on user's own profile
+    - Efficiently fetches related data with select_related
+
+    Returns:
+    - Profile object with subscriptions, recent_likes, recent_read_later lists
+    - show_toggle_buttons context flag indicating if user viewing their own profile
+    """
     template_name = 'accounts/profile.html'
     model = Profile
     context_object_name = "profile"
@@ -51,7 +96,6 @@ class ProfileDetailView(DetailView):
     slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
-        """ Subscriptions + Recent Articles """
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
 
@@ -82,6 +126,21 @@ class ProfileDetailView(DetailView):
 
 
 class ProfileActivityView(DetailView):
+    """Display paginated user activity history (likes and read-later bookmarks).
+
+    Permissions:
+    - Any user can view activity of any profile
+
+    Behavior:
+    - Paginates user's likes with 10 items per page
+    - Paginates user's read-later bookmarks with 10 items per page
+    - Retrieves pagination page numbers from separate GET parameters
+    - Efficiently fetches related article and bulletin data
+
+    Returns:
+    - Profile object with paginated likes_page_obj and read_later_page_obj
+    - Lists of likes and read_laters for current page
+    """
     template_name = 'accounts/profile_activity.html'
     model = Profile
     context_object_name = "profile"
@@ -114,6 +173,21 @@ class ProfileActivityView(DetailView):
 
 
 class ProfileUpdateView(UpdateView):
+    """Update user profile information (avatar, biography, etc.).
+
+    Permissions:
+    - Any user can update their own profile
+    - No mixin validation required as form/template handles own-profile check
+
+    Behavior:
+    - Allows editing profile fields via ProfileForm
+    - User identified by URL username parameter
+    - Redirects to updated profile on successful save
+
+    Returns:
+    - Form with validation errors on invalid submission
+    - Redirect to profile detail view on successful update
+    """
     template_name = "accounts/profile_form.html"
     model = Profile
     form_class = ProfileForm
@@ -125,6 +199,23 @@ class ProfileUpdateView(UpdateView):
 
 
 class PromoteReaderToWriterView(LoginRequiredMixin, View):
+    """Promote reader user to writer role (create personal bulletin).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - Self-service: User can only promote their own account
+    - Cannot promote if already writer or admin
+
+    Behavior:
+    - Validates user is promoting their own account
+    - Changes role from 'reader' to 'writer'
+    - Creates personal Bulletin on first writer promotion (handled by signal)
+    - Displays success message on promotion, warning if already writer
+    - Redirects to referrer if provided, otherwise to user's profile
+
+    Returns:
+    - Redirect to profile page after successful promotion or error
+    """
     def post(self, request, username):
         if request.user.username != username:
             messages.error(request, 'Nemôžeš meniť role iných používateľov.')
@@ -148,6 +239,24 @@ class PromoteReaderToWriterView(LoginRequiredMixin, View):
 
 
 class PromoteReaderToAdminView(LoginRequiredMixin, View):
+    """Promote reader user to administrator role (moderation privileges).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - Superuser-only: Only Django superusers can promote to admin
+    - Cannot promote writers (admin and writer are mutually exclusive)
+
+    Behavior:
+    - Validates requesting user is superuser
+    - Validates target user exists
+    - Prevents promoting already-promoted users or writers
+    - Changes role from 'reader' to 'admin'
+    - Displays appropriate success/warning messages
+    - Redirects to referrer if provided, otherwise to user's profile
+
+    Returns:
+    - Redirect to profile page after successful promotion or error
+    """
     def post(self, request, username):
         # Only superusers can promote to admin
         if not request.user.is_superuser:
