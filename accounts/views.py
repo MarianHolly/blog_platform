@@ -51,16 +51,17 @@ class CustomLoginView(LoginView):
 
     Permissions:
     - Any anonymous user can attempt login
-    - Authenticated users are redirected to home page
+    - Authenticated users are redirected to profile page
 
     Behavior:
     - Accepts username/password credentials
     - Creates session on successful authentication
-    - Redirects already-authenticated users to home page
+    - Redirects already-authenticated users to their profile
+    - Redirects successful login to user's profile page
 
     Returns:
     - Login form template for GET requests
-    - Redirect to next URL or home page on successful authentication
+    - Redirect to user's profile page on successful authentication
     """
     template_name = 'accounts/login.html'
     redirect_authenticated_user = True
@@ -129,17 +130,24 @@ class ProfileActivityView(DetailView):
     """Display paginated user activity history (likes and read-later bookmarks).
 
     Permissions:
-    - Any user can view activity of any profile
+    - Any user can view activity of any public profile
+    - Shows complete engagement history for the viewed user
+
+    Query Optimization:
+    - select_related('article__bulletin__owner'): Fetches article author in single query
+    - Filters likes and read-laters by author, ordered by recency
 
     Behavior:
-    - Paginates user's likes with 10 items per page
-    - Paginates user's read-later bookmarks with 10 items per page
-    - Retrieves pagination page numbers from separate GET parameters
+    - Paginates user's likes with 10 items per page (likes_page GET parameter)
+    - Paginates user's read-later bookmarks with 10 items per page (read_later_page parameter)
+    - Shows two separate paginated lists on single page
     - Efficiently fetches related article and bulletin data
 
     Returns:
     - Profile object with paginated likes_page_obj and read_later_page_obj
-    - Lists of likes and read_laters for current page
+    - likes: Current page's list of user's likes
+    - read_laters: Current page's list of user's bookmarks
+    - Pagination objects for template navigation
     """
     template_name = 'accounts/profile_activity.html'
     model = Profile
@@ -176,13 +184,14 @@ class ProfileUpdateView(UpdateView):
     """Update user profile information (avatar, biography, etc.).
 
     Permissions:
-    - Any user can update their own profile
-    - No mixin validation required as form/template handles own-profile check
+    - LoginRequiredMixin not enforced; template/form should validate own-profile check
+    - User can update their own profile via username URL parameter
 
     Behavior:
-    - Allows editing profile fields via ProfileForm
-    - User identified by URL username parameter
+    - Allows editing profile fields (avatar, biography, etc.) via ProfileForm
+    - User identified by URL username parameter (slug_field='user__username')
     - Redirects to updated profile on successful save
+    - Form validation ensures only valid profile data is saved
 
     Returns:
     - Form with validation errors on invalid submission
@@ -203,15 +212,16 @@ class PromoteReaderToWriterView(LoginRequiredMixin, View):
 
     Permissions:
     - LoginRequiredMixin: User must be authenticated
-    - Self-service: User can only promote their own account
-    - Cannot promote if already writer or admin
+    - Self-service only: User can only promote their own account (enforced via username check)
+    - Role restriction: Cannot promote if already writer or admin
 
     Behavior:
-    - Validates user is promoting their own account
+    - Validates requesting user is promoting their own account (matches URL username parameter)
     - Changes role from 'reader' to 'writer'
-    - Creates personal Bulletin on first writer promotion (handled by signal)
+    - Creates personal Bulletin on first writer promotion (handled by post_save signal in models)
     - Displays success message on promotion, warning if already writer
-    - Redirects to referrer if provided, otherwise to user's profile
+    - Redirects to referrer if provided (via next POST parameter), otherwise to user's profile
+    - Uses messages framework to provide user feedback
 
     Returns:
     - Redirect to profile page after successful promotion or error
@@ -243,16 +253,18 @@ class PromoteReaderToAdminView(LoginRequiredMixin, View):
 
     Permissions:
     - LoginRequiredMixin: User must be authenticated
-    - Superuser-only: Only Django superusers can promote to admin
-    - Cannot promote writers (admin and writer are mutually exclusive)
+    - Superuser-only: Only Django superusers can promote users to admin role
+    - Role restriction: Cannot promote writers (admin and writer are mutually exclusive roles)
 
     Behavior:
-    - Validates requesting user is superuser
-    - Validates target user exists
-    - Prevents promoting already-promoted users or writers
-    - Changes role from 'reader' to 'admin'
-    - Displays appropriate success/warning messages
-    - Redirects to referrer if provided, otherwise to user's profile
+    - Validates requesting user is Django superuser (checked first)
+    - Validates target user exists in database (raises 404-like messages if not)
+    - Prevents promoting already-promoted users (warns if target already admin)
+    - Prevents promoting writers (warns if target has writer role)
+    - Changes role from 'reader' to 'admin' only if validation passes
+    - Displays appropriate success/warning messages via messages framework
+    - Redirects to referrer if provided (via next POST parameter), otherwise to user's profile
+    - Gracefully handles non-existent users with error messages
 
     Returns:
     - Redirect to profile page after successful promotion or error

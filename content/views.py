@@ -89,13 +89,15 @@ class AboutPageView(TemplateView):
     """Display static about page with platform information.
 
     Permissions:
-    - Any user can view
+    - Any user (authenticated or anonymous) can view
 
     Behavior:
-    - Renders static template with no context data
+    - Renders static template with no dynamic context data
+    - No database queries required (pure template rendering)
+    - Suitable for caching due to static content
 
     Returns:
-    - Rendered about page template
+    - Rendered about page template with platform description
     """
     template_name = "content/about.html"
 
@@ -104,13 +106,15 @@ class QAPageView(TemplateView):
     """Display static FAQ/Q&A page with help information.
 
     Permissions:
-    - Any user can view
+    - Any user (authenticated or anonymous) can view
 
     Behavior:
-    - Renders static template with no context data
+    - Renders static template with no dynamic context data
+    - No database queries required (pure template rendering)
+    - Suitable for caching due to static content
 
     Returns:
-    - Rendered Q&A page template
+    - Rendered Q&A/FAQ page template with help information
     """
     template_name = "content/qa.html"
 
@@ -375,13 +379,15 @@ class BulletinCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
 
     Permissions:
     - LoginRequiredMixin: User must be authenticated
-    - WriterRequiredMixin: User must have 'writer' role
-    - One bulletin per writer (enforced at profile level)
+    - WriterRequiredMixin: User must have 'writer' role (checked before POST processing)
+    - One bulletin per writer: Profile model enforces single bulletin per writer (unique_together)
 
     Behavior:
-    - Sets bulletin owner automatically to user's profile
-    - Allows customizing title, description, and URL slug
-    - Redirects to new bulletin on successful creation
+    - Sets bulletin owner automatically to user's profile (pre-populated)
+    - Allows customizing bulletin title, description, and URL slug
+    - Validates form data (slug uniqueness, title length, etc.)
+    - Redirects to newly created bulletin on successful creation
+    - Passes user to form via get_form_kwargs() for validation
 
     Returns:
     - Form with validation errors on invalid submission
@@ -407,13 +413,15 @@ class BulletinUpdateView(UpdateView):
     """Update bulletin details (title, description, slug).
 
     Permissions:
-    - Any authenticated user can update (no mixin validation)
-    - Note: Template/form should validate ownership
+    - LoginRequiredMixin not enforced at view level; template/form should validate ownership
+    - Note: Authorization should be checked in template or form to ensure user owns bulletin
 
     Behavior:
-    - Retrieves bulletin by primary key URL parameter
-    - Allows editing bulletin metadata
+    - Retrieves bulletin by primary key (pk) URL parameter
+    - Allows editing bulletin metadata (title, description, slug)
+    - Validates form data (slug uniqueness, title length, etc.)
     - Redirects to updated bulletin on successful save
+    - Uses get_success_url() to redirect to bulletin detail view
 
     Returns:
     - Form with validation errors on invalid submission
@@ -431,17 +439,24 @@ class BulletinDashboardView(DetailView):
     """Display writer's dashboard with draft and published articles.
 
     Permissions:
-    - Any user can view (no mixin validation)
-    - Note: Template should restrict to bulletin owner only
+    - No mixin validation enforced at view level
+    - Note: Template should restrict access to bulletin owner only (check user.profile == bulletin.owner)
+
+    Query Optimization:
+    - Uses bulletin.articles relationship (reverse ForeignKey from Article model)
+    - Filters articles by status (draft vs published) in single queryset
 
     Behavior:
-    - Retrieves bulletin by primary key URL parameter
-    - Lists draft articles (unpublished/in-progress)
-    - Lists published articles (live content)
-    - Allows writers to manage their bulletin's content
+    - Retrieves bulletin by primary key (pk) URL parameter
+    - Separates articles into two lists: drafts (status=draft) and published (status=published)
+    - Shows writer's draft articles (unpublished/in-progress) for editing
+    - Shows writer's published articles (live content) for reference
+    - Allows writers to manage their bulletin's content via template links
 
     Returns:
-    - Bulletin object with draft and published article lists
+    - Bulletin object
+    - drafts: List of articles with status='draft'
+    - articles: List of articles with status='published'
     """
     model = Bulletin
     template_name = "content/bulletin_dashboard.html"
@@ -557,18 +572,23 @@ class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMi
 
     Permissions:
     - LoginRequiredMixin: User must be authenticated
-    - AdministratorRequiredMixin: User must have 'admin' role
+    - AdministratorRequiredMixin: User must have 'admin' role (enforced before processing)
 
     Behavior:
-    - Lists articles currently under review for evaluation
-    - Lists articles already reviewed (approved or rejected)
-    - Allows admins to evaluate submitted articles
-    - Provides context for moderation workflow
+    - Lists articles currently under review for evaluation (evaluation=under_review)
+    - Lists articles already reviewed (evaluation=approved or evaluation=rejected)
+    - Allows admins to evaluate submitted articles via decision form links
+    - Provides separate context for moderation workflow (pending vs completed reviews)
+
+    Query Optimization:
+    - Fetches all articles in default queryset
+    - Filters by evaluation status in get_context_data()
+    - Uses evaluation field filters for admin review workflow
 
     Returns:
-    - All articles (unfiltered by default)
-    - unreviewed_articles: Articles with 'under_review' evaluation status
-    - reviewed_articles: Articles with 'approved' or 'rejected' status
+    - articles: All articles (default queryset for ListView)
+    - unreviewed_articles: Articles with evaluation='under_review'
+    - reviewed_articles: Articles with evaluation in ('approved', 'rejected')
     """
     template_name = 'accounts/admin_dashboard.html'
     model = Article
@@ -586,17 +606,19 @@ class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin
 
     Permissions:
     - LoginRequiredMixin: User must be authenticated
-    - AdministratorRequiredMixin: User must have 'admin' role
+    - AdministratorRequiredMixin: User must have 'admin' role (enforced before processing)
 
     Behavior:
-    - Retrieves article by ID from URL parameter
-    - Changes evaluation status from 'pending' to 'under_review'
-    - Prevents re-evaluating already-reviewed articles
-    - Shows appropriate success/warning messages
-    - Redirects to referrer if provided, otherwise to user's profile
+    - Retrieves article by ID from URL parameter (id)
+    - Validates article exists (404 if not found)
+    - Changes evaluation status from 'pending' to 'under_review' only if pending
+    - Prevents re-evaluating already-reviewed articles (warns if already under_review/approved/rejected)
+    - Shows appropriate success/warning messages via messages framework
+    - Redirects to referrer if provided (via next POST parameter), otherwise to user's profile
+    - Persists evaluation status change immediately to database
 
     Returns:
-    - Redirect to profile after status change
+    - Redirect to profile or next URL after status change
     """
     def post(self, request, id):
         article = get_object_or_404(Article, id=id)
@@ -619,17 +641,20 @@ class ArticleEvaluationDecisionView(LoginRequiredMixin, AdministratorRequiredMix
 
     Permissions:
     - LoginRequiredMixin: User must be authenticated
-    - AdministratorRequiredMixin: User must have 'admin' role
+    - AdministratorRequiredMixin: User must have 'admin' role (enforced before processing)
 
     Behavior:
-    - Retrieves article by ID from URL parameter (pk_url_kwarg)
-    - Displays form with two options: Approved or Rejected
-    - Updates article evaluation status based on admin decision
-    - Redirects to evaluation dashboard after decision
+    - Retrieves article by ID from URL parameter using pk_url_kwarg='id'
+    - Displays form with evaluation decision options: Approved or Rejected
+    - Validates form data with ArticleEvaluationForm
+    - Updates article evaluation status based on admin's final decision
+    - Persists decision immediately to database
+    - Redirects to evaluation dashboard after successful decision
+    - Evaluation workflow: pending → under_review → (approved or rejected)
 
     Returns:
-    - Form with approval/rejection options on GET
-    - Redirect to evaluation dashboard on successful POST
+    - Form with approval/rejection radio options on GET request
+    - Redirect to evaluation dashboard on successful POST decision
     """
     template_name = "accounts/evaluation_form.html"
     form_class = ArticleEvaluationForm
@@ -649,19 +674,26 @@ class ArticleSearchView(ListView):
     """Search published articles by title or description.
 
     Permissions:
-    - Any user can search
+    - Any user (authenticated or anonymous) can search articles
+
+    Query Optimization:
+    - select_related('bulletin__owner'): Fetches author in single query
+    - Filters for published articles only (status=published)
+    - Case-insensitive search using Q objects with icontains
 
     Behavior:
-    - Retrieves 'q' query parameter from GET request
-    - Filters published articles by title or description (case-insensitive)
-    - Paginates results 10 per page
-    - Returns empty queryset if no query provided
-    - Provides article count and query term to template
+    - Retrieves 'q' query parameter from GET request (search term)
+    - Filters published articles matching title OR description (case-insensitive)
+    - Returns empty queryset if no query provided (prevents full database export)
+    - Strips whitespace from query term for consistent search
+    - Paginates results 10 per page for browsable result sets
+    - Provides article count and query term to template for display
 
     Returns:
-    - Paginated list of matching published articles
+    - Paginated list of published articles matching search criteria
+    - articles: Queryset of matching articles (10 per page)
     - article_count: Total number of search results
-    - query: The search term submitted by user
+    - query: The search term submitted by user (for display in template)
     """
     template_name = "content/search_results.html"
     model = Article
