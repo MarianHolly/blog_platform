@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.template.defaulttags import comment
 from django.test import TestCase
 from django.utils import timezone
@@ -52,6 +53,19 @@ class CommentModelTest(TestCase):
     def test_comment_author(self):
         comment = Comment.objects.get(author__user__username='TestUser')
         self.assertEqual(comment.author.user.username, 'TestUser')
+
+    def test_comment_unique_together_constraint(self):
+        """Test that duplicate comments (same user+article) raise IntegrityError."""
+        comment = Comment.objects.get(author__user__username='TestUser')
+
+        # Attempting to create another comment from same user on same article
+        # should raise IntegrityError due to unique_together constraint
+        with self.assertRaises(IntegrityError):
+            Comment.objects.create(
+                author=comment.author,
+                article=comment.article,
+                content='Duplicate comment'
+            )
 
 
 class LikeModelTest(TestCase):
@@ -108,6 +122,18 @@ class LikeModelTest(TestCase):
             article=article)
         self.assertTrue(Like.objects.filter(author=writer_profile, article=article).exists())
 
+    def test_like_unique_together_constraint(self):
+        """Test that duplicate likes (same user+article) raise IntegrityError."""
+        like = Like.objects.get(author__user__username='TestUser')
+
+        # Attempting to create another like from same user on same article
+        # should raise IntegrityError due to unique_together constraint
+        with self.assertRaises(IntegrityError):
+            Like.objects.create(
+                author=like.author,
+                article=like.article
+            )
+
 
 
 class ReadLaterModelTest(TestCase):
@@ -146,3 +172,15 @@ class ReadLaterModelTest(TestCase):
     def test_readlater_author(self):
         readlater = ReadLater.objects.get(author__user__username='TestUser')
         self.assertEqual(readlater.author.user.username, 'TestUser')
+
+    def test_readlater_unique_together_constraint(self):
+        """Test that duplicate read-later bookmarks (same user+article) raise IntegrityError."""
+        readlater = ReadLater.objects.get(author__user__username='TestUser')
+
+        # Attempting to create another read-later from same user on same article
+        # should raise IntegrityError due to unique_together constraint
+        with self.assertRaises(IntegrityError):
+            ReadLater.objects.create(
+                author=readlater.author,
+                article=readlater.article
+            )
