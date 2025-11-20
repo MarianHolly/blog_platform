@@ -39,7 +39,8 @@ class ArticleForm(ModelForm):
             try:
                 self.fields['bulletin'].initial = user.profile.bulletin
                 self.fields['bulletin'].disabled = True
-            except:
+            except AttributeError:
+                # User profile or bulletin doesn't exist yet
                 pass
 
         self.fields['status'].choices = [
@@ -91,5 +92,6 @@ class BulletinForm(ModelForm):
             try:
                 self.fields['owner'].initial = user.profile
                 self.fields['owner'].disabled = True
-            except:
+            except AttributeError:
+                # User profile doesn't exist yet
                 pass

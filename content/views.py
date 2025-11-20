@@ -69,19 +69,28 @@ class HomePageView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        # Use cached popular bulletins (2 min TTL) instead of querying database
         popular_bulletins = cache.get('popular_bulletins')
         if popular_bulletins is None:
             popular_bulletins = list(Bulletin.objects.all()[:3])
             cache.set('popular_bulletins', popular_bulletins, 60 * 2)
 
+        # Use cached recent writers (2 min TTL) instead of querying database
         recent_writers = cache.get('recent_writers')
         if recent_writers is None:
             recent_writers = list(Profile.objects.filter(role=PROFILE_ROLE_WRITER)[:3])
-            cache.set('recent_writers', recent_writers, 60 * 2)  # 2 min
+            cache.set('recent_writers', recent_writers, 60 * 2)
 
-        context['popular_bulletins'] = Bulletin.objects.all()[:3]
-        context['recent_writers'] = Profile.objects.filter(role=PROFILE_ROLE_WRITER)[:3]
-        context['new_readers'] = Profile.objects.filter(role=PROFILE_ROLE_READER)[:3]
+        # Use cached new readers (2 min TTL) instead of querying database
+        new_readers = cache.get('new_readers')
+        if new_readers is None:
+            new_readers = list(Profile.objects.filter(role=PROFILE_ROLE_READER)[:3])
+            cache.set('new_readers', new_readers, 60 * 2)
+
+        # Add cached data to context
+        context['popular_bulletins'] = popular_bulletins
+        context['recent_writers'] = recent_writers
+        context['new_readers'] = new_readers
         return context
 
 
