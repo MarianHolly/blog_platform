@@ -292,6 +292,11 @@ class ArticleUpdateView(ArticleOwnerMixin, LoginRequiredMixin, WriterRequiredMix
     form_class = ArticleForm
     model = Article
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -324,6 +329,21 @@ class ArticleDeleteView(LoginRequiredMixin, WriterOrSuperAdminRequiredMixin, Del
     """
     template_name = "content/confirm_delete.html"
     model = Article
+
+    def test_func(self):
+        # Call parent test_func first (checks WriterOrSuperAdminRequiredMixin)
+        if not super().test_func():
+            return False
+
+        article = self.get_object()
+        user = self.request.user
+
+        # Superusers can delete any article
+        if user.is_superuser:
+            return True
+
+        # Writers can only delete articles in their own bulletin
+        return article.bulletin == user.profile.bulletin
 
     def get_success_url(self):
         return reverse('profile', kwargs={'username': self.object.bulletin.owner.user.username})

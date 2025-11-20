@@ -123,6 +123,12 @@ class ProfileDetailView(DetailView):
                 self.request.user.is_authenticated and
                 self.request.user.profile == profile
         )
+
+        # Add role constants to template context
+        context['reader_role'] = 'reader'
+        context['writer_role'] = 'writer'
+        context['admin_role'] = 'admin'
+
         return context
 
 

@@ -15,7 +15,7 @@ from content.models import Article, Bulletin
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'subtitle', 'description', 'content', 'status', 'visibility']
+        fields = ['title', 'subtitle', 'description', 'content', 'status', 'visibility', 'bulletin']
         widgets = {
             'status': RadioSelect,
             'visibility': RadioSelect,
