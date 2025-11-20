@@ -1,7 +1,13 @@
 from django.contrib.auth.models import User
 from django.db.models import CASCADE, Model, OneToOneField, ImageField, ForeignKey
 from django.db.models.fields import CharField, TextField, DateTimeField, BooleanField
-from cloudinary_storage.storage import MediaCloudinaryStorage
+import sys
+
+# Only import Cloudinary if not running tests
+if 'test' not in sys.argv:
+    from cloudinary_storage.storage import MediaCloudinaryStorage
+else:
+    MediaCloudinaryStorage = None
 
 
 # Extending existing User model
@@ -18,7 +24,7 @@ class Profile(Model):
     avatar = ImageField(
         default='default_avatar.png',
         upload_to='profile_pics/',
-        storage=MediaCloudinaryStorage()
+        storage=MediaCloudinaryStorage() if MediaCloudinaryStorage else None
     )
     auto_subscribed_to_platform = BooleanField(default=False)
 

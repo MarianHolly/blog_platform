@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 from .ckeditor_config import *
@@ -6,6 +7,9 @@ from .ckeditor_config import *
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
+
+# Check if running tests early to configure appropriately
+TESTING = 'test' in sys.argv
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
@@ -40,11 +44,14 @@ INSTALLED_APPS = [
 ]
 
 # Cloudinary Configuration
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-}
+if TESTING:
+    CLOUDINARY_STORAGE = {}
+else:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    }
 
 # Media URL (keep for compatibility)
 MEDIA_URL = "/media/"
@@ -140,7 +147,7 @@ else:
     }
 
 # Redis Configuration
-REDIS_URL = os.getenv('REDIS_URL')
+REDIS_URL = os.getenv('REDIS_URL') if not TESTING else None
 
 if REDIS_URL:
     print(f"[*] Redis URL found: {REDIS_URL[:30]}...")
@@ -262,6 +269,26 @@ else:
             },
         },
     }
+
+# Use SQLite for testing and database sessions (bypass Redis connection errors)
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }
+    # Use database sessions for tests to avoid Redis connection issues
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+    # Disable Redis cache for tests
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
+    # Use local filesystem storage for tests instead of Cloudinary
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
+    # Disable Cloudinary for tests
+    CLOUDINARY_STORAGE = {}
 
 print("Cloudinary storage configured")
 print(f"Database: {'Production (PostgreSQL)' if os.getenv('DATABASE_URL') else 'Local Development'}")

@@ -59,7 +59,7 @@ class ArticleUpdateViewPermissionTest(TestCase):
     def test_owner_can_edit_own_article(self):
         """Test that article owner can edit their own article"""
         self.client.login(username='writer1', password='Password123')
-        url = reverse('article_update', kwargs={'pk': self.article1.id})
+        url = reverse('article_edit', kwargs={'pk': self.article1.id})
         response = self.client.get(url)
 
         # Should get 200 OK
@@ -69,7 +69,7 @@ class ArticleUpdateViewPermissionTest(TestCase):
     def test_non_owner_cannot_edit_article(self):
         """Test that non-owner gets 403 Forbidden when trying to edit"""
         self.client.login(username='writer2', password='Password456')
-        url = reverse('article_update', kwargs={'pk': self.article1.id})
+        url = reverse('article_edit', kwargs={'pk': self.article1.id})
         response = self.client.get(url)
 
         # Should get 403 Forbidden (ArticleOwnerMixin enforces this)
@@ -77,7 +77,7 @@ class ArticleUpdateViewPermissionTest(TestCase):
 
     def test_anonymous_cannot_edit_article(self):
         """Test that anonymous users cannot edit articles"""
-        url = reverse('article_update', kwargs={'pk': self.article1.id})
+        url = reverse('article_edit', kwargs={'pk': self.article1.id})
         response = self.client.get(url)
 
         # Should redirect to login (LoginRequiredMixin)
