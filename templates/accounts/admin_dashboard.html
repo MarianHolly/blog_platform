@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load content_tags %}
 
 {% block title %}Admin Dashboard{% endblock %}
 
@@ -92,8 +93,8 @@
             {% if reviewed_articles %}
                 {% for article in reviewed_articles %}
                     <div class="w-xl mb-1 p-1 bg-white rounded border border-gray-200 flex flex-row
-                        {% if article.evaluation == 'approved' %} border-l-3 border-l-green-500
-                        {% elif article.evaluation == 'rejected' %} border-l-3 border-l-red-500{% endif %}">
+                        {% if article.evaluation == approved_evaluation %} border-l-3 border-l-green-500
+                        {% elif article.evaluation == rejected_evaluation %} border-l-3 border-l-red-500{% endif %}">
                         <a href="{% url 'article_detail' article.id %}"
                            class="w-full flex flex-row items-center hover:cursor-pointer px-1">
                             <div class="flex flex-row justify-center items-center mr-auto">
