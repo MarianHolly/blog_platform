@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load account_tags %}
 
 {% block title %}{{ profile.user.username }}{% endblock %}
 
@@ -29,7 +30,7 @@
                         {{ profile.user.first_name }} {{ profile.user.last_name }}
                     </h1>
                     <p class="text-gray-500 opacity-60 text-md mb-4">@{{ profile.user.username }}</p>
-                    {% if profile.role == 'writer' and profile.bulletin %}
+                    {% if profile.role == writer_role and profile.bulletin %}
                         <a href="{% url 'bulletin_detail' profile.bulletin.slug %}"
                            class="px-4 py-2 bg-gray-50 text-gray-900 text-md rounded-sm text-center hover:bg-gray-200 transition border-1 border-gray-100 hover:border-gray-300">
                             {{ profile.bulletin }}
@@ -40,7 +41,7 @@
                 <!-- Role Promotion Section -->
                 <div class="flex flex-col">
                     {% if user.is_authenticated and profile.user == user %}
-                        {% if profile.role == 'reader' %}
+                        {% if profile.role == reader_role %}
                             <!-- Reader can promote self to writer -->
                             <form action="{% url 'promote_to_writer' username=user.username %}" method="post">
                                 {% csrf_token %}
@@ -52,7 +53,7 @@
                             </form>
                         {% endif %}
 
-                        {% if profile.role == 'writer' and not profile.bulletin %}
+                        {% if profile.role == writer_role and not profile.bulletin %}
                             <!-- Writer without bulletin can create one -->
                             <a href="{% url 'bulletin_create' %}"
                                class="m-1 px-2 py-1 bg-blue-100 text-blue-800 text-sm uppercase rounded-xs text-center hover:bg-blue-200 transition border-1 border-blue-300">
@@ -63,7 +64,7 @@
 
                     {% if user.is_superuser and profile.user != user %}
                         <!-- Superuser viewing other user's profile -->
-                        {% if profile.role == 'reader' %}
+                        {% if profile.role == reader_role %}
                             <!-- Superuser can promote any reader to admin -->
                             <form action="{% url 'promote_to_admin' username=profile.user.username %}" method="post">
                                 {% csrf_token %}
@@ -181,7 +182,7 @@
                 </div>
 
 
-                {% if user.profile.role == 'admin' %}
+                {% if user.profile.role == admin_role %}
                     <div class="bg-white rounded-lg shadow p-3">
                         <a href="{% url 'article_evaluation_dashboard' %}">
                             <h2 class="px-4 py-2 mb-3 text-sm font-medium text-gray-700 opacity-60 text-center uppercase rounded-lg hover:bg-gray-100 hover:underline transition">

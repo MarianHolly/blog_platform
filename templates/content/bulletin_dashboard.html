@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load content_tags %}
 
 {% block title %}{{ bulletin }} - Dashboard{% endblock %}
 
@@ -67,9 +68,9 @@
             <h2 class="text-center text-xl font-semibold my-3">Publikované články</h2>
             {% for article in articles %}
                 <div class="flex flex-row justify-center items-center mb-2 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 transition border-l-3
-                 {% if article.visibility == 'public' %}
+                 {% if article.visibility == public_visibility %}
                  border-l-green-500
-                 {% elif article.visibility == 'private' %}
+                 {% elif article.visibility == private_visibility %}
                  border-l-blue-500
                  {% endif %}">
                     <a href="{% url 'article_detail' article.id %}" class="flex flex-col flex-1 hover:cursor-pointer">
@@ -84,9 +85,9 @@
                         <form method="POST" action="{% url 'visibility_toggle' article.id %}">
                             {% csrf_token %}
                             <button type="submit" class="text-xs py-1 px-3 border-1 rounded-xl font-medium hover:cursor-pointer
-                                {% if article.visibility == 'public' %} border-green-500 text-green-500
+                                {% if article.visibility == public_visibility %} border-green-500 text-green-500
                                 {% else %} border-blue-500 text-blue-500 {% endif %}">
-                                {% if article.visibility == 'public' %} Verejné {% else %} Súkromné {% endif %}
+                                {% if article.visibility == public_visibility %} Verejné {% else %} Súkromné {% endif %}
                             </button>
                         </form>
                     </div>
