@@ -144,3 +144,47 @@ class ArticleFormTest(TestCase):
         }
         form = ArticleForm(data=form_data, user=user)
         self.assertTrue(form.is_valid())
+
+    def test_article_form_content_required(self):
+        """Test that content field is required (mandatory)"""
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+        form = ArticleForm(
+            data={
+                'title': 'Article Without Content',
+                'status': 'draft',
+                'visibility': 'private',
+                'bulletin': bulletin,
+                'content': ''  # Empty content
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('content', form.errors)
+
+    def test_article_form_content_cannot_be_only_whitespace(self):
+        """Test that content with only HTML tags is invalid"""
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+        form = ArticleForm(
+            data={
+                'title': 'Article With Empty HTML',
+                'status': 'draft',
+                'visibility': 'private',
+                'bulletin': bulletin,
+                'content': '<p>&nbsp;</p>'  # Only whitespace in HTML
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('content', form.errors)
+
+    def test_article_form_content_valid_with_text(self):
+        """Test that content with actual text is valid"""
+        bulletin = Bulletin.objects.get(slug='bulletin-testing')
+        form = ArticleForm(
+            data={
+                'title': 'Article With Valid Content',
+                'status': 'draft',
+                'visibility': 'private',
+                'bulletin': bulletin,
+                'content': '<p>This is actual content with text.</p>'
+            }
+        )
+        self.assertTrue(form.is_valid())

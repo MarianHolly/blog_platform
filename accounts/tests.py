@@ -39,9 +39,44 @@ class ProfileModelTest(TestCase):
         profile = Profile.objects.get(user__username='TestUser')
         self.assertEqual(profile.role, 'writer')
 
-    def test_profile_role_property(self):
+    def test_profile_role_property_writer(self):
+        """Test is_writer property for writer role"""
         profile = Profile.objects.get(user__username='TestUser')
         self.assertTrue(profile.is_writer)
+        self.assertFalse(profile.is_reader)
+        self.assertFalse(profile.is_admin)
+
+    def test_profile_is_reader_property_for_reader(self):
+        """Test is_reader, is_writer, is_admin properties for reader role"""
+        reader_user = User.objects.create_user(
+            username='ReaderUser',
+            password='TestPassword123'
+        )
+        reader_profile = Profile.objects.create(
+            user=reader_user,
+            role='reader'
+        )
+
+        # Reader should have is_reader=True, others False
+        self.assertTrue(reader_profile.is_reader)
+        self.assertFalse(reader_profile.is_writer)
+        self.assertFalse(reader_profile.is_admin)
+
+    def test_profile_is_admin_property_for_admin(self):
+        """Test is_reader, is_writer, is_admin properties for admin role"""
+        admin_user = User.objects.create_user(
+            username='AdminUser',
+            password='TestPassword123'
+        )
+        admin_profile = Profile.objects.create(
+            user=admin_user,
+            role='admin'
+        )
+
+        # Admin should have is_admin=True, others False
+        self.assertFalse(admin_profile.is_reader)
+        self.assertFalse(admin_profile.is_writer)
+        self.assertTrue(admin_profile.is_admin)
 
     def test_profile_full_name(self):
         profile = Profile.objects.get(user__username='TestUser')
