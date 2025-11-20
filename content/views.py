@@ -151,7 +151,7 @@ class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
         return reverse('bulletin_detail', kwargs={'slug': self.request.user.profile.bulletin.slug})
 
 
-class ArticleUpdateView(LoginRequiredMixin, WriterRequiredMixin, UpdateView):
+class ArticleUpdateView(ArticleOwnerMixin, LoginRequiredMixin, WriterRequiredMixin, UpdateView):
     template_name = "content/form.html"
     form_class = ArticleForm
     model = Article
@@ -173,7 +173,7 @@ class ArticleDeleteView(LoginRequiredMixin, WriterOrSuperAdminRequiredMixin, Del
     model = Article
 
     def get_success_url(self):
-        return reverse('profile', kwargs={'username': self.object.user.username})
+        return reverse('profile', kwargs={'username': self.object.bulletin.owner.user.username})
 
 
 # ==================================== BULLETIN RELATED ======================== #
