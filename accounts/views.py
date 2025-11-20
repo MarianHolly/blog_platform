@@ -15,6 +15,10 @@ from accounts.models import Profile
 from content.models import Article, Subscription
 from engagement.models import Like, ReadLater
 
+# Profile role constants
+PROFILE_ROLE_READER = 'reader'
+PROFILE_ROLE_WRITER = 'writer'
+PROFILE_ROLE_ADMIN = 'admin'
 
 # Create your views here.
 class SignUpView(CreateView):
@@ -128,11 +132,11 @@ class PromoteReaderToWriterView(LoginRequiredMixin, View):
 
         profile = request.user.profile
 
-        if profile.role == 'reader':
-            profile.role = 'writer'
+        if profile.role == PROFILE_ROLE_READER:
+            profile.role = PROFILE_ROLE_WRITER
             profile.save()
             messages.success(request, 'Stal si sa autorom.')
-        elif profile.role == 'writer':
+        elif profile.role == PROFILE_ROLE_WRITER:
             messages.warning(request, 'Už si autorom.')
         else:
             messages.warning(request, 'Chyba, pravdepodobne si adminom.')
@@ -162,12 +166,12 @@ class PromoteReaderToAdminView(LoginRequiredMixin, View):
             messages.error(request, 'Používateľ neexistuje.')
             return redirect('profile', username=request.user.username)
 
-        if profile.role == 'reader':
-            profile.role = 'admin'
+        if profile.role == PROFILE_ROLE_READER:
+            profile.role = PROFILE_ROLE_ADMIN
             profile.save()
             messages.success(request, 'Stal si sa adminom.')
 
-        elif profile.role == 'writer':
+        elif profile.role == PROFILE_ROLE_WRITER:
             messages.warning(request, 'Nie je možné byť autorom a adminom zároveň.')
         else:
             messages.warning(request, 'Chyba, pravdepodobne si adminom.')

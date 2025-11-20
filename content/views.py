@@ -18,6 +18,20 @@ from content.models import Article, Bulletin, Subscription
 from engagement.forms import CommentModelForm
 from engagement.models import Comment, Like, ReadLater
 
+# Article status constants
+ARTICLE_STATUS_PUBLISHED = 'published'
+ARTICLE_STATUS_DRAFT = 'draft'
+ARTICLE_VISIBILITY_PUBLIC = 'public'
+ARTICLE_VISIBILITY_PRIVATE = 'private'
+ARTICLE_EVAL_PENDING = 'pending'
+ARTICLE_EVAL_UNDER_REVIEW = 'under_review'
+ARTICLE_EVAL_APPROVED = 'approved'
+ARTICLE_EVAL_REJECTED = 'rejected'
+
+# Profile role constants
+PROFILE_ROLE_READER = 'reader'
+PROFILE_ROLE_WRITER = 'writer'
+PROFILE_ROLE_ADMIN = 'admin'
 
 # ==================================== BLOG PLATFORM ======================== #
 
@@ -30,7 +44,7 @@ class HomePageView(ListView):
 
     def get_queryset(self):
         return Article.objects.filter(
-            status='published'
+            status=ARTICLE_STATUS_PUBLISHED
         ).select_related('bulletin__owner').order_by('-created')
 
     def get_context_data(self, **kwargs):
@@ -43,12 +57,12 @@ class HomePageView(ListView):
 
         recent_writers = cache.get('recent_writers')
         if recent_writers is None:
-            recent_writers = list(Profile.objects.filter(role='writer')[:3])
+            recent_writers = list(Profile.objects.filter(role=PROFILE_ROLE_WRITER)[:3])
             cache.set('recent_writers', recent_writers, 60 * 2)  # 2 min
 
         context['popular_bulletins'] = Bulletin.objects.all()[:3]
-        context['recent_writers'] = Profile.objects.filter(role='writer')[:3]
-        context['new_readers'] = Profile.objects.filter(role='reader')[:3]
+        context['recent_writers'] = Profile.objects.filter(role=PROFILE_ROLE_WRITER)[:3]
+        context['new_readers'] = Profile.objects.filter(role=PROFILE_ROLE_READER)[:3]
         return context
 
 
@@ -192,7 +206,7 @@ class BulletinDetailView(ListView):
         articles = cache.get(cache_key)
         if articles is None:
             articles = self.bulletin.articles.filter(
-                status='published'
+                status=ARTICLE_STATUS_PUBLISHED
             ).select_related('bulletin__owner').order_by('-published')
             cache.set(cache_key, articles, 60 * 10)
 
@@ -247,8 +261,8 @@ class BulletinDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         bulletin = self.get_object()
-        context['drafts'] = bulletin.articles.filter(status='draft')
-        context['articles'] = bulletin.articles.filter(status='published')
+        context['drafts'] = bulletin.articles.filter(status=ARTICLE_STATUS_DRAFT)
+        context['articles'] = bulletin.articles.filter(status=ARTICLE_STATUS_PUBLISHED)
         return context
 
 
@@ -301,10 +315,10 @@ class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
     def post(self, request, id):
         article = self.get_object()
 
-        if article.visibility == 'public':
-            article.visibility = 'private'
+        if article.visibility == ARTICLE_VISIBILITY_PUBLIC:
+            article.visibility = ARTICLE_VISIBILITY_PRIVATE
         else:
-            article.visibility = 'public'
+            article.visibility = ARTICLE_VISIBILITY_PUBLIC
         article.save()
 
         next_url = request.POST.get('next', '')
@@ -323,8 +337,8 @@ class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['unreviewed_articles'] = Article.objects.filter(evaluation='under_review')
-        context['reviewed_articles'] = Article.objects.filter(evaluation__in=['approved', 'rejected'])
+        context['unreviewed_articles'] = Article.objects.filter(evaluation=ARTICLE_EVAL_UNDER_REVIEW)
+        context['reviewed_articles'] = Article.objects.filter(evaluation__in=[ARTICLE_EVAL_APPROVED, ARTICLE_EVAL_REJECTED])
         return context
 
 
@@ -332,8 +346,8 @@ class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin
     def post(self, request, id):
         article = get_object_or_404(Article, id=id)
 
-        if article.evaluation == 'pending':
-            article.evaluation = 'under_review'
+        if article.evaluation == ARTICLE_EVAL_PENDING:
+            article.evaluation = ARTICLE_EVAL_UNDER_REVIEW
             article.save()
             messages.success(request, f'{article.title} - je v procese hodnotenia.')
         else:
@@ -372,7 +386,7 @@ class ArticleSearchView(ListView):
             return Article.objects.filter(
                 Q(title__icontains=query) |
                 Q(description__icontains=query),
-                status='published'
+                status=ARTICLE_STATUS_PUBLISHED
             ).select_related('bulletin__owner')
         return Article.objects.none()
 
