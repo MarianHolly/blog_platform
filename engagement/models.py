@@ -13,6 +13,9 @@ class Comment(Model):
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('author', 'article')
+
     def __repr__(self):
         return f"Comment(author={self.author}, article={self.article})"
 
@@ -25,6 +28,9 @@ class Like(Model):
     article = ForeignKey(Article, on_delete=CASCADE)
     created = DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('author', 'article')
+
     def __repr__(self):
         return f"Like(author={self.author}, article={self.article})"
 
@@ -36,6 +42,9 @@ class ReadLater(Model):
     author = ForeignKey(Profile, on_delete=CASCADE)
     article = ForeignKey(Article, on_delete=CASCADE)
     created = DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('author', 'article')
 
     def __repr__(self):
         return f"ReadLater(author={self.author}, article={self.article})"

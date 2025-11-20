@@ -49,7 +49,7 @@ class Article(Model):
         '*': ['class']
     }
 
-    title = CharField(max_length=150, null=False, blank=False, unique=True)
+    title = CharField(max_length=150, null=False, blank=False)
     content = CKEditor5Field('Content', config_name='default', null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
@@ -66,6 +66,7 @@ class Article(Model):
 
     class Meta:
         ordering = ['-created']
+        unique_together = ('bulletin', 'title')
         indexes = [
             Index(fields=['status', 'visibility', 'evaluation']),
             Index(fields=['bulletin', 'status']),
