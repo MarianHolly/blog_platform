@@ -143,7 +143,7 @@ else:
 REDIS_URL = os.getenv('REDIS_URL')
 
 if REDIS_URL:
-    print(f"🎯 Redis URL found: {REDIS_URL[:30]}...")
+    print(f"[*] Redis URL found: {REDIS_URL[:30]}...")
     try:
         # Simple Redis configuration without SSL complications
         CACHES = {
@@ -154,9 +154,9 @@ if REDIS_URL:
         }
         SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
         SESSION_CACHE_ALIAS = 'default'
-        print("✅ Redis: Configured")
+        print("[+] Redis: Configured")
     except Exception as e:
-        print(f"⚠️ Redis failed: {e}")
+        print(f"[-] Redis failed: {e}")
         # Fallback to database
         CACHES = {
             'default': {
@@ -164,7 +164,7 @@ if REDIS_URL:
             }
         }
         SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-        print("📝 Using database sessions instead")
+        print("[*] Using database sessions instead")
 else:
     # No Redis - use database sessions
     CACHES = {
@@ -173,7 +173,7 @@ else:
         }
     }
     SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-    print("🎯 Redis: Skipped (using database sessions)")
+    print("[*] Redis: Skipped (using database sessions)")
 
 CACHE_TTL = 60 * 15
 
@@ -263,7 +263,7 @@ else:
         },
     }
 
-print("🔧 Cloudinary storage configured")
-print(f"🗄️ Database: {'Production (PostgreSQL)' if os.getenv('DATABASE_URL') else 'Local Development'}")
-print(f"🎯 Redis: {'Connected' if REDIS_URL else 'Not configured (using fallback)'}")
-print(f"🔒 Debug Mode: {DEBUG}")
+print("Cloudinary storage configured")
+print(f"Database: {'Production (PostgreSQL)' if os.getenv('DATABASE_URL') else 'Local Development'}")
+print(f"Redis: {'Connected' if REDIS_URL else 'Not configured (using fallback)'}")
+print(f"Debug Mode: {DEBUG}")
