@@ -37,6 +37,25 @@ PROFILE_ROLE_ADMIN = 'admin'
 
 @method_decorator(cache_page(60 * 1), name='dispatch')
 class HomePageView(ListView):
+    """Display homepage with featured published articles and popular writers.
+
+    Permissions:
+    - Any user (authenticated or anonymous) can view
+
+    Behavior:
+    - Caches entire page response for 1 minute
+    - Paginates published articles 9 per page
+    - Fetches related bulletin and owner data efficiently
+    - Loads popular bulletins (top 3) from cache (2 min TTL)
+    - Loads recent writers with 'writer' role from cache (2 min TTL)
+    - Shows new reader accounts (up to 3)
+
+    Returns:
+    - Paginated list of featured articles (published, newest first)
+    - Popular bulletins (3 max)
+    - Recent writers (3 max)
+    - New readers (3 max)
+    """
     template_name = "content/home.html"
     model = Article
     context_object_name = "featured_articles"
@@ -67,10 +86,32 @@ class HomePageView(ListView):
 
 
 class AboutPageView(TemplateView):
+    """Display static about page with platform information.
+
+    Permissions:
+    - Any user can view
+
+    Behavior:
+    - Renders static template with no context data
+
+    Returns:
+    - Rendered about page template
+    """
     template_name = "content/about.html"
 
 
 class QAPageView(TemplateView):
+    """Display static FAQ/Q&A page with help information.
+
+    Permissions:
+    - Any user can view
+
+    Behavior:
+    - Renders static template with no context data
+
+    Returns:
+    - Rendered Q&A page template
+    """
     template_name = "content/qa.html"
 
 
@@ -78,12 +119,44 @@ class QAPageView(TemplateView):
 
 
 class ArticleListView(ListView):
+    """Display list of all articles (no filtering applied).
+
+    Permissions:
+    - Any user can view
+
+    Behavior:
+    - Lists all articles from database without status filtering
+    - Note: Templates may apply additional filtering
+
+    Returns:
+    - List of articles (potentially unfiltered)
+    """
     template_name = "content/article_list.html"
     model = Article
     context_object_name = "articles"
 
 
 class ArticleDetailView(DetailView):
+    """Display article with engagement options (comments, likes, bookmarks).
+
+    Permissions:
+    - Any user can view published articles
+    - Subscription/like/bookmark status only shown to authenticated users
+
+    Behavior:
+    - Loads article with related bulletin and owner data
+    - For authenticated users:
+      - Checks if user already liked the article
+      - Checks if user already bookmarked (read-later) the article
+      - Checks if user subscribed to the article's bulletin
+    - Displays comment form for authenticated users
+    - Handles POST requests to create/update user comments
+    - One comment per user per article (update if exists)
+
+    Returns:
+    - Article object with engagement flags (is_liked, is_read_later, is_subscribed)
+    - Comment form for rendering
+    """
     template_name = "content/article_detail.html"
     model = Article
     context_object_name = "article"
@@ -143,6 +216,23 @@ class ArticleDetailView(DetailView):
 
 
 class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
+    """Create new article in user's bulletin.
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - WriterRequiredMixin: User must have 'writer' role
+
+    Behavior:
+    - Sets bulletin automatically to user's personal bulletin
+    - Validates article content is not empty (rich text editor)
+    - Allows draft or published status selection
+    - Displays error message if content validation fails
+    - Redirects to bulletin dashboard on successful creation
+
+    Returns:
+    - Form with validation errors on invalid submission
+    - Redirect to bulletin detail on successful creation
+    """
     template_name = "content/form.html"
     form_class = ArticleForm
 
@@ -166,6 +256,25 @@ class ArticleCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
 
 
 class ArticleUpdateView(ArticleOwnerMixin, LoginRequiredMixin, WriterRequiredMixin, UpdateView):
+    """Update existing article (writers can only edit own bulletin articles).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - WriterRequiredMixin: User must have 'writer' role
+    - ArticleOwnerMixin: Enforces article.bulletin == user's bulletin (prevents cross-bulletin edits)
+
+    Behavior:
+    - Retrieves article by primary key URL parameter
+    - Validates article belongs to user's bulletin
+    - Allows changing title, subtitle, description, content, status, visibility
+    - Validates content field is not empty (rich text)
+    - Displays error on content validation failure
+    - Redirects to article detail on successful update
+
+    Returns:
+    - Form with validation errors on invalid submission
+    - Redirect to article detail on successful update
+    """
     template_name = "content/form.html"
     form_class = ArticleForm
     model = Article
@@ -183,6 +292,23 @@ class ArticleUpdateView(ArticleOwnerMixin, LoginRequiredMixin, WriterRequiredMix
 
 
 class ArticleDeleteView(LoginRequiredMixin, WriterOrSuperAdminRequiredMixin, DeleteView):
+    """Delete article (writers delete own articles, admins can delete any).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - WriterOrSuperAdminRequiredMixin: User must be writer or superuser
+    - Ownership: Writers can delete their own bulletin articles; superusers can delete any
+
+    Behavior:
+    - Retrieves article by primary key URL parameter
+    - Displays deletion confirmation template
+    - Performs cascade delete of article and related comments/likes/bookmarks
+    - Redirects to article owner's profile on successful deletion
+
+    Returns:
+    - Confirmation template with article details
+    - Redirect to profile on confirmed deletion
+    """
     template_name = "content/confirm_delete.html"
     model = Article
 
@@ -194,6 +320,23 @@ class ArticleDeleteView(LoginRequiredMixin, WriterOrSuperAdminRequiredMixin, Del
 
 
 class BulletinDetailView(ListView):
+    """Display bulletin (writer's publishing space) with published articles.
+
+    Permissions:
+    - Any user can view public bulletins
+
+    Behavior:
+    - Retrieves bulletin by slug from URL parameter
+    - Paginates published articles (6 per page) ordered by publication date
+    - Caches queryset per bulletin and page (10 min TTL)
+    - For authenticated users: checks if subscribed to this bulletin
+    - Efficiently fetches related bulletin owner data
+
+    Returns:
+    - Paginated list of published articles in the bulletin
+    - Bulletin object details
+    - is_subscribed flag (authenticated users only)
+    """
     template_name = "content/bulletin_detail.html"
     model = Article
     context_object_name = "articles"
@@ -228,6 +371,22 @@ class BulletinDetailView(ListView):
 
 
 class BulletinCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
+    """Create new bulletin (writer's publishing space).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - WriterRequiredMixin: User must have 'writer' role
+    - One bulletin per writer (enforced at profile level)
+
+    Behavior:
+    - Sets bulletin owner automatically to user's profile
+    - Allows customizing title, description, and URL slug
+    - Redirects to new bulletin on successful creation
+
+    Returns:
+    - Form with validation errors on invalid submission
+    - Redirect to bulletin detail on successful creation
+    """
     template_name = "content/bulletin_form.html"
     form_class = BulletinForm
 
@@ -245,6 +404,21 @@ class BulletinCreateView(LoginRequiredMixin, WriterRequiredMixin, CreateView):
 
 
 class BulletinUpdateView(UpdateView):
+    """Update bulletin details (title, description, slug).
+
+    Permissions:
+    - Any authenticated user can update (no mixin validation)
+    - Note: Template/form should validate ownership
+
+    Behavior:
+    - Retrieves bulletin by primary key URL parameter
+    - Allows editing bulletin metadata
+    - Redirects to updated bulletin on successful save
+
+    Returns:
+    - Form with validation errors on invalid submission
+    - Redirect to bulletin detail on successful update
+    """
     template_name = "accounts/profile_form.html"
     model = Bulletin
     form_class = BulletinForm
@@ -254,6 +428,21 @@ class BulletinUpdateView(UpdateView):
 
 
 class BulletinDashboardView(DetailView):
+    """Display writer's dashboard with draft and published articles.
+
+    Permissions:
+    - Any user can view (no mixin validation)
+    - Note: Template should restrict to bulletin owner only
+
+    Behavior:
+    - Retrieves bulletin by primary key URL parameter
+    - Lists draft articles (unpublished/in-progress)
+    - Lists published articles (live content)
+    - Allows writers to manage their bulletin's content
+
+    Returns:
+    - Bulletin object with draft and published article lists
+    """
     model = Bulletin
     template_name = "content/bulletin_dashboard.html"
     context_object_name = "bulletin"
@@ -270,6 +459,24 @@ class BulletinDashboardView(DetailView):
 
 
 class SubscriptionToggleView(LoginRequiredMixin, View):
+    """Toggle user subscription to a bulletin (subscribe/unsubscribe).
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - Self-service: Users can manage their own subscriptions
+    - Prevents self-subscription: Cannot subscribe to own bulletin
+
+    Behavior:
+    - Retrieves bulletin by slug from URL parameter
+    - Validates user is not bulletin owner
+    - Creates subscription if doesn't exist
+    - Deletes subscription if already exists
+    - Shows success/warning messages accordingly
+    - Redirects to referrer if provided, otherwise to own profile
+
+    Returns:
+    - Redirect to profile or referrer after toggling subscription
+    """
     def post(self, request, slug):
         # get bulletin
         bulletin = get_object_or_404(Bulletin, slug=slug)
@@ -309,6 +516,21 @@ class SubscriptionToggleView(LoginRequiredMixin, View):
 
 
 class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
+    """Toggle article visibility between public and private.
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - ArticleOwnerMixin: User must own the article (bulletin match)
+
+    Behavior:
+    - Retrieves article by ID from URL parameter
+    - Validates article ownership via ArticleOwnerMixin
+    - Toggles visibility: public <-> private
+    - Redirects to referrer if provided, otherwise to bulletin dashboard
+
+    Returns:
+    - Redirect to bulletin dashboard after toggling visibility
+    """
     def get_object(self):
         return get_object_or_404(Article, id=self.kwargs['id'])
 
@@ -331,6 +553,23 @@ class ArticleVisibilityToggleView(LoginRequiredMixin, ArticleOwnerMixin, View):
 
 
 class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMixin, ListView):
+    """Display admin dashboard for article evaluation and moderation.
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - AdministratorRequiredMixin: User must have 'admin' role
+
+    Behavior:
+    - Lists articles currently under review for evaluation
+    - Lists articles already reviewed (approved or rejected)
+    - Allows admins to evaluate submitted articles
+    - Provides context for moderation workflow
+
+    Returns:
+    - All articles (unfiltered by default)
+    - unreviewed_articles: Articles with 'under_review' evaluation status
+    - reviewed_articles: Articles with 'approved' or 'rejected' status
+    """
     template_name = 'accounts/admin_dashboard.html'
     model = Article
     context_object_name = "articles"
@@ -343,6 +582,22 @@ class ArticleEvaluationDashboardView(LoginRequiredMixin, AdministratorRequiredMi
 
 
 class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin, View):
+    """Move article to under-review status for admin evaluation.
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - AdministratorRequiredMixin: User must have 'admin' role
+
+    Behavior:
+    - Retrieves article by ID from URL parameter
+    - Changes evaluation status from 'pending' to 'under_review'
+    - Prevents re-evaluating already-reviewed articles
+    - Shows appropriate success/warning messages
+    - Redirects to referrer if provided, otherwise to user's profile
+
+    Returns:
+    - Redirect to profile after status change
+    """
     def post(self, request, id):
         article = get_object_or_404(Article, id=id)
 
@@ -360,6 +615,22 @@ class ArticleEvaluationToggleView(LoginRequiredMixin, AdministratorRequiredMixin
 
 
 class ArticleEvaluationDecisionView(LoginRequiredMixin, AdministratorRequiredMixin, UpdateView):
+    """Admin decision form for approving or rejecting articles under review.
+
+    Permissions:
+    - LoginRequiredMixin: User must be authenticated
+    - AdministratorRequiredMixin: User must have 'admin' role
+
+    Behavior:
+    - Retrieves article by ID from URL parameter (pk_url_kwarg)
+    - Displays form with two options: Approved or Rejected
+    - Updates article evaluation status based on admin decision
+    - Redirects to evaluation dashboard after decision
+
+    Returns:
+    - Form with approval/rejection options on GET
+    - Redirect to evaluation dashboard on successful POST
+    """
     template_name = "accounts/evaluation_form.html"
     form_class = ArticleEvaluationForm
     model = Article
@@ -375,6 +646,23 @@ class ArticleEvaluationDecisionView(LoginRequiredMixin, AdministratorRequiredMix
 # ==================================== FEATURES ======================== #
 
 class ArticleSearchView(ListView):
+    """Search published articles by title or description.
+
+    Permissions:
+    - Any user can search
+
+    Behavior:
+    - Retrieves 'q' query parameter from GET request
+    - Filters published articles by title or description (case-insensitive)
+    - Paginates results 10 per page
+    - Returns empty queryset if no query provided
+    - Provides article count and query term to template
+
+    Returns:
+    - Paginated list of matching published articles
+    - article_count: Total number of search results
+    - query: The search term submitted by user
+    """
     template_name = "content/search_results.html"
     model = Article
     context_object_name = 'articles'
