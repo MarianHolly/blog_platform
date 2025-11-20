@@ -33,7 +33,7 @@ class ArticleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields["content"].required = False
+        self.fields["content"].required = True
 
         if user:
             try:
