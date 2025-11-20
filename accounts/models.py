@@ -37,7 +37,7 @@ class Profile(Model):
 
     @property
     def is_reader(self):
-        return True
+        return self.role == 'reader'
 
     @property
     def is_writer(self):
