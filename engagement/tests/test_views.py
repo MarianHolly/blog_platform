@@ -59,7 +59,7 @@ class LikeToggleViewTest(TestCase):
     def test_author_cannot_like_own_article(self):
         """Author should not be able to like their own article"""
         self.client.login(username='writer', password='pass123')
-        response = self.client.post(reverse('like_toggle', args=[self.article.id]))
+        response = self.client.post(reverse('toggle_like', args=[self.article.id]))
         self.assertEqual(response.status_code, 302)  # redirect
         self.assertFalse(Like.objects.filter(article=self.article, author=self.writer_profile).exists())
 
@@ -68,7 +68,7 @@ class LikeToggleViewTest(TestCase):
         self.client.login(username='reader', password='pass123')
         next_url = '/article/'
         response = self.client.post(
-            reverse('like_toggle', args=[self.article.id]),
+            reverse('toggle_like', args=[self.article.id]),
             {'next': next_url}
         )
         self.assertEqual(response.status_code, 302)
@@ -110,7 +110,7 @@ class ReadLaterToggleViewTest(TestCase):
     def test_reader_can_bookmark_article(self):
         """Reader should be able to bookmark an article"""
         self.client.login(username='reader', password='pass123')
-        response = self.client.post(reverse('read_later_toggle', args=[self.article.id]))
+        response = self.client.post(reverse('toggle_read_later', args=[self.article.id]))
         self.assertEqual(response.status_code, 302)  # redirect
         self.assertTrue(ReadLater.objects.filter(article=self.article, author=self.reader_profile).exists())
 
@@ -118,14 +118,14 @@ class ReadLaterToggleViewTest(TestCase):
         """Reader should be able to remove a bookmark"""
         ReadLater.objects.create(article=self.article, author=self.reader_profile)
         self.client.login(username='reader', password='pass123')
-        response = self.client.post(reverse('read_later_toggle', args=[self.article.id]))
+        response = self.client.post(reverse('toggle_read_later', args=[self.article.id]))
         self.assertEqual(response.status_code, 302)  # redirect
         self.assertFalse(ReadLater.objects.filter(article=self.article, author=self.reader_profile).exists())
 
     def test_author_cannot_bookmark_own_article(self):
         """Author should not be able to bookmark their own article"""
         self.client.login(username='writer', password='pass123')
-        response = self.client.post(reverse('read_later_toggle', args=[self.article.id]))
+        response = self.client.post(reverse('toggle_read_later', args=[self.article.id]))
         self.assertEqual(response.status_code, 302)  # redirect
         self.assertFalse(ReadLater.objects.filter(article=self.article, author=self.writer_profile).exists())
 
@@ -134,7 +134,7 @@ class ReadLaterToggleViewTest(TestCase):
         self.client.login(username='reader', password='pass123')
         next_url = '/article/'
         response = self.client.post(
-            reverse('read_later_toggle', args=[self.article.id]),
+            reverse('toggle_read_later', args=[self.article.id]),
             {'next': next_url}
         )
         self.assertEqual(response.status_code, 302)
