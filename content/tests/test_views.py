@@ -154,3 +154,90 @@ class ArticleDeleteViewRedirectTest(TestCase):
         # Follow redirect and verify we get 200 OK on profile page
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.writer_user.username)
+
+
+class BulletinDetailViewTest(TestCase):
+    """Test bulletin detail page"""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.writer = User.objects.create_user(
+            username='writer', email='writer@test.com', password='pass123'
+        )
+        cls.writer_profile = Profile.objects.create(user=cls.writer, role='writer')
+        cls.bulletin = Bulletin.objects.create(
+            owner=cls.writer_profile, title='My Bulletin', slug='my-bulletin'
+        )
+        cls.article1 = Article.objects.create(
+            title='Published Article',
+            bulletin=cls.bulletin,
+            status='published',
+            visibility='public',
+            published=timezone.now()
+        )
+        cls.article2 = Article.objects.create(
+            title='Draft Article',
+            bulletin=cls.bulletin,
+            status='draft',
+            visibility='private'
+        )
+
+    def test_bulletin_detail_loads(self):
+        """Bulletin detail page should load"""
+        response = self.client.get(reverse('bulletin_detail', args=[self.bulletin.slug]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_bulletin_detail_shows_only_published_articles(self):
+        """Bulletin detail should only show published articles"""
+        response = self.client.get(reverse('bulletin_detail', args=[self.bulletin.slug]))
+        self.assertContains(response, 'Published Article')
+        self.assertNotContains(response, 'Draft Article')
+
+    def test_bulletin_not_found(self):
+        """Non-existent bulletin should return 404"""
+        response = self.client.get(reverse('bulletin_detail', args=['nonexistent']))
+        self.assertEqual(response.status_code, 404)
+
+
+class ArticleSearchViewTest(TestCase):
+    """Test article search functionality"""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.writer = User.objects.create_user(
+            username='writer', email='writer@test.com', password='pass123'
+        )
+        cls.writer_profile = Profile.objects.create(user=cls.writer, role='writer')
+        cls.bulletin = Bulletin.objects.create(
+            owner=cls.writer_profile, title='Test Bulletin', slug='test'
+        )
+        cls.article1 = Article.objects.create(
+            title='Python Programming Guide',
+            bulletin=cls.bulletin,
+            status='published',
+            visibility='public',
+            published=timezone.now()
+        )
+        cls.article2 = Article.objects.create(
+            title='Django Web Framework',
+            bulletin=cls.bulletin,
+            status='published',
+            visibility='public',
+            published=timezone.now()
+        )
+
+    def test_search_page_loads(self):
+        """Search page should load"""
+        response = self.client.get(reverse('article_search'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_search_finds_articles_by_title(self):
+        """Search should find articles by title"""
+        response = self.client.get(reverse('article_search') + '?q=Python')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Python Programming Guide')
+
+    def test_search_no_results(self):
+        """Search with no results should return empty"""
+        response = self.client.get(reverse('article_search') + '?q=NonexistentArticle')
+        self.assertEqual(response.status_code, 200)
