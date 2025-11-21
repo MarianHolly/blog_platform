@@ -7,6 +7,76 @@ from accounts.models import Profile
 from content.models import Bulletin, Article, Subscription
 
 
+class ProfileModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        print('\nProfileModel - setting setUpTestData')
+
+        # Create test reader
+        cls.reader_user = User.objects.create_user(
+            username='TestReader',
+            password='TestPassword123',
+            email='reader@mail.com')
+        cls.reader_profile = Profile.objects.create(
+            user=cls.reader_user,
+            role='reader')
+
+        # Create test writer
+        cls.writer_user = User.objects.create_user(
+            username='TestWriter',
+            password='TestPassword456',
+            email='writer@mail.com')
+        cls.writer_profile = Profile.objects.create(
+            user=cls.writer_user,
+            role='writer')
+
+        # Create test admin
+        cls.admin_user = User.objects.create_user(
+            username='TestAdmin',
+            password='TestPassword789',
+            email='admin@mail.com')
+        cls.admin_profile = Profile.objects.create(
+            user=cls.admin_user,
+            role='admin')
+
+    def test_reader_profile_is_reader_returns_true(self):
+        """Reader profile should have is_reader property return True"""
+        profile = Profile.objects.get(user__username='TestReader')
+        self.assertTrue(profile.is_reader)
+
+    def test_reader_profile_is_writer_returns_false(self):
+        """Reader profile should have is_writer property return False"""
+        profile = Profile.objects.get(user__username='TestReader')
+        self.assertFalse(profile.is_writer)
+
+    def test_reader_profile_is_admin_returns_false(self):
+        """Reader profile should have is_admin property return False"""
+        profile = Profile.objects.get(user__username='TestReader')
+        self.assertFalse(profile.is_admin)
+
+    def test_writer_profile_is_writer_returns_true(self):
+        """Writer profile should have is_writer property return True"""
+        profile = Profile.objects.get(user__username='TestWriter')
+        self.assertTrue(profile.is_writer)
+
+    def test_writer_profile_has_bulletin(self):
+        """Writer profile should have an associated bulletin"""
+        profile = Profile.objects.get(user__username='TestWriter')
+        # Create a bulletin for the writer
+        bulletin = Bulletin.objects.create(
+            owner=profile,
+            title='Test Bulletin',
+            slug='test-bulletin')
+        # Verify bulletin exists and is associated with writer
+        self.assertTrue(Bulletin.objects.filter(owner=profile).exists())
+        self.assertEqual(bulletin.owner, profile)
+
+    def test_admin_profile_is_admin_returns_true(self):
+        """Admin profile should have is_admin property return True"""
+        profile = Profile.objects.get(user__username='TestAdmin')
+        self.assertTrue(profile.is_admin)
+
+
 # Create your tests here.
 class BulletinModelTest(TestCase):
     @classmethod
