@@ -301,9 +301,10 @@ class ArticleCreateViewTest(TestCase):
 
         response = self.client.post(url, data)
 
-        # Should redirect to bulletin detail
+        # Should redirect (302)
         self.assertEqual(response.status_code, 302)
-        self.assertIn('bulletin_detail', response.url)
+        # Should redirect to bulletin detail page
+        self.assertIn('/bulletin/', response.url)
 
         # Article should be created
         article = Article.objects.filter(title='New Article').first()
@@ -339,8 +340,8 @@ class ArticleCreateViewTest(TestCase):
         url = reverse('article_create')
         response = self.client.get(url)
 
-        # Should redirect (WriterRequiredMixin enforces this)
-        self.assertEqual(response.status_code, 302)
+        # Should get 403 Forbidden (WriterRequiredMixin enforces this)
+        self.assertEqual(response.status_code, 403)
 
     def test_anonymous_cannot_create_article(self):
         """Test that anonymous users cannot create articles"""
@@ -424,9 +425,10 @@ class ArticleUpdateViewExtendedTest(TestCase):
 
         response = self.client.post(url, data)
 
-        # Should redirect to article detail
+        # Should redirect (302)
         self.assertEqual(response.status_code, 302)
-        self.assertIn('article_detail', response.url)
+        # Should redirect to article detail page
+        self.assertIn('/article/', response.url)
 
         # Article should be updated
         self.article.refresh_from_db()
@@ -631,9 +633,10 @@ class ArticleEvaluationViewTest(TestCase):
 
         response = self.client.post(url, data)
 
-        # Should redirect to evaluation dashboard
+        # Should redirect (302)
         self.assertEqual(response.status_code, 302)
-        self.assertIn('article_evaluation_dashboard', response.url)
+        # Should redirect to evaluation dashboard
+        self.assertIn('/evaluate/dashboard/', response.url)
 
         # Article should be approved
         self.under_review_article.refresh_from_db()
@@ -663,8 +666,8 @@ class ArticleEvaluationViewTest(TestCase):
         url = reverse('article_evaluation_decision', kwargs={'id': self.under_review_article.id})
         response = self.client.get(url)
 
-        # Should redirect (AdministratorRequiredMixin enforces this)
-        self.assertEqual(response.status_code, 302)
+        # Should get 403 Forbidden (AdministratorRequiredMixin enforces this)
+        self.assertEqual(response.status_code, 403)
 
     def test_anonymous_cannot_evaluate(self):
         """Test that anonymous users cannot evaluate articles"""
