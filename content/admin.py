@@ -63,16 +63,36 @@ class ArticleAdmin(ModelAdmin):
 
 
 class BulletinAdmin(ModelAdmin):
-    list_display = ['title', 'owner', 'articles_count', 'subscriber_count']
+    """Admin interface for Bulletin model with writer information."""
+
+    list_display = ['title', 'writer_display', 'articles_count', 'subscriber_count', 'created_display']
+    list_filter = ['created', 'updated']
+    search_fields = ['title', 'owner__user__username', 'owner__user__first_name', 'owner__user__last_name']
     readonly_fields = ['created', 'updated']
+    list_per_page = 25
+
+    def writer_display(self, obj):
+        """Display writer's name and username."""
+        profile = obj.owner
+        return f'{profile.full_name} (@{profile.user.username})'
+    writer_display.short_description = 'Writer'
+    writer_display.admin_order_field = 'owner__user__username'
 
     def subscriber_count(self, obj):
+        """Display count of subscribers."""
         return obj.subscribers.count()
     subscriber_count.short_description = 'Subscribers'
 
     def articles_count(self, obj):
+        """Display count of articles."""
         return obj.articles.count()
     articles_count.short_description = 'Articles'
+
+    def created_display(self, obj):
+        """Display creation date."""
+        return obj.created.strftime('%Y-%m-%d')
+    created_display.short_description = 'Created'
+    created_display.admin_order_field = 'created'
 
 
 class SubscriptionAdmin(ModelAdmin):
