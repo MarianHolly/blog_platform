@@ -115,7 +115,7 @@ class LikeToggleViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_like_toggle_redirects_to_article(self):
-        """Like toggle should redirect to article detail"""
+        """Like toggle should redirect to next parameter if provided"""
         self.client.login(username='reader', password='pass123')
         next_url = '/articles/'
         response = self.client.post(
@@ -123,9 +123,8 @@ class LikeToggleViewTest(TestCase):
             {'next': next_url}
         )
 
-        # Should redirect to article detail
-        expected_url = reverse('article_detail', args=[self.article.id])
-        self.assertEqual(response.url, expected_url)
+        # Should redirect to next_url
+        self.assertEqual(response.url, next_url)
 
     def test_like_toggle_respects_next_parameter(self):
         """Like toggle should redirect to 'next' parameter if provided"""
