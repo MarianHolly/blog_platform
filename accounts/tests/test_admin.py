@@ -17,7 +17,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase, RequestFactory
 
 from accounts.models import Profile
-from accounts.admin import ProfileAdmin, BulletinAdmin
+from accounts.admin import ProfileAdmin
+from content.admin import BulletinAdmin
 from content.models import Article, Bulletin, Subscription
 from engagement.models import Like, Comment
 
