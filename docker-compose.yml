@@ -10,14 +10,17 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=True
-      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - ALLOWED_HOSTS=localhost,127.0.0.1,blog-platform-web
+      - DB_HOST=postgres
     env_file:
       - .env
     volumes:
       - .:/app
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
 
   # PostgreSQL Database
