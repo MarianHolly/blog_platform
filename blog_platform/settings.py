@@ -79,6 +79,11 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
+# Only add cache middleware if Redis is available
+if os.getenv('REDIS_URL'):
+    MIDDLEWARE.insert(1, "django.middleware.cache.UpdateCacheMiddleware")
+    MIDDLEWARE.append("django.middleware.cache.FetchFromCacheMiddleware")
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Security headers
