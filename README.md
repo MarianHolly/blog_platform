@@ -1,54 +1,245 @@
-# Blog Platform Documentation
+# Blog Platform
 
-## Brief Overview
+A modern Django-based content management system for writers to publish articles and readers to engage with content through subscriptions, likes, and comments.
 
-**Blog Platform** is a Django-based content management system that enables writers to publish articles through personal bulletins while allowing readers to engage through subscriptions, likes, and comments. The platform features a three-tier user system with role-based permissions and content visibility controls.
+**Tech Stack**: Django 5.2 · PostgreSQL · Redis · Cloudinary · Tailwind CSS · CKEditor5
 
-### Core Features
-- **Multi-role User System**: Reader, Writer, Administrator roles
-- **Bulletin System**: Personal publication spaces for writers
-- **Content Management**: Rich text articles with draft/published states
-- **Subscription Model**: Private content access through subscriptions
-- **Engagement Tools**: Likes, comments, read-later functionality
-- **Permission System**: Role-based access control throughout the platform
+---
 
------
+## Quick Links
 
-## User Roles and Permissions
-The system supports three distinct user roles, each with specific permissions:
+| Document | Purpose |
+|----------|---------|
+| **[DEVELOPMENT.md](DEVELOPMENT.md)** | Local development setup and workflow |
+| **[DEPLOYMENT.md](DEPLOYMENT.md)** | Deploy to Railway with PostgreSQL & Redis |
+| **[CLAUDE.md](CLAUDE.md)** | Architecture, models, permissions (for developers) |
+| **[NOTES.md](NOTES.md)** | Detailed feature overview and user flows |
 
-### 0. Visitor (anyone who visits a website)
- - Access to all public articles that are visible to everyone.
+---
 
-### 1. Reader (user)
- - Personal profile where they can manage their information and subscription preferences.
- - Subscribe to writers to receive access to their private articles.
- - Ability to like and save articles + write comments under articles.
+## Quick Start
 
-### 2. Writer
- - Inherits everything from Reader (every writer is a reader).
- - Beside personal profile, writer also possesses bulletin page with list of his published articles. 
- - Ability to create new articles and set their status (draft, public, private)
- - Ability to publish or hide (draft <-> public / private) his articles.
- - Ability to edit or delete his articles.
+### Local Development (5 minutes)
+```bash
+# 1. Clone and setup
+git clone https://github.com/yourusername/blog_platform.git
+cd blog_platform
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 
-### 3. Administrator
- - Administrator evaluate and review articles of any reader on platform.
- - Ability to read all public and private articles regardless of subscription.
- - Ability to place articles under “evaluation” - making them hidden from readers (draft).
- - Articles under evaluation are either:
-   - approved as safe or verified - making them visible again with also verified mark.
-   - delete article as inappropriate - (send a warning to author of article)
+# 2. Configure .env
+# Copy example and fill in your details
+cp .env.example .env
 
-### Possible Extensions
- - Reader could also report articles that they find troublesome.
+# 3. Database setup
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py populate_sample_data
 
- - There could be multiple writer plans based on number of articles that they can write and publish.
- - Writer's Dashboard - where he can manage his articles 
- - Writer's Bullerin - separate written content from profile. Should writer's profile be primary for his engagement with other people articles and writer's bulletin dedicated for writer's content presentation.
+# 4. Run server
+python manage.py runserver
+# Visit http://localhost:8000
+```
 
- - Administrator could send inappropriate article back to author, so author can rewrite or edit them.
- - If writer had multiple articles rejected, there could be warning mark for administrators to see on writer's profile.
- - In case of administrators, articles shouldn't be judged by one administrator only for deletion. 
- - Two types of administrators - basic managing articles, advanced managing also writers.
- - Should writers be put under evaluation also?
+### Deploy to Railway (10 minutes)
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete Railway setup guide.
+
+---
+
+## Features
+
+### User Roles
+- **Readers**: Subscribe to writers, like/comment on articles, save for later
+- **Writers**: Create personal bulletins, publish articles, manage content
+- **Administrators**: Moderate articles, verify content, manage platform
+
+### Content Management
+- **Rich Text Editor**: CKEditor5 with sanitized HTML output
+- **Draft & Publish**: Articles can be draft (private) or published (public)
+- **Visibility Control**: Articles can be public (everyone) or private (subscribers only)
+- **Evaluation Workflow**: Admin can approve/reject articles during review
+
+### Engagement
+- **Likes**: React to articles (logged-in users only)
+- **Comments**: Discuss articles with one comment per user per article
+- **Read Later**: Bookmark articles for later reading
+- **Subscriptions**: Follow writers to access their private content
+
+---
+
+## System Architecture
+
+### Database Models
+
+```
+User (Django)
+  └─ Profile (OneToOne) [role: reader|writer|admin]
+      └─ Bulletin (OneToOne if writer)
+          └─ Article (ForeignKey)
+              ├─ Comments (1:many)
+              ├─ Likes (1:many)
+              └─ ReadLater (1:many)
+
+Subscription [Profile → Bulletin] - Links readers to writer bulletins
+```
+
+### Permissions
+
+| Action | Visitor | Reader | Writer | Admin |
+|--------|---------|--------|--------|-------|
+| View public articles | ✓ | ✓ | ✓ | ✓ |
+| Like articles | ✗ | ✓ | ✓ | ✓ |
+| Create articles | ✗ | ✗ | ✓ | ✗ |
+| Moderate articles | ✗ | ✗ | ✗ | ✓ |
+| Access private articles | ✗ | If subscribed | Own only | All |
+
+---
+
+## Project Structure
+
+```
+blog_platform/
+├── accounts/           # Authentication & profiles
+├── content/            # Articles & bulletins
+├── engagement/         # Likes, comments, bookmarks
+├── core/               # Shared utilities
+├── templates/          # Django templates
+├── static/             # CSS, JavaScript
+├── requirements.txt    # Python dependencies
+├── manage.py           # Django CLI
+└── .env.example        # Environment template
+```
+
+---
+
+## Testing
+
+```bash
+# Run all tests
+python manage.py test
+
+# Run specific app
+python manage.py test accounts
+
+# With coverage
+coverage run --source='.' manage.py test
+coverage report
+```
+
+---
+
+## Admin Panel
+
+Access Django admin at `/admin`:
+- Create/edit users
+- Manage roles (promote to writer/admin)
+- Create bulletins
+- Review and evaluate articles
+
+View admin dashboard at `/accounts/admin-dashboard`:
+- See articles pending review
+- View evaluation history
+
+---
+
+## Environment Configuration
+
+Create `.env` file with:
+```bash
+SECRET_KEY=your-secret-key
+DEBUG=False
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+DATABASE_URL=postgresql://user:password@localhost:5432/blog_platform
+
+REDIS_URL=redis://localhost:6379/0
+
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+SUPERUSER_USERNAME=admin
+SUPERUSER_EMAIL=admin@example.com
+SUPERUSER_PASSWORD=secure-password
+```
+
+See `.env.example` for complete template.
+
+---
+
+## Key Features in Development
+
+- ✅ **Multi-role system** with permission mixins
+- ✅ **Content sanitization** prevents XSS attacks
+- ✅ **Article evaluation workflow** for moderation
+- ✅ **Subscription model** for private content
+- ✅ **Responsive design** with Tailwind CSS
+- ✅ **Media storage** via Cloudinary
+- ✅ **Redis caching** for performance
+- ✅ **Comprehensive tests** for all apps
+
+---
+
+## Performance Optimizations
+
+- **Database indexes** on frequently queried fields (Like, Comment, ReadLater)
+- **Select/prefetch related** in admin to avoid N+1 queries
+- **Redis caching** for homepage and bulletin queries
+- **Static file optimization** with WhiteNoise
+- **HTML sanitization** with bleach library
+
+---
+
+## Documentation by Role
+
+### For Developers
+- **[DEVELOPMENT.md](DEVELOPMENT.md)**: Setup, testing, common tasks
+- **[CLAUDE.md](CLAUDE.md)**: Architecture decisions, code patterns
+
+### For DevOps/Deployment
+- **[DEPLOYMENT.md](DEPLOYMENT.md)**: Railway setup, environment config, troubleshooting
+
+### For Product Managers
+- **[NOTES.md](NOTES.md)**: User flows, feature descriptions, future roadmap
+
+---
+
+## Troubleshooting
+
+### Can't Connect to Database
+```bash
+# Check PostgreSQL is running
+# Windows: services.msc → PostgreSQL
+# macOS: brew services start postgresql
+
+# Verify DATABASE_URL in .env
+```
+
+### Static Files Not Loading
+```bash
+python manage.py collectstatic --clear --noinput
+```
+
+### Tests Failing
+```bash
+python manage.py test --verbosity=2
+# Check test output for specific errors
+```
+
+See **[DEVELOPMENT.md](DEVELOPMENT.md)** for more troubleshooting.
+
+---
+
+## License
+
+This project is open source and available under the MIT License.
+
+---
+
+## Next Steps
+
+1. **New to the project?** → Start with [DEVELOPMENT.md](DEVELOPMENT.md)
+2. **Ready to deploy?** → Follow [DEPLOYMENT.md](DEPLOYMENT.md)
+3. **Need architecture details?** → Read [CLAUDE.md](CLAUDE.md)
+4. **Want feature overview?** → Check [NOTES.md](NOTES.md)
