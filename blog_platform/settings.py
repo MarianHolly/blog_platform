@@ -19,7 +19,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.railway.app,.on
 
 # CSRF Trusted Origins for Railway and Render deployments
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.railway.app',
+    'https://*.up.railway.app',
     'https://*.onrender.com',
 ]
 
