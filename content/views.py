@@ -75,7 +75,7 @@ class HomePageView(ListView):
         # Use cached new readers (2 min TTL) instead of querying database
         new_readers = cache.get('new_readers')
         if new_readers is None:
-            new_readers = list(Profile.objects.filter(role=PROFILE_ROLE_READER)[:3])
+            new_readers = list(Profile.objects.filter(role=ROLE_READER)[:3])
             cache.set('new_readers', new_readers, 60 * 2)
 
         # Add cached data to context
