@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="mb-24 mt-8" id="articles">
+    <section class="mb-16 mt-8" id="articles">
         <div class="mb-6">
             <h1 class="text-2xl font-medium opacity-70 text-center uppercase">Najnovšie články</h1>
             <p class="text-sm font-300 opacity-50 text-center italic">Najnovší obsah od našich autorov</p>
@@ -43,7 +43,10 @@
                                 {% endif %}
 
                                 {% if article.evaluation == approved_evaluation %}
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full mr-2">
+                                    <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mr-2 inline-flex items-center gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path fill-rule="evenodd" d="M2.25 12c0-6.215 5.785-11.25 12-11.25s12 5.035 12 11.25S19.215 23.25 12 23.25S2.25 18.215 2.25 12zm13.5-1.5a.75.75 0 0 0-1.5 0v2.379l-.621-.621a.75.75 0 1 0-1.06 1.061l2 2a.75.75 0 0 0 1.06 0l2-2a.75.75 0 1 0-1.06-1.06l-.621.62V10.5z" clip-rule="evenodd"/>
+                                        </svg>
                                         Overený
                                     </span>
                                 {% endif %}
@@ -64,7 +67,7 @@
         {% endif %}
     </section>
 
-    <section class="mb-24" id="bulletins">
+    <section class="mb-16" id="bulletins">
         <div class="my-4">
             <h1 class="text-xl font-medium opacity-70 text-center uppercase">Bulletiny</h1>
             <p class="text-sm font-300 opacity-50 text-center italic">Bulletiny, ktoré sú populárne medzi našimi
@@ -74,7 +77,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-6 md:mx-0">
             {% for bulletin in popular_bulletins %}
                 <a href="{% url 'bulletin_detail' bulletin.slug %}"
-                   class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                   class="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all">
                     <h3 class="text-lg font-semibold text-center">{{ bulletin.title }}</h3>
                     <p class="text-gray-600 text-sm mt-2">{{ bulletin.description|truncatewords:20 }}</p>
                 </a>
@@ -82,7 +85,7 @@
         </div>
     </section>
 
-    <section class="mb-24" id="writers">
+    <section class="mb-16" id="writers">
         <div class="my-4">
             <h1 class="text-xl font-medium opacity-70 text-center uppercase">Autori</h1>
             <p class="text-sm font-300 opacity-50 text-center italic">Autori, ktorí zaujali v poslednom čase najviac
@@ -92,9 +95,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-6 md:mx-0">
             {% for writer in recent_writers %}
                 <a href="{% url 'profile' username=writer.user.username %}"
-                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                   class="flex items-center p-4 border border-gray-200 bg-gray-50 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all">
                     <img src="{{ writer.avatar.url }}" alt="{{ writer.username }}"
-                         class="w-16 h-16 rounded-full mr-4 object-cover flex-none">
+                         class="w-16 h-16 rounded-full mr-4 object-cover flex-none border-2" style="border-color: #1e40af;">
                     <div>
                         <h3 class="text-lg font-semibold"> {{ writer.user.first_name }} {{ writer.user.last_name }}</h3>
                         {% if writer.biography %}
@@ -108,7 +111,7 @@
         </div>
     </section>
 
-    <section class="mb-24" id="readers">
+    <section class="mb-16" id="readers">
         <div class="my-4">
             <h1 class="text-xl font-medium opacity-70 text-center uppercase">Čitatelia</h1>
             <p class="text-sm font-300 opacity-50 text-center italic">Noví čitatelia, ktorí sa k nám pridali.</p>
@@ -116,9 +119,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-6 md:mx-0">
             {% for reader in new_readers %}
                 <a href="{% url 'profile' username=reader.user.username %}"
-                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                   class="flex items-center p-4 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all" style="border: 1px solid #d4e3ff; background-color: #f0f4ff;">
                     <img src="{{ reader.avatar.url }}" alt="{{ reader.username }}"
-                         class="w-16 h-16 rounded-full mr-4 object-cover flex-none">
+                         class="w-16 h-16 rounded-full mr-4 object-cover flex-none border-2" style="border-color: #1e40af;">
                     <div>
                         <h3 class="text-lg font-semibold"> {{ reader.user.first_name }} {{ reader.user.last_name }}</h3>
                         {% if reader.biography %}
@@ -133,7 +136,18 @@
 
     </section>
 
-    <section id="call-to-action" class="my-32">
-
+    <section id="call-to-action" class="my-16 py-12 mx-6 md:mx-0 rounded-xl text-white text-center" style="background: linear-gradient(to right, #1e40af, #1e3a8a);">
+        <h2 class="text-3xl font-bold mb-4">Staň sa súčasťou komunity</h2>
+        <p class="text-lg mb-8 opacity-90">Zdieľaj články, čítaj obsah ostatných a buduj komunitu.</p>
+        <div class="flex justify-center gap-4 flex-wrap">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'signup' %}" class="bg-white font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition hover:scale-105" style="color: #1e40af;">Registruj sa</a>
+                <a href="{% url 'login' %}" class="border-2 border-white text-white font-bold px-8 py-3 rounded-lg transition" style="background-color: rgba(30, 64, 175, 0.3); hover: background-color: rgba(30, 64, 175, 0.5);">Prihlás sa</a>
+            {% else %}
+                {% if user.profile.role == 'reader' %}
+                    <a href="{% url 'promote_to_writer' %}" class="bg-white font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition hover:scale-105" style="color: #1e40af;">Staň sa autorom</a>
+                {% endif %}
+            {% endif %}
+        </div>
     </section>
 {% endblock %}
