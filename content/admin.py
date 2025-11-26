@@ -35,7 +35,7 @@ class ArticleAdmin(ModelAdmin):
     def get_queryset(self, request):
         """Optimize queries with select_related for author and bulletin."""
         qs = super().get_queryset(request)
-        return qs.select_related('bulletin', 'bulletin__owner')
+        return qs.select_related('bulletin', 'bulletin__owner', 'bulletin__owner__user')
 
     def author(self, obj):
         """Display article author (writer's name)."""
