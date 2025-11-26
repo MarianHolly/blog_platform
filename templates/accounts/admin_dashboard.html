@@ -5,12 +5,12 @@
 
 {% block content %}
     <div class="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-2">
-        <div class="bg-white rounded-lg shadow pt-6 pb-8 mb-3">
-            <h2 class="text-center font-medium text-gray-700 text-xl uppercase">Ovladaci panel spravcov</h2>
+        <div class="bg-white rounded-lg shadow pt-6 pb-8 mb-3" style="border-top: 4px solid #1e40af;">
+            <h2 class="text-center font-medium text-xl uppercase" style="color: #1e40af;">Ovladaci panel spravcov</h2>
         </div>
 
-        <div class="bg-white rounded-lg shadow py-4 border-1 border-gray-400 w-2/3 mx-auto">
-            <h2 class="text-center font-medium text-gray-700 text-md mb-1 uppercase">články na kontrolu</h2>
+        <div class="bg-white rounded-lg shadow py-4 border-1 w-2/3 mx-auto" style="border-color: #1e40af;">
+            <h2 class="text-center font-medium text-md mb-1 uppercase" style="color: #1e40af;">články na kontrolu</h2>
             <div class="text-center font-light text-gray-400 text-sm my-1">
                 {% if unreviewed_articles %}
                     {% if unreviewed_articles.count == 1 %}
@@ -67,8 +67,8 @@
             {% endif %}
         </div>
 
-        <div class="bg-white rounded-lg shadow py-4 border-1 border-gray-400 w-2/3 mx-auto">
-            <h2 class="text-center font-medium text-gray-700 text-md mb-1 uppercase">archiv skontrolovaných článkov</h2>
+        <div class="bg-white rounded-lg shadow py-4 border-1 w-2/3 mx-auto" style="border-color: #1e40af;">
+            <h2 class="text-center font-medium text-md mb-1 uppercase" style="color: #1e40af;">archiv skontrolovaných článkov</h2>
             <div class="text-center font-light text-gray-400 text-sm my-1">
                 {% if reviewed_articles %}
                     {% if reviewed_articles.count == 1 %}
