@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
-from django.db.models import F
+from django.db.models import F, Prefetch, Count
 
 from accounts.models import Profile
-from content.models import Bulletin
+from content.models import Bulletin, Article, Subscription
 
 
 class ProfileAdmin(ModelAdmin):
@@ -69,6 +69,15 @@ class ProfileAdmin(ModelAdmin):
     )
 
     list_per_page = 25
+
+    def get_queryset(self, request):
+        """Optimize queryset with select_related and prefetch_related to avoid N+1 queries."""
+        qs = super().get_queryset(request)
+        # Select related for User FK traversal
+        qs = qs.select_related('user')
+        # Prefetch related for bulletin (OneToOne from Profile perspective)
+        qs = qs.prefetch_related('bulletin')
+        return qs
 
     def has_permission(self, request, view_type=None):
         """Restrict admin access to admin users only."""
