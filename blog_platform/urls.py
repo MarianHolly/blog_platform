@@ -5,6 +5,11 @@ from django.conf.urls.static import static
 
 from content.views import *
 
+# Customize Django Admin Site
+admin.site.site_header = "Blog Platform Admin"
+admin.site.site_title = "Blog Platform Administration"
+admin.site.index_title = "Spravovací panel"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("content.urls")),
