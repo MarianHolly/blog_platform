@@ -1,0 +1,144 @@
+/* Custom Admin Theme - Brand Color #1e40af */
+
+:root {
+    --brand-color: #1e40af;
+    --brand-dark: #1e3a8a;
+    --brand-light: #dbeafe;
+}
+
+/* Admin Header and Navigation */
+#header {
+    background-color: var(--brand-color) !important;
+    border-bottom: 3px solid var(--brand-dark) !important;
+}
+
+#header h1, #header h1 a {
+    color: white !important;
+}
+
+#header a {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#header a:hover {
+    color: white !important;
+}
+
+/* Admin Sidebar Navigation */
+.module h2 {
+    background-color: var(--brand-color) !important;
+    color: white !important;
+}
+
+.module h2 a {
+    color: white !important;
+}
+
+.module ul li a {
+    color: var(--brand-color) !important;
+}
+
+.module ul li a:hover {
+    background-color: var(--brand-light) !important;
+    color: var(--brand-dark) !important;
+}
+
+/* Action Buttons */
+.button {
+    background-color: var(--brand-color) !important;
+    border-color: var(--brand-color) !important;
+    color: white !important;
+}
+
+.button:hover {
+    background-color: var(--brand-dark) !important;
+    border-color: var(--brand-dark) !important;
+}
+
+.submit-row .default {
+    background-color: var(--brand-color) !important;
+    border-color: var(--brand-color) !important;
+}
+
+.submit-row .default:hover {
+    background-color: var(--brand-dark) !important;
+}
+
+/* Links */
+a:link {
+    color: var(--brand-color) !important;
+}
+
+a:visited {
+    color: var(--brand-dark) !important;
+}
+
+a:hover {
+    color: var(--brand-dark) !important;
+}
+
+/* Focus and Active States */
+input:focus, textarea:focus, select:focus {
+    border-color: var(--brand-color) !important;
+    box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
+/* Admin List Page Highlighting */
+.selected {
+    background-color: var(--brand-light) !important;
+}
+
+tbody tr:hover {
+    background-color: var(--brand-light) !important;
+}
+
+/* Form Labels and Help Text */
+label {
+    color: var(--brand-color) !important;
+}
+
+.help {
+    color: var(--brand-dark) !important;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    background-color: transparent !important;
+}
+
+.breadcrumbs a {
+    color: var(--brand-color) !important;
+}
+
+/* Admin Changelist Table */
+th {
+    background-color: var(--brand-light) !important;
+    border-color: var(--brand-color) !important;
+}
+
+th a {
+    color: var(--brand-color) !important;
+}
+
+th a:hover {
+    color: var(--brand-dark) !important;
+}
+
+/* Status Badges */
+.status-badge {
+    background-color: var(--brand-color) !important;
+    color: white !important;
+}
+
+/* Messages and Alerts */
+.messagelist .success {
+    border-left-color: var(--brand-color) !important;
+}
+
+.messagelist .error {
+    border-left-color: #dc2626 !important;
+}
+
+.messagelist .warning {
+    border-left-color: #f59e0b !important;
+}
