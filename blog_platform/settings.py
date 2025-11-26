@@ -79,11 +79,6 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-# Only add cache middleware if Redis is available
-if os.getenv('REDIS_URL'):
-    MIDDLEWARE.insert(1, "django.middleware.cache.UpdateCacheMiddleware")
-    MIDDLEWARE.append("django.middleware.cache.FetchFromCacheMiddleware")
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Security headers
@@ -160,37 +155,18 @@ else:
 # Redis Configuration
 REDIS_URL = os.getenv('REDIS_URL') if not TESTING else None
 
+# Always use database sessions and dummy cache as fallback
+# Redis is optional for performance
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 if REDIS_URL:
     print(f"[*] Redis URL found: {REDIS_URL[:30]}...")
-    try:
-        # Simple Redis configuration without SSL complications
-        CACHES = {
-            'default': {
-                'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-                'LOCATION': REDIS_URL,
-            }
-        }
-        SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-        SESSION_CACHE_ALIAS = 'default'
-        print("[+] Redis: Configured")
-    except Exception as e:
-        print(f"[-] Redis failed: {e}")
-        # Fallback to database
-        CACHES = {
-            'default': {
-                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-            }
-        }
-        SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-        print("[*] Using database sessions instead")
 else:
-    # No Redis - use database sessions
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        }
-    }
-    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
     print("[*] Redis: Skipped (using database sessions)")
 
 CACHE_TTL = 60 * 15
