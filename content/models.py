@@ -1,4 +1,3 @@
-from bleach import clean
 from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
     SlugField, ForeignKey, Index
@@ -6,6 +5,7 @@ from django.utils import timezone
 from django_ckeditor_5.fields import CKEditor5Field
 
 from accounts.models import Profile
+from core.sanitization import sanitize_article_content
 
 
 # Create your models here.
@@ -43,12 +43,6 @@ class Article(Model):
         ('private', 'Private'),
     ]
 
-    ALLOWED_TAGS = ['p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'h1', 'h2', 'h3']
-    ALLOWED_ATTRIBUTES = {
-        'a': ['href', 'title'],
-        '*': ['class']
-    }
-
     title = CharField(max_length=150, null=False, blank=False)
     content = CKEditor5Field('Content', config_name='default', null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
@@ -80,8 +74,13 @@ class Article(Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        """Save Article with sanitized HTML content.
+
+        Sanitizes content to prevent XSS attacks and sets published timestamp
+        when article transitions to published status.
+        """
         if self.content:
-            self.content = clean(self.content, tags=self.ALLOWED_TAGS, attributes=self.ALLOWED_ATTRIBUTES, strip=True)
+            self.content = sanitize_article_content(self.content)
 
         if self.status == 'published':
             self.published = timezone.now()
