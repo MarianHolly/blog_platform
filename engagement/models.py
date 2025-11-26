@@ -1,4 +1,4 @@
-from django.db.models import Model, DateTimeField, ForeignKey, TextField, CASCADE
+from django.db.models import Model, DateTimeField, ForeignKey, TextField, CASCADE, Index
 
 from accounts.models import Profile
 from content.models import Article
@@ -15,6 +15,7 @@ class Comment(Model):
 
     class Meta:
         unique_together = ('author', 'article')
+        indexes = [Index(fields=['article']), Index(fields=['author'])]
 
     def __repr__(self):
         return f"Comment(author={self.author}, article={self.article})"
@@ -30,6 +31,7 @@ class Like(Model):
 
     class Meta:
         unique_together = ('author', 'article')
+        indexes = [Index(fields=['article']), Index(fields=['author'])]
 
     def __repr__(self):
         return f"Like(author={self.author}, article={self.article})"
@@ -45,6 +47,7 @@ class ReadLater(Model):
 
     class Meta:
         unique_together = ('author', 'article')
+        indexes = [Index(fields=['article']), Index(fields=['author'])]
 
     def __repr__(self):
         return f"ReadLater(author={self.author}, article={self.article})"
