@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Run migrations, collect static files, and start gunicorn
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn blog_platform.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 60"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput --clear --verbosity 2 && gunicorn blog_platform.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 60"]
