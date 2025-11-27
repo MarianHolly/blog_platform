@@ -13,7 +13,7 @@ TESTING = 'test' in sys.argv
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.railway.app,.onrender.com").split(",")
 
@@ -80,6 +80,10 @@ MIDDLEWARE = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+# WhiteNoise Configuration for production static files
+WHITENOISE_USE_FINDERS = True  # Find files from installed apps
+WHITENOISE_AUTOREFRESH = DEBUG  # Auto-refresh during development
 
 # Security headers
 SECURE_BROWSER_XSS_FILTER = True
