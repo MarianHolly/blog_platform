@@ -18,13 +18,22 @@ from bleach import clean
 # Sanitization Configuration
 # ============================================================================
 
-# Allowed HTML tags for rich text content (CKEditor output)
-ALLOWED_TAGS = ['p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'h1', 'h2', 'h3']
+# Allowed HTML tags for rich text content (CKEditor5 output)
+ALLOWED_TAGS = [
+    'p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'a', 'img', 'blockquote', 'code', 'pre', 'hr',
+    'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td',
+    'div', 'span', 'figure', 'figcaption'
+]
 
 # Allowed HTML attributes
 ALLOWED_ATTRIBUTES = {
-    'a': ['href', 'title'],
-    '*': ['class']
+    'a': ['href', 'title', 'target', 'rel'],
+    'img': ['src', 'alt', 'title', 'width', 'height'],
+    '*': ['class', 'style'],
+    'table': ['border', 'cellpadding', 'cellspacing'],
+    'td': ['colspan', 'rowspan'],
+    'th': ['colspan', 'rowspan'],
 }
 
 
