@@ -63,13 +63,13 @@ MEDIA_URL = "/media/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
-CKEDITOR_5_CUSTOM_CSS = '/static/css/article-content.css'
+CKEDITOR_5_CUSTOM_CSS = 'css/article-content.css'
 
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
