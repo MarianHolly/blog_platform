@@ -99,7 +99,7 @@
             {% for writer in recent_writers %}
                 <a href="{% url 'profile' username=writer.user.username %}"
                    class="flex items-center p-4 border border-gray-200 bg-gray-50 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all">
-                    <img src="{{ writer.avatar.url }}" alt="{{ writer.username }}"
+                    <img src="{{ writer.avatar_url }}" alt="{{ writer.username }}"
                          class="w-16 h-16 rounded-full mr-4 object-cover flex-none border-2" style="border-color: #1e40af;">
                     <div>
                         <h3 class="text-lg font-semibold"> {{ writer.user.first_name }} {{ writer.user.last_name }}</h3>
@@ -123,7 +123,7 @@
             {% for reader in new_readers %}
                 <a href="{% url 'profile' username=reader.user.username %}"
                    class="flex items-center p-4 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all" style="border: 1px solid #d4e3ff; background-color: #f0f4ff;">
-                    <img src="{{ reader.avatar.url }}" alt="{{ reader.username }}"
+                    <img src="{{ reader.avatar_url }}" alt="{{ reader.username }}"
                          class="w-16 h-16 rounded-full mr-4 object-cover flex-none border-2" style="border-color: #1e40af;">
                     <div>
                         <h3 class="text-lg font-semibold"> {{ reader.user.first_name }} {{ reader.user.last_name }}</h3>
