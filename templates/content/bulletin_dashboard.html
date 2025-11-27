@@ -4,6 +4,8 @@
 {% block title %}{{ bulletin }} - Dashboard{% endblock %}
 
 {% block content %}
+    {% public_visibility as pub_vis %}
+    {% private_visibility as priv_vis %}
     <div class="max-w-3xl mx-auto px-4 py-8">
         <!-- Bulletin Information -->
         <div class="bg-white rounded-lg shadow mb-8 py-6">
@@ -68,9 +70,9 @@
             <h2 class="text-center text-xl font-semibold my-3">Publikované články</h2>
             {% for article in articles %}
                 <div class="flex flex-row justify-center items-center mb-2 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 transition border-l-3
-                 {% if article.visibility == public_visibility %}
+                 {% if article.visibility == pub_vis %}
                  border-l-green-500
-                 {% elif article.visibility == private_visibility %}
+                 {% elif article.visibility == priv_vis %}
                  border-l-blue-500
                  {% endif %}">
                     <a href="{% url 'article_detail' article.id %}" class="flex flex-col flex-1 hover:cursor-pointer">
@@ -85,9 +87,9 @@
                         <form method="POST" action="{% url 'visibility_toggle' article.id %}">
                             {% csrf_token %}
                             <button type="submit" class="text-xs py-1 px-3 border-1 rounded-xl font-medium hover:cursor-pointer
-                                {% if article.visibility == public_visibility %} border-green-500 text-green-500
+                                {% if article.visibility == pub_vis %} border-green-500 text-green-500
                                 {% else %} border-blue-500 text-blue-500 {% endif %}">
-                                {% if article.visibility == public_visibility %} Verejné {% else %} Súkromné {% endif %}
+                                {% if article.visibility == pub_vis %} Verejné {% else %} Súkromné {% endif %}
                             </button>
                         </form>
                     </div>
