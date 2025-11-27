@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block content %}
+    {% public_visibility as pub_vis %}
+    {% private_visibility as priv_vis %}
+    {% approved_evaluation as approved_eval %}
     <section class="mb-16 mt-8" id="articles">
         <div class="mb-6">
             <h1 class="text-2xl font-medium opacity-70 text-center uppercase">Najnovšie články</h1>
@@ -34,7 +37,7 @@
                             <p class="text-gray-600 text-sm mb-auto">{{ article.description|truncatewords:25 }}</p>
 
                             <div class="flex flex-row items-center mt-4">
-                                {% if article.visibility == private_visibility %}
+                                {% if article.visibility == priv_vis %}
                                     <span class="text-gray-500 p-1 border-1 border-gray-500 rounded-xl opacity-60">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
                                             <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd"/>
@@ -42,7 +45,7 @@
                                     </span>
                                 {% endif %}
 
-                                {% if article.evaluation == approved_evaluation %}
+                                {% if article.evaluation == approved_eval %}
                                     <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mr-2 inline-flex items-center gap-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                             <path fill-rule="evenodd" d="M2.25 12c0-6.215 5.785-11.25 12-11.25s12 5.035 12 11.25S19.215 23.25 12 23.25S2.25 18.215 2.25 12zm13.5-1.5a.75.75 0 0 0-1.5 0v2.379l-.621-.621a.75.75 0 1 0-1.06 1.061l2 2a.75.75 0 0 0 1.06 0l2-2a.75.75 0 1 0-1.06-1.06l-.621.62V10.5z" clip-rule="evenodd"/>
