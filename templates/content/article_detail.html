@@ -9,13 +9,22 @@
 {% endblock %}
 
 {% block content %}
+    {% public_visibility as pub_vis %}
+    {% private_visibility as priv_vis %}
+    {% admin_role as admin_r %}
+    {% writer_role as writer_r %}
+    {% published_status as pub_status %}
+    {% draft_status as draft_st %}
+    {% approved_evaluation as approved_eval %}
+    {% under_review_evaluation as under_rev %}
+    {% rejected_evaluation as rejected_eval %}
     <div class="container mx-auto px-4 py-8">
         <!-- Article Content -->
         <article class="max-w-5xl mx-auto bg-white p-6 rounded shadow mb-12">
             <div class="w-full flex flex-col items-center">
                 <h1 class="text-xl text-center font-bold w-fit text-gray-800 mb-2">
                     {{ article.title }}</h1>
-                {% if article.evaluation == approved_evaluation %}
+                {% if article.evaluation == approved_eval %}
                     <div class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
                         Overený
                     </div>
@@ -24,19 +33,19 @@
 
             <div class="flex flex-col mb-6 pb-4 border-b border-gray-200 justify-center items-center">
                 <div class="text-gray-600">
-                    {% if user.profile.role == writer_role and article.bulletin == user.profile.bulletin %}
+                    {% if user.profile.role == writer_r and article.bulletin == user.profile.bulletin %}
                         <div class="my-1">
-                            {% if article.status == published_status %}
+                            {% if article.status == pub_status %}
                                 <form method="POST" action="{% url 'visibility_toggle' article.id %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="next" value="{{ request.path }}">
                                     <button type="submit"
                                             class="text-sm px-3 py-1 border-1 rounded-md font-medium hover:cursor-pointer border-gray-400 text-gray-600 hover:bg-gray-100">
-                                        {% if article.visibility == public_visibility %} zmeň na Súkromné {% else %} zmeň na
+                                        {% if article.visibility == pub_vis %} zmeň na Súkromné {% else %} zmeň na
                                             Verejné {% endif %}
                                     </button>
                                 </form>
-                            {% elif article.status == draft_status %}
+                            {% elif article.status == draft_st %}
                                 <div class="text-gray-400 text-center">Form to set Draft to Publish.</div>
                             {% elif article.status == 'under_evaluation' %}
                                 <div class="text-pink-400 text-center">Article is under evaluation of administrators.
@@ -54,18 +63,19 @@
                         <span class="text-sm my-2">vytvorené: <span
                                 class="font-medium text-gray-800">{{ article.created|date:"M d, Y" }}</span></span><br>
                     {% endif %}
-                    {% if article.status == published_status %}
+                    {% if article.status == pub_status %}
                         <span class="text-sm">publikované: <span
                                 class="font-medium text-gray-800">{{ article.published|date:"M d, Y" }}</span></span>
                     {% endif %}
                 </div>
             </div>
             <div class="article-content prose-sm sm:prose lg:prose-lg max-w-none">
-                {% if article.visibility == public_visibility %}
+                {% if article.visibility == pub_vis %}
+                    <!-- PUBLIC: Showing full content -->
                     {{ article.content|safe }}
-                {% elif article.visibility == private_visibility %}
+                {% elif article.visibility == priv_vis %}
                     {% if user.is_authenticated %}
-                        {% if is_subscribed or article.bulletin == user.profile.bulletin or user.profile.role == admin_role %}
+                        {% if is_subscribed or article.bulletin == user.profile.bulletin or user.profile.role == admin_r %}
                             {{ article.content|safe }}
                         {% else %}
                             {{ article.content|safe|truncatewords:175 }}
@@ -99,7 +109,7 @@
         </article>
 
         <!-- Author/Owner Actions -->
-        {% if user.profile.role == writer_role and article.bulletin == user.profile.bulletin %}
+        {% if user.profile.role == writer_r and article.bulletin == user.profile.bulletin %}
             <section class="bg-white max-w-sm mx-auto rounded-lg shadow mb-12 p-3 flex justify-center gap-4">
                 <a href="{% url 'article_edit' article.id %}" class="flex-1">
                     <p class="px-6 py-3 text-gray-700 text-center border-gray-100 border-1 hover:bg-gray-100 hover:cursor-pointer rounded-md transition">
@@ -115,20 +125,20 @@
         {% endif %}
 
         <!-- Admin Actions -->
-        {% if user.profile.role == admin_role %}
+        {% if user.profile.role == admin_r %}
             <section class="bg-white w-fit h-fit px-6 py-4 mx-auto rounded-lg shadow mb-4">
-                {% if article.evaluation == under_review_evaluation %}
+                {% if article.evaluation == under_rev %}
                     <div class="flex flex-col items-center py-4">
                         <a href="{% url 'article_evaluation_dashboard' %}"
                            class="px-6 py-3 text-blue-400 text-center border-blue-100 border-1 hover:bg-blue-50 hover:cursor-pointer rounded-md transition">
                             Článok čaká na vyhodnotenie
                         </a>
                     </div>
-                {% elif article.evaluation == approved_evaluation %}
+                {% elif article.evaluation == approved_eval %}
                     <p class="px-6 py-3 text-green-700 text-center border-green-100 border-1 rounded-md bg-green-50">
                         Článok bol schválený a overený.
                     </p>
-                {% elif article.evaluation == rejected_evaluation %}
+                {% elif article.evaluation == rejected_eval %}
                     <p class="px-6 py-3 text-red-700 text-center border-red-100 border-1 rounded-md bg-red-50">
                         Článok bol zamietnutý.
                     </p>
@@ -231,7 +241,7 @@
                                    class="font-medium text-gray-700 hover:underline hover:text-gray-900">prihlásený</a>.
                             </p>
                         </div>
-                    {% elif article.visibility == public_visibility or article.visibility == private_visibility and is_subscribed or article.bulletin == user.profile.bulletin or user.profile.role == admin_role %}
+                    {% elif article.visibility == pub_vis or article.visibility == priv_vis and is_subscribed or article.bulletin == user.profile.bulletin or user.profile.role == admin_r %}
                         <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
                             <form method="post">
                                 {% csrf_token %}
@@ -242,7 +252,7 @@
                                 </button>
                             </form>
                         </div>
-                    {% elif article.visibility == private_visibility and not is_subscribed or not article.bulletin == user.profile.bulletin or not user.profile.role == admin_role %}
+                    {% elif article.visibility == priv_vis and not is_subscribed or not article.bulletin == user.profile.bulletin or not user.profile.role == admin_r %}
                         <div class="w-md mx-auto px-4 py-12 mt-6 shadow-md rounded-md bg-gray-50 border-1 border-gray-100 flex flex-col gap-2 justify-center">
                             <form action="{% url 'toggle_subscription' article.bulletin.slug %}" method="post"
                                   class="flex justify-center items">

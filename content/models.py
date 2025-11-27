@@ -51,7 +51,7 @@ class Article(Model):
     description = TextField(null=True, blank=True)
 
     status = CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
-    visibility = CharField(max_length=20, choices=VISIBILITY_CHOICES, default='private')
+    visibility = CharField(max_length=20, choices=VISIBILITY_CHOICES, default='public')
     evaluation = CharField(max_length=20, choices=EVALUATION_CHOICES, default='pending')
 
     created = DateTimeField(auto_now_add=True)
