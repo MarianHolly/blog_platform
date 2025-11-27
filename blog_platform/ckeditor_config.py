@@ -31,26 +31,7 @@ CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': {
             'items': ['heading', '|', 'bold', 'italic', 'link',
-                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
-        }
-
-    },
-    'extends': {
-        'blockToolbar': [
-            'paragraph', 'heading1', 'heading2', 'heading3',
-            '|',
-            'bulletedList', 'numberedList',
-            '|',
-            'blockQuote',
-        ],
-        'toolbar': {
-            'items': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
-                      'code', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
-                      'bulletedList', 'numberedList', 'todoList', '|', 'blockQuote', 'imageUpload', '|',
-                      'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
-                      'insertTable',
-                      ],
-            'shouldNotGroupWhenFull': 'true'
+                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'insertTable'],
         },
         'image': {
             'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
@@ -62,7 +43,6 @@ CKEDITOR_5_CONFIGS = {
                 'alignRight',
                 'alignCenter',
             ]
-
         },
         'table': {
             'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
@@ -83,13 +63,13 @@ CKEDITOR_5_CONFIGS = {
                 {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
                 {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'}
             ]
-        }
-    },
-    'list': {
-        'properties': {
-            'styles': 'true',
-            'startIndex': 'true',
-            'reversed': 'true',
+        },
+        'list': {
+            'properties': {
+                'styles': 'true',
+                'startIndex': 'true',
+                'reversed': 'true',
+            }
         }
     }
 }
