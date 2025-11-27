@@ -42,6 +42,20 @@ class Profile(Model):
         return self.user.get_full_name() or self.user.username
 
     @property
+    def avatar_url(self):
+        """Return avatar URL with fallback to default avatar image or placeholder if not found."""
+        if self.avatar and str(self.avatar) != 'default_avatar.png':
+            try:
+                # Return custom avatar if it exists
+                return self.avatar.url
+            except Exception:
+                pass
+
+        # Fall back to placeholder avatar with username initials
+        initials = self.user.username[:2].upper()
+        return f'https://ui-avatars.com/api/?name={self.user.username}&background=1e40af&color=fff&size=128'
+
+    @property
     def is_reader(self):
         return self.role == 'reader'
 
