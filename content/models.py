@@ -2,6 +2,7 @@ from ckeditor.fields import RichTextField
 from django.db.models import Model, CASCADE, CharField, TextField, DateTimeField, ManyToManyField, OneToOneField, \
     SlugField, ForeignKey, Index
 from django.utils import timezone
+from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
 from accounts.models import Profile
@@ -44,6 +45,7 @@ class Article(Model):
     ]
 
     title = CharField(max_length=150, null=False, blank=False)
+    slug = SlugField(max_length=200, unique=True, blank=True)
     content = CKEditor5Field('Content', config_name='default', null=True, blank=True)
     bulletin = ForeignKey(Bulletin, on_delete=CASCADE, related_name='articles')
 
@@ -77,8 +79,11 @@ class Article(Model):
         """Save Article with sanitized HTML content.
 
         Sanitizes content to prevent XSS attacks and sets published timestamp
-        when article transitions to published status.
+        when article transitions to published status. Auto-generates slug from title.
         """
+        if not self.slug:
+            self.slug = slugify(self.title)
+
         if self.content:
             self.content = sanitize_article_content(self.content)
 
