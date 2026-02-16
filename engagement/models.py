@@ -25,8 +25,8 @@ class Comment(Model):
 
 
 class Like(Model):
-    author = ForeignKey(Profile, on_delete=CASCADE)
-    article = ForeignKey(Article, on_delete=CASCADE)
+    author = ForeignKey(Profile, on_delete=CASCADE, related_name='likes')
+    article = ForeignKey(Article, on_delete=CASCADE, related_name='likes')
     created = DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -41,8 +41,8 @@ class Like(Model):
 
 
 class ReadLater(Model):
-    author = ForeignKey(Profile, on_delete=CASCADE)
-    article = ForeignKey(Article, on_delete=CASCADE)
+    author = ForeignKey(Profile, on_delete=CASCADE, related_name='bookmarks')
+    article = ForeignKey(Article, on_delete=CASCADE, related_name='bookmarks')
     created = DateTimeField(auto_now_add=True)
 
     class Meta:
