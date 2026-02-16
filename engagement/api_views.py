@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 
 from engagement.models import Comment, ReadLater
@@ -54,7 +55,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         Raises PermissionError if user is not the author.
         """
         if serializer.instance.author != self.request.user.profile:
-            raise PermissionError("You can only edit your own comments")
+            raise PermissionDenied("You can only edit your own comments")
         serializer.save()
 
     def perform_destroy(self, instance):
@@ -63,7 +64,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         Raises PermissionError if user is not the author.
         """
         if instance.author != self.request.user.profile:
-            raise PermissionError("You can only delete your own comments")
+            raise PermissionDenied("You can only delete your own comments")
         instance.delete()
 
 
