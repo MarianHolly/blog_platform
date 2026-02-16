@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 
@@ -97,7 +98,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         Only writers can create articles.
         """
         if not self.request.user.profile.is_writer:
-            raise PermissionError("Only writers can create articles")
+            raise PermissionDenied("Only writers can create articles")
 
         # Automatically set bulletin to writer's bulletin
         bulletin = self.request.user.profile.bulletin
@@ -106,13 +107,13 @@ class ArticleViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         """Update article - only owner can update."""
         if serializer.instance.author != self.request.user.profile:
-            raise PermissionError("You can only edit your own articles")
+            raise PermissionDenied("You can only edit your own articles")
         serializer.save()
 
     def perform_destroy(self, instance):
         """Delete article - only owner can delete."""
         if instance.author != self.request.user.profile:
-            raise PermissionError("You can only delete your own articles")
+            raise PermissionDenied("You can only delete your own articles")
         instance.delete()
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
