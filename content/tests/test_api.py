@@ -20,15 +20,13 @@ class ArticleAPITestCase(TestCase):
         """Set up test data before each test method."""
         self.client = APIClient()
 
-        # Create reader user
+        # Create reader user with profile
         self.reader_user = User.objects.create_user('reader', 'reader@test.com', 'pass123')
-        self.reader_profile = Profile.objects.get(user=self.reader_user)
+        self.reader_profile = Profile.objects.create(user=self.reader_user, role='reader')
 
-        # Create writer user
+        # Create writer user with profile
         self.writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        self.writer_profile = Profile.objects.get(user=self.writer_user)
-        self.writer_profile.role = 'writer'
-        self.writer_profile.save()
+        self.writer_profile = Profile.objects.create(user=self.writer_user, role='writer')
 
         # Create bulletin for writer
         self.bulletin = Bulletin.objects.create(
@@ -252,15 +250,13 @@ class BulletinAPITestCase(TestCase):
         """Set up test data."""
         self.client = APIClient()
 
-        # Create reader
+        # Create reader with profile
         self.reader_user = User.objects.create_user('reader', 'reader@test.com', 'pass123')
-        self.reader_profile = Profile.objects.get(user=self.reader_user)
+        self.reader_profile = Profile.objects.create(user=self.reader_user, role='reader')
 
-        # Create writer with bulletin
+        # Create writer with profile and bulletin
         self.writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        self.writer_profile = Profile.objects.get(user=self.writer_user)
-        self.writer_profile.role = 'writer'
-        self.writer_profile.save()
+        self.writer_profile = Profile.objects.create(user=self.writer_user, role='writer')
 
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
@@ -329,12 +325,10 @@ class SubscriptionAPITestCase(TestCase):
         self.client = APIClient()
 
         self.user = User.objects.create_user('reader', 'reader@test.com', 'pass123')
-        self.profile = Profile.objects.get(user=self.user)
+        self.profile = Profile.objects.create(user=self.user, role='reader')
 
         writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        writer_profile = Profile.objects.get(user=writer_user)
-        writer_profile.role = 'writer'
-        writer_profile.save()
+        writer_profile = Profile.objects.create(user=writer_user, role='writer')
 
         self.bulletin = Bulletin.objects.create(
             owner=writer_profile,
