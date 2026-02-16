@@ -41,6 +41,13 @@ INSTALLED_APPS = [
     "csp",
     "django_bleach",
 
+    # Django REST Framework
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "drf_spectacular",
+    "corsheaders",
+    "django_filters",
+
     # Local apps
     "accounts",
     "content",
@@ -71,6 +78,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -280,6 +288,73 @@ if 'test' in sys.argv:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
     # Disable Cloudinary for tests
     CLOUDINARY_STORAGE = {}
+
+# ============================================================================
+# Django REST Framework Configuration
+# ============================================================================
+
+REST_FRAMEWORK = {
+    # Authentication: Use JWT tokens for API, session auth for browsable API
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+
+    # Permissions: Authenticated users can write, anyone can read
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+
+    # Pagination: Return 20 items per page by default
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+
+    # Filtering: Enable advanced filtering, search, and ordering
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+
+    # Schema: Use drf-spectacular for OpenAPI schema generation
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# JWT Authentication Settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),      # Short-lived access token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),      # Long-lived refresh token
+    'ROTATE_REFRESH_TOKENS': True,                     # Issue new refresh token on refresh
+    'BLACKLIST_AFTER_ROTATION': False,                 # Don't use blacklist (needs extra app)
+}
+
+# API Documentation Settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Blog Platform API',
+    'DESCRIPTION': 'A modern content management API with articles, bulletins, and engagement features',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+}
+
+# CORS Settings for Frontend Development
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',      # React default
+    'http://localhost:5173',      # Vite default
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173',
+]
+
+# In production, add your frontend domain
+if not DEBUG:
+    production_frontend = os.getenv('FRONTEND_URL')
+    if production_frontend:
+        CORS_ALLOWED_ORIGINS.append(production_frontend)
+
+# Allow credentials (cookies, authorization headers)
+CORS_ALLOW_CREDENTIALS = True
 
 print("Cloudinary storage configured")
 print(f"Database: {'Production (PostgreSQL)' if os.getenv('DATABASE_URL') else 'Local Development'}")
