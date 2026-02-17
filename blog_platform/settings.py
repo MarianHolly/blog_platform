@@ -17,11 +17,17 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.railway.app,.onrender.com").split(",")
 
-# CSRF Trusted Origins for Railway and Render deployments
+# CSRF Trusted Origins for deployment platforms
 CSRF_TRUSTED_ORIGINS = [
     'https://*.up.railway.app',
     'https://*.onrender.com',
 ]
+
+# Add custom CSRF origins from environment (for Coolify/custom domains)
+# Format: CSRF_TRUSTED_ORIGINS_CUSTOM=https://yourdomain.com,https://www.yourdomain.com
+custom_origins = os.getenv("CSRF_TRUSTED_ORIGINS_CUSTOM", "")
+if custom_origins:
+    CSRF_TRUSTED_ORIGINS.extend(custom_origins.split(","))
 
 # Application definition
 INSTALLED_APPS = [
