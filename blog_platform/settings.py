@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_filters",
 
     # Local apps
+    "core",
     "accounts",
     "content",
     "engagement",
