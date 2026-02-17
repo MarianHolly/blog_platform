@@ -71,13 +71,7 @@ class SignUpForm(UserCreationForm):
     def save(self, commit=True):
         self.instance.is_active = True
         user = super().save(commit)
-
-        profile = Profile(
-            user=user
-        )
-
-        if commit:
-            profile.save()
+        # Profile is auto-created by signal in accounts/signals.py
         return user
 
 
