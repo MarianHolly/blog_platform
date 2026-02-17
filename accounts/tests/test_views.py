@@ -87,7 +87,9 @@ class LoginViewTest(TestCase):
             email='test@example.com',
             password='TestPass123'
         )
-        Profile.objects.create(user=self.user, role='reader')
+        self.user.profile.role = 'reader'  # Use auto-created profile
+
+        self.user.profile.save()
 
     def test_login_view_get_returns_form(self):
         """GET request to login view should display form"""
@@ -155,7 +157,11 @@ class ProfileDetailViewTest(TestCase):
             email='test@example.com',
             password='TestPass123'
         )
-        self.profile = Profile.objects.create(user=self.user, role='reader')
+        self.profile = self.user.profile  # Use auto-created profile
+
+        self.profile.role = 'reader'
+
+        self.profile.save()
 
     def test_profile_detail_view_get_returns_profile(self):
         """GET profile should display user profile"""
@@ -200,7 +206,9 @@ class ProfileDetailViewTest(TestCase):
             email='other@example.com',
             password='TestPass123'
         )
-        Profile.objects.create(user=other_user, role='reader')
+        other_user.profile.role = 'reader'  # Use auto-created profile
+
+        other_user.profile.save()
 
         self.client.login(username='testuser', password='TestPass123')
         response = self.client.get(
@@ -230,7 +238,9 @@ class LogoutViewTest(TestCase):
             email='test@example.com',
             password='TestPass123'
         )
-        Profile.objects.create(user=self.user, role='reader')
+        self.user.profile.role = 'reader'  # Use auto-created profile
+
+        self.user.profile.save()
 
     def test_logout_clears_session(self):
         """Logout should clear user session"""
@@ -262,7 +272,11 @@ class PromoteToWriterViewTest(TestCase):
             email='reader@test.com',
             password='TestPass123'
         )
-        self.profile = Profile.objects.create(user=self.user, role='reader')
+        self.profile = self.user.profile  # Use auto-created profile
+
+        self.profile.role = 'reader'
+
+        self.profile.save()
 
     def test_promote_to_writer_requires_login(self):
         """Promotion to writer requires user to be logged in"""
@@ -290,7 +304,11 @@ class PromoteToWriterViewTest(TestCase):
             email='other@test.com',
             password='TestPass123'
         )
-        other_profile = Profile.objects.create(user=other_user, role='reader')
+        other_profile = other_user.profile  # Use auto-created profile
+
+        other_profile.role = 'reader'
+
+        other_profile.save()
 
         self.client.login(username='reader', password='TestPass123')
         response = self.client.post(
@@ -326,7 +344,11 @@ class PromoteToAdminViewTest(TestCase):
             email='reader@test.com',
             password='TestPass123'
         )
-        self.profile = Profile.objects.create(user=self.user, role='reader')
+        self.profile = self.user.profile  # Use auto-created profile
+
+        self.profile.role = 'reader'
+
+        self.profile.save()
 
         # Create superuser
         self.admin = User.objects.create_superuser(
@@ -334,7 +356,9 @@ class PromoteToAdminViewTest(TestCase):
             email='admin@test.com',
             password='AdminPass123'
         )
-        Profile.objects.create(user=self.admin, role='admin')
+        self.admin.profile.role = 'admin'  # Use auto-created profile
+
+        self.admin.profile.save()
 
     def test_promote_to_admin_requires_superuser(self):
         """Only superusers can promote to admin"""

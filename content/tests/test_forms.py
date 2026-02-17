@@ -17,9 +17,13 @@ class BulletinFormTest(TestCase):
             password='TestPassword123',
             email='test@mail.com')
 
-        test_profile = Profile.objects.create(
-            user=test_user,
-            role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+
+        test_profile.role = 'writer'
+
+
+        test_profile.save()
 
     def test_bulletin_form_is_valid(self):
         form = BulletinForm(
@@ -55,9 +59,13 @@ class ArticleFormTest(TestCase):
             password='TestPassword123',
             email='test@mail.com')
 
-        test_profile = Profile.objects.create(
-            user=test_user,
-            role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+
+        test_profile.role = 'writer'
+
+
+        test_profile.save()
 
         test_bulletin = Bulletin.objects.create(
             owner=test_profile,

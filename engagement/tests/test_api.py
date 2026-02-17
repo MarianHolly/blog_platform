@@ -22,14 +22,26 @@ class CommentAPITestCase(TestCase):
 
         # Create users with profiles
         self.user1 = User.objects.create_user('user1', 'user1@test.com', 'pass123')
-        self.profile1 = Profile.objects.create(user=self.user1, role='reader')
+        self.profile1 = self.user1.profile  # Use auto-created profile
+
+        self.profile1.role = 'reader'
+
+        self.profile1.save()
 
         self.user2 = User.objects.create_user('user2', 'user2@test.com', 'pass123')
-        self.profile2 = Profile.objects.create(user=self.user2, role='reader')
+        self.profile2 = self.user2.profile  # Use auto-created profile
+
+        self.profile2.role = 'reader'
+
+        self.profile2.save()
 
         # Create writer with profile and article
         writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        writer_profile = Profile.objects.create(user=writer_user, role='writer')
+        writer_profile = writer_user.profile  # Use auto-created profile
+
+        writer_profile.role = 'writer'
+
+        writer_profile.save()
 
         bulletin = Bulletin.objects.create(
             owner=writer_profile,
@@ -167,14 +179,26 @@ class ReadLaterAPITestCase(TestCase):
 
         # Create users with profiles
         self.user1 = User.objects.create_user('user1', 'user1@test.com', 'pass123')
-        self.profile1 = Profile.objects.create(user=self.user1, role='reader')
+        self.profile1 = self.user1.profile  # Use auto-created profile
+
+        self.profile1.role = 'reader'
+
+        self.profile1.save()
 
         self.user2 = User.objects.create_user('user2', 'user2@test.com', 'pass123')
-        self.profile2 = Profile.objects.create(user=self.user2, role='reader')
+        self.profile2 = self.user2.profile  # Use auto-created profile
+
+        self.profile2.role = 'reader'
+
+        self.profile2.save()
 
         # Create writer with profile and articles
         writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        writer_profile = Profile.objects.create(user=writer_user, role='writer')
+        writer_profile = writer_user.profile  # Use auto-created profile
+
+        writer_profile.role = 'writer'
+
+        writer_profile.save()
 
         bulletin = Bulletin.objects.create(
             owner=writer_profile,
@@ -292,7 +316,11 @@ class JWTAuthenticationTestCase(TestCase):
             password='testpass123'
         )
         # Create profile for the user
-        self.profile = Profile.objects.create(user=self.user, role='reader')
+        self.profile = self.user.profile  # Use auto-created profile
+
+        self.profile.role = 'reader'
+
+        self.profile.save()
 
     def test_obtain_token(self):
         """Test obtaining JWT tokens with valid credentials."""
