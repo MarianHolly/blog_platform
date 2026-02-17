@@ -58,7 +58,11 @@ class GuiFormSubmissionTests(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Test Bulletin',
@@ -97,7 +101,9 @@ class GuiFormSubmissionTests(TestCase):
             email='test@example.com',
             password='TestPass123'
         )
-        Profile.objects.create(user=user, role='reader')
+        user.profile.role = 'reader'  # Use auto-created profile
+
+        user.profile.save()
 
         response = self.client.post(reverse('login'), {
             'username': 'testuser',
@@ -154,7 +160,11 @@ class GuiNavigationTests(TestCase):
             email='test@example.com',
             password='TestPass123'
         )
-        self.profile = Profile.objects.create(user=self.user, role='reader')
+        self.profile = self.user.profile  # Use auto-created profile
+
+        self.profile.role = 'reader'
+
+        self.profile.save()
 
     def test_profile_page_accessible(self):
         """User profile page is accessible"""

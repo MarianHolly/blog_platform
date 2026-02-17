@@ -21,7 +21,9 @@ class LikeToggleViewTest(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+        self.writer_profile.role = 'writer'
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Test Bulletin',
@@ -42,7 +44,9 @@ class LikeToggleViewTest(TestCase):
             email='reader@test.com',
             password='pass123'
         )
-        self.reader_profile = Profile.objects.create(user=self.reader, role='reader')
+        self.reader_profile = self.reader.profile  # Use auto-created profile
+        self.reader_profile.role = 'reader'
+        self.reader_profile.save()
 
     def test_like_toggle_requires_login(self):
         """Like toggle requires user to be logged in"""
@@ -152,7 +156,9 @@ class ReadLaterToggleViewTest(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+        self.writer_profile.role = 'writer'
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Test Bulletin',
@@ -173,7 +179,9 @@ class ReadLaterToggleViewTest(TestCase):
             email='reader@test.com',
             password='pass123'
         )
-        self.reader_profile = Profile.objects.create(user=self.reader, role='reader')
+        self.reader_profile = self.reader.profile  # Use auto-created profile
+        self.reader_profile.role = 'reader'
+        self.reader_profile.save()
 
     def test_read_later_toggle_requires_login(self):
         """Read later toggle requires user to be logged in"""

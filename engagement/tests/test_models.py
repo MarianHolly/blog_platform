@@ -16,8 +16,11 @@ class CommentModelTest(TestCase):
 
         test_user = User.objects.create_user(
             username='TestUser', password='TestPassword123')
-        test_profile = Profile.objects.create(
-            user=test_user, role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+        test_profile.role = 'writer'
+
+        test_profile.save()
         test_bulletin = Bulletin.objects.create(
             owner=test_profile, title='TestBulletin', slug='test-bulletin')
         test_article = Article.objects.create(
@@ -75,8 +78,11 @@ class LikeModelTest(TestCase):
 
         test_user = User.objects.create_user(
             username='TestUser', password='TestPassword123')
-        test_profile = Profile.objects.create(
-            user=test_user, role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+        test_profile.role = 'writer'
+
+        test_profile.save()
         test_bulletin = Bulletin.objects.create(
             owner=test_profile, title='TestBulletin', slug='test-bulletin')
         test_article = Article.objects.create(
@@ -142,8 +148,11 @@ class ReadLaterModelTest(TestCase):
 
         test_user = User.objects.create_user(
             username='TestUser', password='TestPassword123')
-        test_profile = Profile.objects.create(
-            user=test_user, role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+        test_profile.role = 'writer'
+
+        test_profile.save()
         test_bulletin = Bulletin.objects.create(
             owner=test_profile, title='TestBulletin', slug='test-bulletin')
         test_article = Article.objects.create(

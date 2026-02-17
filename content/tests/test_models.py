@@ -17,27 +17,33 @@ class ProfileModelTest(TestCase):
             username='TestReader',
             password='TestPassword123',
             email='reader@mail.com')
-        cls.reader_profile = Profile.objects.create(
-            user=cls.reader_user,
-            role='reader')
+        cls.reader_profile = cls.reader_user.profile  # Use auto-created profile
+
+        cls.reader_profile.role = 'reader'
+
+        cls.reader_profile.save()
 
         # Create test writer
         cls.writer_user = User.objects.create_user(
             username='TestWriter',
             password='TestPassword456',
             email='writer@mail.com')
-        cls.writer_profile = Profile.objects.create(
-            user=cls.writer_user,
-            role='writer')
+        cls.writer_profile = cls.writer_user.profile  # Use auto-created profile
+
+        cls.writer_profile.role = 'writer'
+
+        cls.writer_profile.save()
 
         # Create test admin
         cls.admin_user = User.objects.create_user(
             username='TestAdmin',
             password='TestPassword789',
             email='admin@mail.com')
-        cls.admin_profile = Profile.objects.create(
-            user=cls.admin_user,
-            role='admin')
+        cls.admin_profile = cls.admin_user.profile  # Use auto-created profile
+
+        cls.admin_profile.role = 'admin'
+
+        cls.admin_profile.save()
 
     def test_reader_profile_is_reader_returns_true(self):
         """Reader profile should have is_reader property return True"""
@@ -88,9 +94,13 @@ class BulletinModelTest(TestCase):
             password='TestPassword123',
             email='test@mail.com')
 
-        test_profile = Profile.objects.create(
-            user=test_user,
-            role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+
+        test_profile.role = 'writer'
+
+
+        test_profile.save()
 
         test_bulletin = Bulletin.objects.create(
             owner=test_profile,
@@ -158,9 +168,13 @@ class ArticleModelTest(TestCase):
             password='TestPassword123',
             email='test@mail.com')
 
-        test_profile = Profile.objects.create(
-            user=test_user,
-            role='writer')
+        test_profile = test_user.profile  # Use auto-created profile
+
+
+        test_profile.role = 'writer'
+
+
+        test_profile.save()
 
         test_bulletin = Bulletin.objects.create(
             owner=test_profile,
@@ -251,15 +265,21 @@ class SubscriptionModelTest(TestCase):
 
         writer_user = User.objects.create_user(
             username='TestWriter', password='TestPassword123')
-        writer_profile = Profile.objects.create(
-            user=writer_user, role='writer')
+        writer_profile = writer_user.profile  # Use auto-created profile
+
+        writer_profile.role = 'writer'
+
+        writer_profile.save()
         writer_bulletin = Bulletin.objects.create(
             owner=writer_profile, title='Subscription Testing', slug='subscription-testing')
 
         reader_user = User.objects.create_user(
             username='TestReader', password='TestPassword456')
-        reader_profile = Profile.objects.create(
-            user=reader_user, role='reader')
+        reader_profile = reader_user.profile  # Use auto-created profile
+
+        reader_profile.role = 'reader'
+
+        reader_profile.save()
 
         subscription = Subscription.objects.create(
             subscriber=reader_profile, bulletin=writer_bulletin)

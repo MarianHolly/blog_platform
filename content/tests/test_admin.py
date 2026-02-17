@@ -38,7 +38,11 @@ class ArticleAdminTestCase(TestCase):
             email='admin@test.com',
             password='adminpass123'
         )
-        cls.admin_profile = Profile.objects.create(user=cls.admin_user, role='admin')
+        cls.admin_profile = cls.admin_user.profile  # Use auto-created profile
+
+        cls.admin_profile.role = 'admin'
+
+        cls.admin_profile.save()
 
         # Create writer1
         cls.writer1_user = User.objects.create_user(
@@ -48,7 +52,11 @@ class ArticleAdminTestCase(TestCase):
             first_name='Jane',
             last_name='Doe'
         )
-        cls.writer1_profile = Profile.objects.create(user=cls.writer1_user, role='writer')
+        cls.writer1_profile = cls.writer1_user.profile  # Use auto-created profile
+
+        cls.writer1_profile.role = 'writer'
+
+        cls.writer1_profile.save()
         # Create bulletin with explicit slug
         bulletin1_title = 'Jane\'s Tech Articles'
         cls.writer1_bulletin = Bulletin.objects.create(
@@ -66,7 +74,11 @@ class ArticleAdminTestCase(TestCase):
             first_name='John',
             last_name='Smith'
         )
-        cls.writer2_profile = Profile.objects.create(user=cls.writer2_user, role='writer')
+        cls.writer2_profile = cls.writer2_user.profile  # Use auto-created profile
+
+        cls.writer2_profile.role = 'writer'
+
+        cls.writer2_profile.save()
         # Create bulletin with explicit slug
         bulletin2_title = 'John\'s Science Writing'
         cls.writer2_bulletin = Bulletin.objects.create(
@@ -357,7 +369,11 @@ class ArticleAdminAuthorFieldTest(ArticleAdminTestCase):
         """Author field should return username if full name not available."""
         # Create article for user with no full name
         user = User.objects.create_user(username='noname', password='pass')
-        profile = Profile.objects.create(user=user, role='writer')
+        profile = user.profile  # Use auto-created profile
+
+        profile.role = 'writer'
+
+        profile.save()
         bulletin = Bulletin.objects.create(title='Test', owner=profile)
         article = Article.objects.create(
             title='Test Article',

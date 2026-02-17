@@ -20,7 +20,11 @@ class ReaderSignupAndDiscoverWorkflowTest(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Tech News',
@@ -128,7 +132,11 @@ class WriterCreateAndPublishWorkflowTest(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='My Bulletin',
@@ -185,7 +193,11 @@ class ReaderSubscribeAndViewPrivateArticlesTest(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Premium Content',
@@ -206,7 +218,11 @@ class ReaderSubscribeAndViewPrivateArticlesTest(TestCase):
             email='reader@test.com',
             password='pass123'
         )
-        self.reader_profile = Profile.objects.create(user=self.reader, role='reader')
+        self.reader_profile = self.reader.profile  # Use auto-created profile
+
+        self.reader_profile.role = 'reader'
+
+        self.reader_profile.save()
 
     def test_reader_subscribe_to_bulletin_workflow(self):
         """Test reader can subscribe to bulletin and view private articles"""
@@ -250,7 +266,11 @@ class MultiUserEngagementWorkflowTest(TestCase):
             email='writer@test.com',
             password='pass123'
         )
-        self.writer_profile = Profile.objects.create(user=self.writer, role='writer')
+        self.writer_profile = self.writer.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Popular Article',
@@ -271,14 +291,22 @@ class MultiUserEngagementWorkflowTest(TestCase):
             email='reader1@test.com',
             password='pass123'
         )
-        self.reader1_profile = Profile.objects.create(user=self.reader1, role='reader')
+        self.reader1_profile = self.reader1.profile  # Use auto-created profile
+
+        self.reader1_profile.role = 'reader'
+
+        self.reader1_profile.save()
 
         self.reader2 = User.objects.create_user(
             username='reader2',
             email='reader2@test.com',
             password='pass123'
         )
-        self.reader2_profile = Profile.objects.create(user=self.reader2, role='reader')
+        self.reader2_profile = self.reader2.profile  # Use auto-created profile
+
+        self.reader2_profile.role = 'reader'
+
+        self.reader2_profile.save()
 
     def test_multiple_readers_engage_with_article(self):
         """Test multiple readers can like and comment on same article"""

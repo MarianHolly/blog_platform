@@ -17,10 +17,11 @@ class ArticleUpdateViewPermissionTest(TestCase):
             username='writer1',
             password='Password123'
         )
-        self.writer1_profile = Profile.objects.create(
-            user=self.writer1_user,
-            role='writer'
-        )
+        self.writer1_profile = self.writer1_user.profile  # Use auto-created profile
+
+        self.writer1_profile.role = 'writer'
+
+        self.writer1_profile.save()
         self.bulletin1 = Bulletin.objects.create(
             owner=self.writer1_profile,
             title='Writer 1 Bulletin',
@@ -38,10 +39,11 @@ class ArticleUpdateViewPermissionTest(TestCase):
             username='writer2',
             password='Password456'
         )
-        self.writer2_profile = Profile.objects.create(
-            user=self.writer2_user,
-            role='writer'
-        )
+        self.writer2_profile = self.writer2_user.profile  # Use auto-created profile
+
+        self.writer2_profile.role = 'writer'
+
+        self.writer2_profile.save()
         self.bulletin2 = Bulletin.objects.create(
             owner=self.writer2_profile,
             title='Writer 2 Bulletin',
@@ -94,10 +96,11 @@ class ArticleDeleteViewRedirectTest(TestCase):
             username='writer',
             password='Password123'
         )
-        self.writer_profile = Profile.objects.create(
-            user=self.writer_user,
-            role='writer'
-        )
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Test Bulletin',
@@ -164,7 +167,11 @@ class BulletinDetailViewTest(TestCase):
         cls.writer = User.objects.create_user(
             username='writer', email='writer@test.com', password='pass123'
         )
-        cls.writer_profile = Profile.objects.create(user=cls.writer, role='writer')
+        cls.writer_profile = cls.writer.profile  # Use auto-created profile
+
+        cls.writer_profile.role = 'writer'
+
+        cls.writer_profile.save()
         cls.bulletin = Bulletin.objects.create(
             owner=cls.writer_profile, title='My Bulletin', slug='my-bulletin'
         )
@@ -207,7 +214,11 @@ class ArticleSearchViewTest(TestCase):
         cls.writer = User.objects.create_user(
             username='writer', email='writer@test.com', password='pass123'
         )
-        cls.writer_profile = Profile.objects.create(user=cls.writer, role='writer')
+        cls.writer_profile = cls.writer.profile  # Use auto-created profile
+
+        cls.writer_profile.role = 'writer'
+
+        cls.writer_profile.save()
         cls.bulletin = Bulletin.objects.create(
             owner=cls.writer_profile, title='Test Bulletin', slug='test'
         )
@@ -254,10 +265,11 @@ class ArticleCreateViewTest(TestCase):
             email='writer@test.com',
             password='Password123'
         )
-        self.writer_profile = Profile.objects.create(
-            user=self.writer_user,
-            role='writer'
-        )
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Writer Bulletin',
@@ -270,10 +282,11 @@ class ArticleCreateViewTest(TestCase):
             email='reader@test.com',
             password='Password123'
         )
-        self.reader_profile = Profile.objects.create(
-            user=self.reader_user,
-            role='reader'
-        )
+        self.reader_profile = self.reader_user.profile  # Use auto-created profile
+
+        self.reader_profile.role = 'reader'
+
+        self.reader_profile.save()
 
         self.client = Client()
 
@@ -380,10 +393,11 @@ class ArticleUpdateViewExtendedTest(TestCase):
             username='writer',
             password='Password123'
         )
-        self.writer_profile = Profile.objects.create(
-            user=self.writer_user,
-            role='writer'
-        )
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Writer Bulletin',
@@ -468,10 +482,11 @@ class ArticleDeleteViewExtendedTest(TestCase):
             username='writer',
             password='Password123'
         )
-        self.writer_profile = Profile.objects.create(
-            user=self.writer_user,
-            role='writer'
-        )
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Writer Bulletin',
@@ -483,10 +498,11 @@ class ArticleDeleteViewExtendedTest(TestCase):
             username='other_writer',
             password='Password123'
         )
-        self.other_writer_profile = Profile.objects.create(
-            user=self.other_writer_user,
-            role='writer'
-        )
+        self.other_writer_profile = self.other_writer_user.profile  # Use auto-created profile
+
+        self.other_writer_profile.role = 'writer'
+
+        self.other_writer_profile.save()
         self.other_bulletin = Bulletin.objects.create(
             owner=self.other_writer_profile,
             title='Other Bulletin',
@@ -565,20 +581,22 @@ class ArticleEvaluationViewTest(TestCase):
             username='admin',
             password='Password123'
         )
-        self.admin_profile = Profile.objects.create(
-            user=self.admin_user,
-            role='admin'
-        )
+        self.admin_profile = self.admin_user.profile  # Use auto-created profile
+
+        self.admin_profile.role = 'admin'
+
+        self.admin_profile.save()
 
         # Create writer user
         self.writer_user = User.objects.create_user(
             username='writer',
             password='Password123'
         )
-        self.writer_profile = Profile.objects.create(
-            user=self.writer_user,
-            role='writer'
-        )
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
             title='Writer Bulletin',

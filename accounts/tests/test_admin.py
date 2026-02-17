@@ -30,7 +30,11 @@ class ProfileAdminListDisplayTest(TestCase):
             username='writer1', email='writer1@test.com', password='pass123',
             first_name='Bob', last_name='Writer'
         )
-        cls.writer_profile = Profile.objects.create(user=cls.writer_user, role='writer')
+        cls.writer_profile = cls.writer_user.profile  # Use auto-created profile
+
+        cls.writer_profile.role = 'writer'
+
+        cls.writer_profile.save()
         cls.writer_bulletin = Bulletin.objects.create(
             owner=cls.writer_profile, title='Bob\'s Blog', slug='bobs-blog'
         )
@@ -43,7 +47,11 @@ class ProfileAdminListDisplayTest(TestCase):
         cls.reader_user = User.objects.create_user(
             username='reader1', email='reader1@test.com', password='pass123'
         )
-        cls.reader_profile = Profile.objects.create(user=cls.reader_user, role='reader')
+        cls.reader_profile = cls.reader_user.profile  # Use auto-created profile
+
+        cls.reader_profile.role = 'reader'
+
+        cls.reader_profile.save()
 
     def setUp(self):
         """Set up for each test."""
@@ -121,10 +129,18 @@ class ProfileAdminFilterTest(TestCase):
     def setUpTestData(cls):
         """Create test data."""
         cls.reader_user = User.objects.create_user(username='reader1', password='pass123')
-        cls.reader_profile = Profile.objects.create(user=cls.reader_user, role='reader')
+        cls.reader_profile = cls.reader_user.profile  # Use auto-created profile
+
+        cls.reader_profile.role = 'reader'
+
+        cls.reader_profile.save()
 
         cls.writer_user = User.objects.create_user(username='writer1', password='pass123')
-        cls.writer_profile = Profile.objects.create(user=cls.writer_user, role='writer')
+        cls.writer_profile = cls.writer_user.profile  # Use auto-created profile
+
+        cls.writer_profile.role = 'writer'
+
+        cls.writer_profile.save()
 
     def test_filter_by_reader_role(self):
         """Can filter by reader role."""
@@ -159,7 +175,11 @@ class ProfileAdminSearchTest(TestCase):
             username='testuser', email='test@example.com',
             first_name='John', last_name='Doe', password='pass123'
         )
-        cls.profile = Profile.objects.create(user=cls.user, role='reader')
+        cls.profile = cls.user.profile  # Use auto-created profile
+
+        cls.profile.role = 'reader'
+
+        cls.profile.save()
 
     def test_search_by_username(self):
         """Can search by username."""
@@ -189,7 +209,11 @@ class ProfileAdminEngagementMetricsTest(TestCase):
     def setUpTestData(cls):
         """Create test data."""
         cls.writer_user = User.objects.create_user(username='writer1', password='pass123')
-        cls.writer_profile = Profile.objects.create(user=cls.writer_user, role='writer')
+        cls.writer_profile = cls.writer_user.profile  # Use auto-created profile
+
+        cls.writer_profile.role = 'writer'
+
+        cls.writer_profile.save()
         cls.writer_bulletin = Bulletin.objects.create(
             owner=cls.writer_profile, title='Blog', slug='blog'
         )
@@ -199,7 +223,11 @@ class ProfileAdminEngagementMetricsTest(TestCase):
         )
 
         cls.reader_user = User.objects.create_user(username='reader1', password='pass123')
-        cls.reader_profile = Profile.objects.create(user=cls.reader_user, role='reader')
+        cls.reader_profile = cls.reader_user.profile  # Use auto-created profile
+
+        cls.reader_profile.role = 'reader'
+
+        cls.reader_profile.save()
 
     def test_get_articles_count_for_writer(self):
         """get_articles_count should return article count for writers."""
@@ -258,12 +286,16 @@ class ProfileAdminPermissionTest(TestCase):
         self.admin_user = User.objects.create_superuser(
             username='admin', email='admin@test.com', password='admin123'
         )
-        Profile.objects.create(user=self.admin_user, role='admin')
+        self.admin_user.profile.role = 'admin'  # Use auto-created profile
+
+        self.admin_user.profile.save()
 
         self.reader_user = User.objects.create_user(
             username='reader', email='reader@test.com', password='pass123'
         )
-        Profile.objects.create(user=self.reader_user, role='reader')
+        self.reader_user.profile.role = 'reader'  # Use auto-created profile
+
+        self.reader_user.profile.save()
 
     def test_admin_access_for_superuser(self):
         """Admin should be accessible to superusers."""

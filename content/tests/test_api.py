@@ -22,11 +22,19 @@ class ArticleAPITestCase(TestCase):
 
         # Create reader user with profile
         self.reader_user = User.objects.create_user('reader', 'reader@test.com', 'pass123')
-        self.reader_profile = Profile.objects.create(user=self.reader_user, role='reader')
+        self.reader_profile = self.reader_user.profile  # Use auto-created profile
+
+        self.reader_profile.role = 'reader'
+
+        self.reader_profile.save()
 
         # Create writer user with profile
         self.writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        self.writer_profile = Profile.objects.create(user=self.writer_user, role='writer')
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
 
         # Create bulletin for writer
         self.bulletin = Bulletin.objects.create(
@@ -252,11 +260,19 @@ class BulletinAPITestCase(TestCase):
 
         # Create reader with profile
         self.reader_user = User.objects.create_user('reader', 'reader@test.com', 'pass123')
-        self.reader_profile = Profile.objects.create(user=self.reader_user, role='reader')
+        self.reader_profile = self.reader_user.profile  # Use auto-created profile
+
+        self.reader_profile.role = 'reader'
+
+        self.reader_profile.save()
 
         # Create writer with profile and bulletin
         self.writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        self.writer_profile = Profile.objects.create(user=self.writer_user, role='writer')
+        self.writer_profile = self.writer_user.profile  # Use auto-created profile
+
+        self.writer_profile.role = 'writer'
+
+        self.writer_profile.save()
 
         self.bulletin = Bulletin.objects.create(
             owner=self.writer_profile,
@@ -325,10 +341,18 @@ class SubscriptionAPITestCase(TestCase):
         self.client = APIClient()
 
         self.user = User.objects.create_user('reader', 'reader@test.com', 'pass123')
-        self.profile = Profile.objects.create(user=self.user, role='reader')
+        self.profile = self.user.profile  # Use auto-created profile
+
+        self.profile.role = 'reader'
+
+        self.profile.save()
 
         writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        writer_profile = Profile.objects.create(user=writer_user, role='writer')
+        writer_profile = writer_user.profile  # Use auto-created profile
+
+        writer_profile.role = 'writer'
+
+        writer_profile.save()
 
         self.bulletin = Bulletin.objects.create(
             owner=writer_profile,

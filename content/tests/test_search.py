@@ -8,7 +8,11 @@ from content.models import Article, Bulletin
 class SearchTests(TestCase):
     def setUp(self):
         writer_user = User.objects.create_user('writer', 'writer@test.com', 'pass123')
-        writer_profile = Profile.objects.create(user=writer_user, role='writer')
+        writer_profile = writer_user.profile  # Use auto-created profile
+
+        writer_profile.role = 'writer'
+
+        writer_profile.save()
         bulletin = Bulletin.objects.create(owner=writer_profile, title='Test', slug='test')
 
         Article.objects.create(
