@@ -11,7 +11,8 @@ A modern Django-based content management system for writers to publish articles 
 | Document | Purpose |
 |----------|---------|
 | **[DEVELOPMENT.md](DEVELOPMENT.md)** | Local development setup and workflow |
-| **[DEPLOYMENT.md](DEPLOYMENT.md)** | Deploy to Railway with PostgreSQL & Redis |
+| **[DEPLOYMENT.md](DEPLOYMENT.md)** | Deploy to Hetzner + Coolify with PostgreSQL & Redis |
+| **[DEPLOY_CHECKLIST.md](DEPLOY_CHECKLIST.md)** | Pre-deployment checklist and verification |
 | **[CLAUDE.md](CLAUDE.md)** | Architecture, models, permissions (for developers) |
 | **[NOTES.md](NOTES.md)** | Detailed feature overview and user flows |
 
@@ -42,8 +43,8 @@ python manage.py runserver
 # Visit http://localhost:8000
 ```
 
-### Deploy to Railway (10 minutes)
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete Railway setup guide.
+### Deploy to Production (Hetzner + Coolify)
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete deployment guide and **[DEPLOY_CHECKLIST.md](DEPLOY_CHECKLIST.md)** for pre-deployment verification.
 
 ---
 
