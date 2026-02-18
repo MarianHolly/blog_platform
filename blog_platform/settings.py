@@ -82,8 +82,8 @@ CKEDITOR_5_CUSTOM_CSS = 'css/article-content.css'
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
