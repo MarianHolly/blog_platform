@@ -18,6 +18,9 @@ admin.site.site_title = "Blog Platform Administration"
 admin.site.index_title = "Spravovací panel"
 
 urlpatterns = [
+    # Health check (for Coolify / load balancers)
+    path("health/", health_check, name="health_check"),
+
     # Django Admin
     path("admin/", admin.site.urls),
 
