@@ -190,8 +190,6 @@ else:
 
 CACHE_TTL = 60 * 15
 
-WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['js', 'css']
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
