@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
 	site: 'http://localhost:4321',
-	output: 'hybrid',
+	output: 'server',
 	integrations: [sitemap()],
 	vite: {
 		plugins: [tailwindcss()],
