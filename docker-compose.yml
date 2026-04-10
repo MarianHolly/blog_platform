@@ -57,6 +57,23 @@ services:
       timeout: 5s
       retries: 5
 
+  # Astro Frontend
+  frontend:
+    image: node:22-alpine
+    container_name: blog-platform-frontend
+    working_dir: /app
+    command: sh -c "npm install -g pnpm && pnpm install && pnpm dev --host"
+    ports:
+      - "4321:4321"
+    environment:
+      - PUBLIC_API_URL=http://web:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - web
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:

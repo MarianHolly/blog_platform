@@ -1,0 +1,74 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticle, getComments } from '../../lib/api';
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/articles');
+
+let article;
+try {
+	article = await getArticle(slug);
+} catch {
+	return Astro.redirect('/articles');
+}
+
+const commentsRes = await getComments(article.id).catch(() => ({ results: [], count: 0, next: null, previous: null }));
+
+const publishedDate = article.published
+	? new Date(article.published).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+	: null;
+---
+
+<BaseLayout title={article.title} description={article.subtitle}>
+	<article class="max-w-2xl mx-auto">
+		<!-- Meta -->
+		<div class="mb-8">
+			<a href="/articles" class="text-sm text-gray-400 hover:text-gray-600 transition-colors mb-4 block">
+				← All articles
+			</a>
+			<h1 class="text-3xl font-bold text-gray-900 leading-tight mb-2">{article.title}</h1>
+			{article.subtitle && (
+				<p class="text-lg text-gray-500 mb-4">{article.subtitle}</p>
+			)}
+			<div class="flex items-center gap-4 text-sm text-gray-400">
+				<span>
+					by <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">
+						{article.author.full_name || article.author.username}
+					</a>
+				</span>
+				<span>in <a href={`/bulletins/${slug}`} class="text-gray-600 hover:text-blue-600 transition-colors">{article.bulletin_title}</a></span>
+				{publishedDate && <time datetime={article.published ?? ''}>{publishedDate}</time>}
+				<span>{article.likes_count} likes</span>
+			</div>
+		</div>
+
+		<!-- Content -->
+		<div class="prose text-gray-800 mb-12" set:html={article.content} />
+
+		<!-- Comments -->
+		<section class="border-t border-gray-200 pt-8">
+			<h2 class="text-lg font-semibold text-gray-900 mb-6">
+				{commentsRes.count} {commentsRes.count === 1 ? 'Comment' : 'Comments'}
+			</h2>
+			{commentsRes.results.length > 0 ? (
+				<div class="space-y-4">
+					{commentsRes.results.map((comment) => (
+						<div class="bg-gray-50 rounded-lg p-4">
+							<div class="flex items-center justify-between mb-2">
+								<span class="text-sm font-medium text-gray-900">{comment.author_name}</span>
+								<time class="text-xs text-gray-400" datetime={comment.created}>
+									{new Date(comment.created).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+								</time>
+							</div>
+							<p class="text-sm text-gray-700">{comment.content}</p>
+						</div>
+					))}
+				</div>
+			) : (
+				<p class="text-sm text-gray-400">No comments yet. Sign in to comment.</p>
+			)}
+		</section>
+	</article>
+</BaseLayout>

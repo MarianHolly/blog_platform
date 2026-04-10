@@ -1,0 +1,54 @@
+---
+interface Props {
+	currentPage: number;
+	totalCount: number;
+	pageSize: number;
+	baseUrl: string;
+}
+
+const { currentPage, totalCount, pageSize, baseUrl } = Astro.props;
+const totalPages = Math.ceil(totalCount / pageSize);
+
+function pageUrl(page: number) {
+	const url = new URL(baseUrl, Astro.site ?? 'http://localhost:4321');
+	if (page > 1) url.searchParams.set('page', String(page));
+	return url.pathname + (url.search || '');
+}
+---
+
+{totalPages > 1 && (
+	<nav class="flex items-center justify-center gap-2 mt-8" aria-label="Pagination">
+		{currentPage > 1 && (
+			<a
+				href={pageUrl(currentPage - 1)}
+				class="px-3 py-1.5 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+			>
+				Previous
+			</a>
+		)}
+
+		{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+			<a
+				href={pageUrl(page)}
+				class={[
+					'px-3 py-1.5 text-sm rounded-md transition-colors',
+					page === currentPage
+						? 'bg-gray-900 text-white'
+						: 'border border-gray-300 hover:bg-gray-50',
+				].join(' ')}
+				aria-current={page === currentPage ? 'page' : undefined}
+			>
+				{page}
+			</a>
+		))}
+
+		{currentPage < totalPages && (
+			<a
+				href={pageUrl(currentPage + 1)}
+				class="px-3 py-1.5 text-sm border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+			>
+				Next
+			</a>
+		)}
+	</nav>
+)}

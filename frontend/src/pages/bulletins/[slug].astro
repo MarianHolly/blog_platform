@@ -1,0 +1,50 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getBulletin, getArticles } from '../../lib/api';
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/bulletins');
+
+let bulletin;
+try {
+	bulletin = await getBulletin(slug);
+} catch {
+	return Astro.redirect('/bulletins');
+}
+
+const articlesRes = await getArticles({ bulletin: slug, ordering: '-published', page_size: 20 })
+	.catch(() => ({ results: [], count: 0, next: null, previous: null }));
+---
+
+<BaseLayout title={bulletin.title} description={bulletin.description}>
+	<!-- Bulletin header -->
+	<div class="mb-8">
+		<a href="/bulletins" class="text-sm text-gray-400 hover:text-gray-600 transition-colors mb-4 block">
+			← All bulletins
+		</a>
+		<h1 class="text-3xl font-bold text-gray-900 mb-2">{bulletin.title}</h1>
+		<p class="text-gray-500 mb-4 max-w-xl">{bulletin.description}</p>
+		<div class="flex items-center gap-4 text-sm text-gray-400">
+			<span>by <span class="text-gray-600 font-medium">{bulletin.owner.full_name}</span></span>
+			<span>{bulletin.articles_count} articles</span>
+			<span>{bulletin.subscribers_count} subscribers</span>
+		</div>
+	</div>
+
+	<!-- Articles -->
+	<section>
+		<h2 class="text-lg font-semibold text-gray-900 mb-4">Articles</h2>
+		{articlesRes.results.length > 0 ? (
+			<div class="grid gap-4">
+				{articlesRes.results.map((article) => (
+					<ArticleCard article={article} />
+				))}
+			</div>
+		) : (
+			<p class="text-sm text-gray-400">No published articles yet.</p>
+		)}
+	</section>
+</BaseLayout>

@@ -1,49 +1,72 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getArticles, getBulletins } from '../lib/api';
+
+const [articlesRes, bulletinsRes] = await Promise.all([
+	getArticles({ page_size: 6, ordering: '-published' }),
+	getBulletins({ page: 1 }),
+]);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<BaseLayout title="Home" description="Discover articles from writers on Blog Platform">
+	<!-- Hero -->
+	<section class="mb-12">
+		<h1 class="text-4xl font-bold text-gray-900 mb-3">Blog Platform</h1>
+		<p class="text-lg text-gray-500 max-w-xl">
+			Discover articles from independent writers. Subscribe to bulletins and stay up to date.
+		</p>
+		<div class="flex gap-3 mt-5">
+			<a href="/articles" class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors">
+				Browse articles
+			</a>
+			<a href="/bulletins" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+				See bulletins
+			</a>
+		</div>
+	</section>
+
+	<!-- Latest articles -->
+	<section class="mb-12">
+		<div class="flex items-center justify-between mb-5">
+			<h2 class="text-xl font-semibold text-gray-900">Latest articles</h2>
+			<a href="/articles" class="text-sm text-blue-600 hover:underline">View all</a>
+		</div>
+		{articlesRes.results.length > 0 ? (
+			<div class="grid gap-4">
+				{articlesRes.results.map((article) => (
+					<ArticleCard article={article} />
+				))}
+			</div>
+		) : (
+			<p class="text-gray-400 text-sm">No articles published yet.</p>
+		)}
+	</section>
+
+	<!-- Bulletins -->
+	<section>
+		<div class="flex items-center justify-between mb-5">
+			<h2 class="text-xl font-semibold text-gray-900">Bulletins</h2>
+			<a href="/bulletins" class="text-sm text-blue-600 hover:underline">View all</a>
+		</div>
+		{bulletinsRes.results.length > 0 ? (
+			<div class="grid sm:grid-cols-2 gap-4">
+				{bulletinsRes.results.slice(0, 4).map((bulletin) => (
+					<a
+						href={`/bulletins/${bulletin.slug}`}
+						class="border border-gray-200 rounded-xl p-4 hover:border-gray-300 hover:shadow-sm transition-all bg-white block"
+					>
+						<h3 class="font-semibold text-gray-900 mb-1">{bulletin.title}</h3>
+						<p class="text-sm text-gray-500 line-clamp-2">{bulletin.description}</p>
+						<div class="flex gap-4 mt-3 text-xs text-gray-400">
+							<span>{bulletin.articles_count} articles</span>
+							<span>{bulletin.subscribers_count} subscribers</span>
+						</div>
+					</a>
+				))}
+			</div>
+		) : (
+			<p class="text-gray-400 text-sm">No bulletins yet.</p>
+		)}
+	</section>
+</BaseLayout>
