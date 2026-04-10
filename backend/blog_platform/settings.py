@@ -15,17 +15,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.railway.app,.onrender.com").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# CSRF Trusted Origins for deployment platforms
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.up.railway.app',
-    'https://*.onrender.com',
-]
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = []
 
-# Add custom CSRF origins from environment (for Coolify/custom domains)
-# Format: CSRF_TRUSTED_ORIGINS_CUSTOM=https://yourdomain.com,https://www.yourdomain.com
-custom_origins = os.getenv("CSRF_TRUSTED_ORIGINS_CUSTOM", "")
+custom_origins = os.getenv("CSRF_TRUSTED_ORIGINS", "")
 if custom_origins:
     CSRF_TRUSTED_ORIGINS.extend(custom_origins.split(","))
 
@@ -346,17 +341,13 @@ SPECTACULAR_SETTINGS = {
 
 # CORS Settings for Frontend Development
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',      # React default
-    'http://localhost:5173',      # Vite default
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:5173',
+    'http://localhost:4321',      # Astro dev server
+    'http://127.0.0.1:4321',
 ]
 
-# In production, add your frontend domain
-if not DEBUG:
-    production_frontend = os.getenv('FRONTEND_URL')
-    if production_frontend:
-        CORS_ALLOWED_ORIGINS.append(production_frontend)
+frontend_url = os.getenv('FRONTEND_URL')
+if frontend_url:
+    CORS_ALLOWED_ORIGINS.append(frontend_url)
 
 # Allow credentials (cookies, authorization headers)
 CORS_ALLOW_CREDENTIALS = True
