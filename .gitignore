@@ -1,8 +1,24 @@
-media
-venv
-.idea
-db.sqlite3
-.env
-__pycache__/
+# Python / Django
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/staticfiles/
+backend/media/
+backend/test_media/
+backend/.env
+backend/db.sqlite3
 
+# Astro / Node
+frontend/node_modules/
+frontend/dist/
+frontend/.astro/
+frontend/.env
+frontend/.env.production
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Claude
 .claude/
