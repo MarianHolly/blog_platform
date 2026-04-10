@@ -3,7 +3,7 @@ name: blog-platform
 services:
   # Django Web Application
   web:
-    build: .
+    build: ./backend
     container_name: blog-platform-web
     command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     ports:
@@ -15,7 +15,7 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/app
+      - ./backend:/app
     depends_on:
       postgres:
         condition: service_healthy
